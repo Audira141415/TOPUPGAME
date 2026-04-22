@@ -1,0 +1,126 @@
+/* Mega Light Mode: Neo-Brutalist Aesthetic */
+
+:root {
+    --primary-neon: #7c3aed; /* Violet */
+    --accent-color: #f59e0b; /* Amber */
+    --brutalist-border: 3px solid #000;
+    --brutalist-shadow: 8px 8px 0px 0px #000;
+    --card-bg: #ffffff;
+}
+
+/* 1. Clean Background with subtle grid */
+body.fi-body {
+    background-color: #f8fafc !important;
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px) !important;
+    background-size: 30px 30px !important;
+    color: #1a1a1a !important;
+}
+
+/* 2. Sidebar - High Contrast Light */
+.fi-sidebar {
+    background-color: #ffffff !important;
+    border-right: var(--brutalist-border) !important;
+}
+
+.fi-sidebar-item-active {
+    background-color: var(--primary-neon) !important;
+    color: #fff !important;
+    border: 2px solid #000 !important;
+    box-shadow: 4px 4px 0px 0px #000 !important;
+}
+
+/* 3. Cards & Table */
+.fi-section, .fi-card, .fi-ta-ctn {
+    background-color: var(--card-bg) !important;
+    border: var(--brutalist-border) !important;
+    box-shadow: var(--brutalist-shadow) !important;
+    border-radius: 0px !important;
+}
+
+/* 4. Statistics Widgets */
+.fi-wi-stats-overview-stat {
+    border: var(--brutalist-border) !important;
+    box-shadow: 6px 6px 0px 0px #000 !important;
+    background-color: #fff !important;
+    transition: all 0.2s ease;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 10px 10px 0px 0px #000 !important;
+}
+
+/* 5. Header Heading */
+.fi-header-heading {
+    font-size: 2.2rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase;
+    color: #000 !important;
+    filter: drop-shadow(3px 3px 0px var(--accent-color));
+}
+
+/* 6. Buttons */
+.fi-btn {
+    border: 2px solid #000 !important;
+    box-shadow: 4px 4px 0px 0px #000 !important;
+    border-radius: 0px !important;
+    text-transform: uppercase !important;
+    font-weight: 800 !important;
+    transition: all 0.1s;
+}
+
+.fi-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px #000 !important;
+}
+
+/* Inputs */
+.fi-input-wrp {
+    border: 2px solid #000 !important;
+    box-shadow: 2px 2px 0px 0px #000 !important;
+    border-radius: 0px !important;
+}
+
+/* Mega Hero Section (Restored) */
+.mega-hero {
+    background-color: #fde047 !important; /* Bright Yellow */
+    border: 5px solid #000 !important;
+    box-shadow: 15px 15px 0px 0px #000 !important;
+    padding: 3rem !important;
+    margin-bottom: 3rem !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.mega-hero-title {
+    font-size: 3.5rem !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    text-transform: uppercase !important;
+    color: #000 !important;
+    margin: 0 !important;
+    letter-spacing: -2px !important;
+    font-style: italic !important;
+}
+
+.mega-hero-subtitle {
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    color: #000 !important;
+    margin-top: 1rem !important;
+    opacity: 0.8;
+}
+
+.mega-hero-decor {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    font-size: 10rem;
+    font-weight: 900;
+    color: rgba(0,0,0,0.05);
+    transform: rotate(-10deg);
+    pointer-events: none;
+}

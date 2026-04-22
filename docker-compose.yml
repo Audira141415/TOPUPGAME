@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+    container_name: topup_backend
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=topup_game
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    depends_on:
+      - db
+      - redis
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
+    container_name: topup_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+
+  # Database
+  db:
+    image: mariadb:10.11
+    container_name: topup_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=topup_game
+    ports:
+      - "3306:3306"
+    volumes:
+      - topup_db_data:/var/lib/mysql
+
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: topup_redis
+    ports:
+      - "6379:6379"
+
+  # Nginx
+  nginx:
+    image: nginx:stable-alpine
+    container_name: topup_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - backend
+
+volumes:
+  topup_db_data:
