@@ -292,11 +292,18 @@ const Home: React.FC = () => {
                     { id: 3, title: 'Valorant Ascendant 3', price: 'Rp 850.000', accent: 'white', img: 'valorant_sultan.png' },
                     { id: 4, title: 'Free Fire Old Acc', price: 'Rp 500.000', accent: 'cyan', img: 'mlbb_sultan.png' },
                   ].map((acc, i) => (
-                    <BrutalCard key={i} accent={acc.accent as any} className="bg-brutal-white hover:-translate-y-2 transition-transform cursor-pointer">
-                       <div className="aspect-square bg-brutal-black/10 border-2 border-brutal-black mb-6 overflow-hidden"><img src={`${STORAGE_URL}/accounts/${acc.img}`} alt={acc.title} className="w-full h-full object-cover" /></div>
-                       <h4 className="text-xl font-black uppercase mb-4">{acc.title}</h4>
-                       <p className="text-2xl font-black text-brutal-magenta">{acc.price}</p>
-                    </BrutalCard>
+                    <Link key={i} to={`/account/${acc.id}`} className="group block">
+                      <BrutalCard accent={acc.accent as any} className="bg-brutal-white h-full group-hover:-translate-y-2 transition-transform shadow-[4px_4px_0px_0px_#000] group-hover:shadow-[8px_8px_0px_0px_#000] p-6">
+                        <div className="aspect-square bg-brutal-black/10 border-2 border-brutal-black mb-6 overflow-hidden">
+                          <img src={`${STORAGE_URL}/accounts/${acc.img}`} alt={acc.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        </div>
+                        <h4 className="text-xl font-black uppercase mb-2 truncate">{acc.title}</h4>
+                        <p className="text-2xl font-black text-brutal-magenta mb-6">{acc.price}</p>
+                        <div className="bg-brutal-black text-white text-center py-2 font-space font-black text-[10px] uppercase border-2 border-brutal-black shadow-[2px_2px_0px_0px_#000] group-hover:bg-brutal-cyan group-hover:text-brutal-black transition-colors">
+                           LIHAT DETAIL AKUN
+                        </div>
+                      </BrutalCard>
+                    </Link>
                   ))}
                </div>
             </div>

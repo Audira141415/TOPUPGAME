@@ -7,15 +7,22 @@
  */
 import axios from 'axios';
 
+// Dynamic host detection for production environments
+const host = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
+const protocol = typeof window !== 'undefined' ? window.location.protocol : 'http:';
+
+// If we are on port 3000 (production deploy), we expect backend on 8080
+const baseHost = host === 'localhost' ? 'http://localhost:8080' : `${protocol}//${host}:8080`;
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+  baseURL: import.meta.env.VITE_API_URL || `${baseHost}/api`,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
 });
 
-export const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || 'http://localhost:8080/storage';
+export const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || `${baseHost}/storage`;
 
 export const gameService = {
   getGames: async () => {
@@ -28,6 +35,10 @@ export const gameService = {
   },
   getFlashSales: async () => {
     const response = await api.get('/flash-sales');
+    return response.data;
+  },
+  getOrder: async (orderId: string) => {
+    const response = await api.get(`/orders/${orderId}`);
     return response.data;
   },
 };
@@ -43,6 +54,22 @@ export const authService = {
   },
   me: async () => {
     const response = await api.get('/me');
+    return response.data;
+  },
+  updateProfile: async (data: any) => {
+    const response = await api.patch('/profile/update', data);
+    return response.data;
+  },
+  updatePassword: async (data: any) => {
+    const response = await api.post('/password/update', data);
+    return response.data;
+  },
+  updateAvatar: async (formData: FormData) => {
+    const response = await api.post('/profile/avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   },
 };

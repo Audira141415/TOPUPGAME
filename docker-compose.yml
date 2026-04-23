@@ -43,6 +43,7 @@ services:
       - MYSQL_DATABASE=topup_game
     ports:
       - "3306:3306"
+    command: --skip-name-resolve
     volumes:
       - topup_db_data:/var/lib/mysql
 

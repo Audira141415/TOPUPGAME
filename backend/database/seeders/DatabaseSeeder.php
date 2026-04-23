@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,17 +13,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // CREATE SUPER ADMIN
+        User::updateOrCreate(
+            ['email' => 'admin@audirazenith.com'],
+            [
+                'name' => 'Super Admin',
+                'password' => Hash::make('Sigma1993'),
+                'role' => 'admin',
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Admin Topup',
-            'email' => 'admin@topupgame.com',
-            'password' => bcrypt('password'),
-        ]);
+        // CREATE TEST CUSTOMER
+        User::updateOrCreate(
+            ['email' => 'customer@audirazenith.com'],
+            [
+                'name' => 'Customer Sultan',
+                'password' => Hash::make('Sigma1993'),
+                'role' => 'user',
+            ]
+        );
+
+        // Default Admin (Backup)
+        User::updateOrCreate(
+            ['email' => 'admin@topupgame.com'],
+            [
+                'name' => 'Admin Topup',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+            ]
+        );
 
         $this->call([
             GameSeeder::class,
             PaymentMethodSeeder::class,
+            FlashSaleSeeder::class,
         ]);
     }
 }

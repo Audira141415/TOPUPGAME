@@ -18,6 +18,9 @@ Route::post('/login', [\App\Http\Controllers\Api\AuthController::class, 'login']
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [\App\Http\Controllers\Api\AuthController::class, 'me']);
     Route::post('/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
+    Route::patch('/profile/update', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
+    Route::post('/password/update', [\App\Http\Controllers\Api\AuthController::class, 'updatePassword']);
+    Route::post('/profile/avatar', [\App\Http\Controllers\Api\AuthController::class, 'updateAvatar']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
