@@ -82,18 +82,6 @@ const Footer: React.FC = () => {
          </div>
       </footer>
 
-      {/* Floating Chat / Support Button */}
-      <button className="fixed bottom-6 right-6 z-[80] group">
-         <div className="absolute inset-0 bg-brutal-black rounded-sm translate-x-1.5 translate-y-1.5"></div>
-         <div className="relative bg-brutal-magenta border-4 border-brutal-black p-4 flex items-center justify-center group-hover:-translate-y-1 transition-transform">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-               <circle cx="9" cy="9" r="1" fill="white"></circle>
-               <circle cx="15" cy="9" r="1" fill="white"></circle>
-            </svg>
-            <div className="absolute -top-2 -right-2 w-4 h-4 bg-brutal-yellow border-2 border-brutal-black rounded-full animate-pulse"></div>
-         </div>
-      </button>
     </>
   );
 };

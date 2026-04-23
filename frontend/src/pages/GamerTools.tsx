@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { STORAGE_URL } from '../services/api';
 
 const GamerTools: React.FC = () => {
   const [activeTool, setActiveTool] = useState('winrate');
@@ -42,13 +43,64 @@ const GamerTools: React.FC = () => {
       <Navbar />
       
       <main className="flex-grow max-w-7xl mx-auto px-4 py-16 w-full">
-        {/* Header Tools */}
-        <div className="text-center mb-16 space-y-4">
-           <h1 className="text-5xl md:text-8xl font-space font-black uppercase italic leading-none text-brutal-black">
-              GAMER <span className="text-brutal-white text-brutal-black-outline">TOOLS</span>
-           </h1>
-           <p className="bg-brutal-magenta text-brutal-white inline-block px-4 py-1 font-space font-black uppercase text-xs border-2 border-brutal-black shadow-brutal-black">Ultimate Command Suite v2.0</p>
-        </div>
+        {/* Hero Gamer Tools */}
+        <section className="mb-20 relative">
+          <div className="bg-brutal-white border-8 border-brutal-black p-8 md:p-16 shadow-[16px_16px_0px_0px_#000] shadow-brutal-cyan relative overflow-hidden group">
+             {/* Background Image */}
+             <div className="absolute inset-0 z-0">
+                <img 
+                  src={`${STORAGE_URL}/banners/tools_hero.png`} 
+                  className="w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-[5000ms]" 
+                  alt="Tools Hero" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-brutal-white via-brutal-white/60 to-transparent"></div>
+             </div>
+
+             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+                <div className="space-y-6 text-center md:text-left max-w-2xl">
+                   <motion.div 
+                      initial={{ x: -50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      className="inline-block bg-brutal-black text-brutal-white font-black uppercase text-xs px-4 py-1 border-2 border-brutal-black shadow-[4px_4px_0px_0px_#000]"
+                   >
+                      Pro Utility Suite
+                   </motion.div>
+                   <motion.h1 
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-6xl md:text-[8rem] font-space font-black text-brutal-black uppercase italic leading-none tracking-tighter"
+                   >
+                      GAMER <br /><span className="text-brutal-cyan text-brutal-white-outline text-brutal-black shadow-brutal-black">TOOLS</span>
+                   </motion.h1>
+                   <motion.p 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-brutal-black font-space font-bold uppercase text-lg border-l-4 border-brutal-magenta pl-6"
+                   >
+                      Tingkatkan performa gamingmu dengan kumpulan tools kalkulator winrate, estimasi magic wheel, dan generator nickname profesional.
+                   </motion.p>
+                </div>
+
+                <motion.div 
+                   initial={{ scale: 0.5, rotate: 20, opacity: 0 }}
+                   animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                   transition={{ delay: 0.6, type: 'spring' }}
+                   className="hidden lg:flex flex-col gap-4"
+                >
+                   <div className="bg-brutal-cyan border-4 border-brutal-black p-6 shadow-[8px_8px_0px_0px_#000] rotate-3">
+                      <p className="font-space font-black text-xs uppercase">Server Status</p>
+                      <p className="text-2xl font-black text-brutal-black">OPTIMAL 🟢</p>
+                   </div>
+                   <div className="bg-brutal-yellow border-4 border-brutal-black p-6 shadow-[8px_8px_0px_0px_#000] -rotate-2">
+                      <p className="font-space font-black text-xs uppercase">Tools Version</p>
+                      <p className="text-2xl font-black text-brutal-black">v2.4.0-PRO</p>
+                   </div>
+                </motion.div>
+             </div>
+          </div>
+        </section>
 
         <div className="grid lg:grid-cols-12 gap-12">
            {/* Sidebar Tool Selector */}

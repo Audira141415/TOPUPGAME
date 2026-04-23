@@ -78,25 +78,72 @@ const AccountStore: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-brutal-bg">
+    <div className="min-h-screen bg-brutal-bg flex flex-col">
       <Navbar />
       
-      {/* Header Section */}
-      <section className="bg-brutal-yellow py-16 border-b-4 border-brutal-black relative overflow-hidden">
-         <div className="absolute top-0 right-0 font-space font-black text-9xl text-brutal-black/5 -rotate-12 select-none">STORE</div>
-         <div className="max-w-7xl mx-auto px-4 relative z-10 text-center md:text-left space-y-6">
-            <h1 className="text-6xl md:text-8xl font-space font-black text-brutal-black italic uppercase leading-none shadow-brutal-white inline-block">ACCOUNT STORE</h1>
-            <div className="flex flex-col md:flex-row items-center gap-6">
-               <p className="bg-brutal-black text-brutal-white px-6 py-2 font-space font-black uppercase text-xl border-2 border-brutal-white shadow-brutal-magenta inline-block -rotate-1">
-                  Jual Beli Akun Sultan - 100% Aman
-               </p>
-               <div className="flex gap-4">
-                  <span className="text-brutal-black font-space font-bold uppercase italic">🛡️ VERIFIED SELLER</span>
-                  <span className="text-brutal-black/40">•</span>
-                  <span className="text-brutal-black font-space font-bold uppercase italic">⚡ INSTANT LOGIN</span>
-               </div>
-            </div>
-         </div>
+      {/* Hero Account Store */}
+      <section className="px-4 py-12 max-w-7xl mx-auto w-full">
+        <div className="bg-brutal-white border-8 border-brutal-black p-8 md:p-20 shadow-[16px_16px_0px_0px_#000] shadow-brutal-cyan relative overflow-hidden group">
+           {/* Background Image */}
+           <div className="absolute inset-0 z-0">
+              <img 
+                src={`${STORAGE_URL}/banners/account_hero.png`} 
+                className="w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-[5000ms]" 
+                alt="Account Store Hero" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-brutal-white via-brutal-white/80 to-transparent"></div>
+           </div>
+
+           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+              <div className="space-y-6 text-center md:text-left max-w-2xl">
+                 <motion.div 
+                    initial={{ x: -50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className="inline-block bg-brutal-cyan text-brutal-black font-black uppercase text-xs px-4 py-1 border-2 border-brutal-black shadow-[4px_4px_0px_0px_#000]"
+                 >
+                    Premium Marketplace
+                 </motion.div>
+                 <motion.h1 
+                    initial={{ y: 50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-6xl md:text-[8rem] font-space font-black text-brutal-black uppercase italic leading-none tracking-tighter"
+                 >
+                    ACCOUNT <br /><span className="text-brutal-magenta">STORE</span>
+                 </motion.h1>
+                 <motion.div 
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="flex flex-wrap justify-center md:justify-start gap-4"
+                 >
+                    <span className="bg-brutal-black text-white px-4 py-1 font-space font-black uppercase text-sm border-2 border-brutal-black">🛡️ 100% TERVERIFIKASI</span>
+                    <span className="bg-brutal-yellow text-brutal-black px-4 py-1 font-space font-black uppercase text-sm border-2 border-brutal-black">⚡ LOGIN INSTAN</span>
+                 </motion.div>
+                 <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6 }}
+                    className="text-brutal-black/60 font-space font-bold uppercase text-lg border-l-4 border-brutal-cyan pl-6"
+                 >
+                    Platform jual beli akun sultan paling aman di Indonesia. Akun MLBB, Genshin Impact, Valorant, dan lainnya dengan data lengkap & garansi seumur hidup.
+                 </motion.p>
+              </div>
+
+              <motion.div 
+                 initial={{ rotate: -10, scale: 0.8, opacity: 0 }}
+                 animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                 transition={{ delay: 0.8, type: 'spring' }}
+                 className="hidden lg:block bg-brutal-magenta border-4 border-brutal-black p-8 text-center min-w-[280px] shadow-[12px_12px_0px_0px_#000] rotate-3 group-hover:rotate-0 transition-transform duration-500"
+              >
+                 <div className="text-white space-y-4">
+                    <p className="font-space font-black uppercase text-2xl italic leading-none">TRUSTED BY</p>
+                    <p className="text-6xl font-space font-black tracking-tighter">10K+</p>
+                    <p className="font-space font-bold uppercase text-xs opacity-80">GAMERS ACROSS INDONESIA</p>
+                 </div>
+              </motion.div>
+           </div>
+        </div>
       </section>
 
       <main className="max-w-7xl mx-auto px-4 py-12">

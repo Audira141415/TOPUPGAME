@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { STORAGE_URL } from '../services/api';
 
 const MysteryBox: React.FC = () => {
   const [isSpinning, setIsSpinning] = useState(false);
@@ -23,13 +24,63 @@ const MysteryBox: React.FC = () => {
     <div className="min-h-screen bg-brutal-bg flex flex-col">
       <Navbar />
       
-      <main className="flex-grow max-w-4xl mx-auto px-4 py-16 w-full text-center">
-        <div className="mb-16 space-y-4">
-           <h1 className="text-6xl md:text-8xl font-space font-black italic uppercase text-brutal-black leading-none">
-              MYSTERY <span className="text-brutal-magenta">BOX</span>
-           </h1>
-           <p className="bg-brutal-black text-brutal-white inline-block px-4 py-1 font-space font-bold uppercase text-lg border-2 border-brutal-cyan">Uji Keberuntunganmu Sekarang!</p>
-        </div>
+      <main className="flex-grow max-w-7xl mx-auto px-4 py-16 w-full">
+        {/* Hero Mystery Box */}
+        <section className="mb-20 relative">
+          <div className="bg-brutal-black border-8 border-brutal-black p-8 md:p-16 shadow-[16px_16px_0px_0px_#000] shadow-brutal-magenta relative overflow-hidden group">
+             {/* Background Banner */}
+             <div className="absolute inset-0 z-0">
+                <img 
+                  src={`${STORAGE_URL}/banners/mysterybox_hero.png`} 
+                  className="w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-[5000ms]" 
+                  alt="Mystery Box Hero" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-brutal-black via-brutal-black/40 to-transparent"></div>
+             </div>
+
+             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+                <div className="space-y-6 text-center md:text-left max-w-2xl">
+                   <motion.div 
+                      initial={{ x: -50, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      className="inline-block bg-brutal-magenta text-brutal-white font-black uppercase text-xs px-4 py-1 border-2 border-brutal-white shadow-[4px_4px_0px_0px_#000]"
+                   >
+                      Feeling Lucky?
+                   </motion.div>
+                   <motion.h1 
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-6xl md:text-8xl font-space font-black text-brutal-white uppercase italic leading-none"
+                   >
+                      MYSTERY <br /><span className="text-brutal-magenta">BOX</span>
+                   </motion.h1>
+                   <motion.p 
+                      initial={{ y: 30, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-brutal-white/80 font-space font-bold uppercase text-lg border-l-4 border-brutal-magenta pl-6"
+                   >
+                      Uji keberuntunganmu! Dapatkan skin legend, ribuan diamonds, atau voucher belanja hanya dengan satu putaran.
+                   </motion.p>
+                </div>
+
+                <motion.div 
+                   initial={{ rotate: 10, scale: 0.8, opacity: 0 }}
+                   animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                   transition={{ delay: 0.6, type: 'spring' }}
+                   className="hidden lg:block bg-brutal-yellow border-4 border-brutal-black p-6 shadow-[12px_12px_0px_0px_#fff] -rotate-3"
+                >
+                   <div className="text-4xl animate-bounce mb-2">🎁</div>
+                   <p className="font-space font-black text-brutal-black uppercase text-sm">Gacha Winner:</p>
+                   <p className="font-space font-black text-brutal-magenta uppercase text-xs">@ZenityGamer99</p>
+                   <p className="font-space font-black text-brutal-black uppercase text-[10px] opacity-40 italic">Baru saja memenangkan 1000 DM!</p>
+                </motion.div>
+             </div>
+          </div>
+        </section>
+
+        <div className="max-w-4xl mx-auto text-center">
 
         <div className="relative mb-20">
            <div className="absolute inset-0 bg-brutal-cyan/20 blur-3xl rounded-full"></div>
@@ -85,6 +136,7 @@ const MysteryBox: React.FC = () => {
 
         <div className="mt-12 text-[10px] font-space font-black uppercase opacity-40 italic">
            *Hasil gacha bersifat acak dan tidak dapat diganggu gugat. Syarat & ketentuan berlaku.
+        </div>
         </div>
       </main>
     </div>

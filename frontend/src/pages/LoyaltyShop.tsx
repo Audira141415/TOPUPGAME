@@ -2,6 +2,8 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
+import { STORAGE_URL } from '../services/api';
+import { motion } from 'framer-motion';
 
 const LoyaltyShop: React.FC = () => {
   const rewards = [
@@ -16,17 +18,62 @@ const LoyaltyShop: React.FC = () => {
       <Navbar />
       
       <main className="flex-grow max-w-7xl mx-auto px-4 py-16 w-full">
-        {/* User Coins Header */}
-        <div className="bg-brutal-black p-8 border-4 border-brutal-black shadow-brutal-yellow mb-16 flex flex-col md:flex-row items-center justify-between gap-8">
-           <div className="space-y-2">
-              <h1 className="text-4xl md:text-6xl font-space font-black text-brutal-white uppercase italic leading-none">LOYALTY <span className="text-brutal-yellow">SHOP</span></h1>
-              <p className="text-brutal-white/60 font-space font-bold uppercase text-xs">Tukarkan Koin Zenith hasil belanjamu dengan hadiah eksklusif!</p>
-           </div>
-           <div className="bg-brutal-yellow border-2 border-brutal-white p-4 text-center min-w-[200px]">
-              <span className="text-[10px] font-black uppercase opacity-60 block mb-1 text-brutal-black">Koin Kamu</span>
-              <p className="text-4xl font-space font-black text-brutal-black tracking-tighter">✨ 1.250</p>
-           </div>
-        </div>
+        {/* Hero Loyalty Shop */}
+        <section className="mb-16 relative">
+          <div className="bg-brutal-black p-8 md:p-16 border-8 border-brutal-black shadow-[16px_16px_0px_0px_#000] shadow-brutal-yellow relative overflow-hidden group flex flex-col md:flex-row items-center justify-between gap-12">
+             {/* Background Image */}
+             <div className="absolute inset-0 z-0">
+                <img 
+                  src={`${STORAGE_URL}/banners/loyalty_hero.png`} 
+                  className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-[3000ms]" 
+                  alt="Loyalty Hero" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-brutal-black via-brutal-black/60 to-transparent"></div>
+             </div>
+
+             <div className="relative z-10 space-y-6 max-w-xl">
+                <motion.div 
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  className="inline-block bg-brutal-yellow text-brutal-black font-black uppercase text-xs px-4 py-1 border-2 border-brutal-white shadow-[4px_4px_0px_0px_#fff]"
+                >
+                  Exclusive Rewards
+                </motion.div>
+                <motion.h1 
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-5xl md:text-8xl font-space font-black text-brutal-white uppercase italic leading-none"
+                >
+                  LOYALTY <br /><span className="text-brutal-yellow">SHOP</span>
+                </motion.h1>
+                <motion.p 
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="text-brutal-white/80 font-space font-bold uppercase text-lg border-l-4 border-brutal-yellow pl-6"
+                >
+                  Tukarkan Koin Zenith hasil belanjamu dengan hadiah eksklusif yang tidak bisa dibeli dengan uang!
+                </motion.p>
+             </div>
+
+             <motion.div 
+                initial={{ scale: 0.5, rotate: -20, opacity: 0 }}
+                animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                transition={{ delay: 0.6, type: 'spring' }}
+                className="relative z-10 bg-brutal-yellow border-4 border-brutal-white p-8 text-center min-w-[280px] shadow-[12px_12px_0px_0px_#000]"
+             >
+                <span className="text-sm font-black uppercase opacity-60 block mb-2 text-brutal-black">Saldo Koin Kamu</span>
+                <div className="flex items-center justify-center gap-3">
+                   <span className="text-5xl animate-bounce">✨</span>
+                   <p className="text-6xl font-space font-black text-brutal-black tracking-tighter">1.250</p>
+                </div>
+                <div className="mt-6 pt-6 border-t-2 border-brutal-black/10">
+                   <BrutalButton variant="black" className="w-full">TUKARKAN SEKARANG</BrutalButton>
+                </div>
+             </motion.div>
+          </div>
+        </section>
 
         {/* Rewards Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">

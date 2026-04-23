@@ -25,6 +25,7 @@ const Home: React.FC = () => {
   const [allGames, setAllGames] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [flashSales, setFlashSales] = useState<any[]>([]);
+  const [news, setNews] = useState<any[]>([]);
   const [showSpin, setShowSpin] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -95,6 +96,10 @@ const Home: React.FC = () => {
           const diff = Math.floor((endTime - now) / 1000);
           setTimeLeft(diff > 0 ? diff : 0);
         }
+      } catch (e) {}
+      try {
+        const newsData = await cmsService.getNews().catch(() => []);
+        setNews(newsData.slice(0, 3)); // Only show latest 3 on homepage
       } catch (e) {}
     };
     fetchData();
@@ -265,17 +270,27 @@ const Home: React.FC = () => {
                <div className="flex-grow h-1 bg-brutal-black"></div>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-               {[
-                 { title: 'New Patch 1.8.66 Mobile Legends: Meta Marksman Kembali?', date: '22 April 2026', tag: 'MLBB', img: 'patch.png' },
-                 { title: 'Bocoran Skin Legend Magic Wheel Terbaru, Siapkan Diamonds!', date: '21 April 2026', tag: 'SKIN', img: 'skin.png' },
-                 { title: 'Cara Cepat Push Rank ke Mythical Glory di Season Ini', date: '20 April 2026', tag: 'GUIDE', img: 'rank.png' },
-               ].map((news, i) => (
-                 <div key={i} className="group cursor-pointer">
+               {news.map((item, i) => (
+                 <div key={item.id} className="group cursor-pointer">
                     <div className="aspect-video bg-brutal-black border-4 border-brutal-black mb-6 overflow-hidden relative">
-                       <img src={`${STORAGE_URL}/news/${news.img}`} alt={news.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                       <img 
+                         src={`${STORAGE_URL}/${item.image}`} 
+                         alt={item.title} 
+                         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" 
+                       />
+                       <div className="absolute top-4 left-4 bg-brutal-yellow text-brutal-black font-black uppercase text-[10px] px-2 py-1 border-2 border-brutal-black z-10">
+                         {item.category}
+                       </div>
                     </div>
-                    <span className="text-xs font-space font-bold opacity-40 uppercase">{news.date}</span>
-                    <h3 className="text-xl font-space font-black uppercase mt-2">{news.title}</h3>
+                    <span className="text-xs font-space font-bold opacity-40 uppercase">
+                       {new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </span>
+                    <h3 className="text-xl font-space font-black uppercase mt-2 line-clamp-2">{item.title}</h3>
+                    <div className="mt-6">
+                       <Link to={`/news/${item.slug}`}>
+                         <BrutalButton variant="black" className="w-full text-sm py-2">READ MORE</BrutalButton>
+                       </Link>
+                    </div>
                  </div>
                ))}
             </div>

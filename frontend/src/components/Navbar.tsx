@@ -44,31 +44,54 @@ const Navbar: React.FC = () => {
           </span>
         </Link>
 
-        {/* Center: Main Navigation */}
-        <div className="hidden xl:flex flex-1 items-center justify-center gap-2">
-           <div className="flex items-center gap-6 px-6 border-r-2 border-brutal-black/10 h-10">
-              <Link to="/" className="hover:text-brutal-cyan transition-colors font-space font-black uppercase text-[11px] tracking-tight">Games</Link>
-              <Link to="/flash-sale" className="hover:text-brutal-cyan transition-colors font-space font-black uppercase text-[11px] tracking-tight relative">
-                Flash Sale
-                <span className="absolute -top-3 -right-5 bg-brutal-magenta text-white text-[7px] px-1.5 py-0.5 font-black border border-brutal-black shadow-[1px_1px_0px_0px_#000] animate-bounce">HOT</span>
-              </Link>
-              <Link to="/mystery-box" className="hover:text-brutal-cyan transition-colors font-space font-black uppercase text-[11px] tracking-tight relative">
-                Mystery Box
-              </Link>
-              <Link to="/account-store" className="hover:text-brutal-cyan transition-colors font-space font-black uppercase text-[11px] tracking-tight relative">
-                Accounts
-              </Link>
-              <Link to="/news" className="hover:text-brutal-cyan transition-colors font-space font-black uppercase text-[11px] tracking-tight relative">
-                News
-              </Link>
+        {/* Center: Main Navigation Grouped */}
+        <div className="hidden lg:flex flex-1 items-center justify-center gap-8">
+           {/* Marketplace Group */}
+           <div className="relative group/nav">
+             <button className="flex items-center gap-2 font-space font-black uppercase text-[12px] tracking-tight hover:text-brutal-magenta transition-colors h-10">
+               Marketplace
+               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="group-hover/nav:rotate-180 transition-transform"><path d="m6 9 6 6 6-6"/></svg>
+             </button>
+             <div className="absolute top-full left-0 w-48 hidden group-hover/nav:block z-50 pt-2">
+               <div className="bg-brutal-white border-4 border-brutal-black shadow-[4px_4px_0px_0px_#000]">
+                 <Link to="/" className="block px-4 py-3 border-b-2 border-brutal-black hover:bg-brutal-cyan font-black text-[10px] uppercase transition-colors">All Games</Link>
+                 <Link to="/flash-sale" className="block px-4 py-3 border-b-2 border-brutal-black hover:bg-brutal-magenta hover:text-white font-black text-[10px] uppercase transition-colors flex justify-between items-center">
+                   Flash Sale
+                   <span className="bg-yellow-400 text-black px-1 text-[8px] border border-black shadow-[1px_1px_0px_0px_#000]">HOT</span>
+                 </Link>
+                 <Link to="/mystery-box" className="block px-4 py-3 border-b-2 border-brutal-black hover:bg-brutal-yellow font-black text-[10px] uppercase transition-colors">Mystery Box</Link>
+                 <Link to="/account-store" className="block px-4 py-3 hover:bg-brutal-cyan font-black text-[10px] uppercase transition-colors">Account Store</Link>
+               </div>
+             </div>
            </div>
-           <div className="flex items-center gap-6 px-6 h-10">
-              <Link to="/tournaments" className="hover:text-brutal-magenta transition-colors font-space font-black uppercase text-[11px] tracking-tight text-brutal-magenta">Tournaments</Link>
-              <Link to="/loyalty-shop" className="hover:text-brutal-yellow transition-colors font-space font-black uppercase text-[11px] tracking-tight text-brutal-black relative">
-                Loyalty Shop
-              </Link>
-              <Link to="/tools" className="hover:text-brutal-cyan transition-colors font-space font-black uppercase text-[11px] tracking-tight">Tools</Link>
-              <Link to="/track" className="hover:text-brutal-cyan transition-colors font-space font-black uppercase text-[11px] tracking-tight">Tracking</Link>
+
+           {/* Community Group */}
+           <div className="relative group/nav">
+             <button className="flex items-center gap-2 font-space font-black uppercase text-[12px] tracking-tight hover:text-brutal-magenta transition-colors h-10">
+               Community
+               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="group-hover/nav:rotate-180 transition-transform"><path d="m6 9 6 6 6-6"/></svg>
+             </button>
+             <div className="absolute top-full left-0 w-48 hidden group-hover/nav:block z-50 pt-2">
+               <div className="bg-brutal-white border-4 border-brutal-black shadow-[4px_4px_0px_0px_#000]">
+                 <Link to="/news" className="block px-4 py-3 border-b-2 border-brutal-black hover:bg-brutal-cyan font-black text-[10px] uppercase transition-colors">Gaming News</Link>
+                 <Link to="/tournaments" className="block px-4 py-3 border-b-2 border-brutal-black hover:bg-brutal-magenta hover:text-white font-black text-[10px] uppercase transition-colors">Tournaments</Link>
+                 <Link to="/loyalty-shop" className="block px-4 py-3 hover:bg-brutal-yellow font-black text-[10px] uppercase transition-colors">Loyalty Shop</Link>
+               </div>
+             </div>
+           </div>
+
+           {/* Resources Group */}
+           <div className="relative group/nav">
+             <button className="flex items-center gap-2 font-space font-black uppercase text-[12px] tracking-tight hover:text-brutal-magenta transition-colors h-10">
+               Resources
+               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="group-hover/nav:rotate-180 transition-transform"><path d="m6 9 6 6 6-6"/></svg>
+             </button>
+             <div className="absolute top-full left-0 w-48 hidden group-hover/nav:block z-50 pt-2">
+               <div className="bg-brutal-white border-4 border-brutal-black shadow-[4px_4px_0px_0px_#000]">
+                 <Link to="/tools" className="block px-4 py-3 border-b-2 border-brutal-black hover:bg-brutal-cyan font-black text-[10px] uppercase transition-colors">Gamer Tools</Link>
+                 <Link to="/track" className="block px-4 py-3 hover:bg-brutal-yellow font-black text-[10px] uppercase transition-colors">Order Tracking</Link>
+               </div>
+             </div>
            </div>
         </div>
 

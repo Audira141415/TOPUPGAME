@@ -16,6 +16,7 @@ import ResetPassword from './pages/ResetPassword';
 import AccountStore from './pages/AccountStore';
 import AccountDetail from './pages/AccountDetail';
 import News from './pages/News';
+import NewsDetail from './pages/NewsDetail';
 import Settings from './pages/Settings';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import LiveSocialProof from './components/LiveSocialProof';
@@ -111,6 +112,11 @@ function App() {
           <Route path="/news" element={
             <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} transition={{ duration: 0.3, ease: "circOut" }}>
               <News />
+            </motion.div>
+          } />
+          <Route path="/news/:slug" element={
+            <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.3, ease: "circOut" }}>
+              <NewsDetail />
             </motion.div>
           } />
         </Routes>
