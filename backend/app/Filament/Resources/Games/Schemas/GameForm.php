@@ -30,9 +30,11 @@ class GameForm
                     ->columnSpanFull(),
                 FileUpload::make('image')
                     ->image()
+                    ->disk('public')
                     ->directory('games'),
                 FileUpload::make('banner')
                     ->image()
+                    ->disk('public')
                     ->directory('banners'),
                 Toggle::make('is_active')
                     ->default(true),

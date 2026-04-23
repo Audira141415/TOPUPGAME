@@ -21,6 +21,11 @@ class ProductForm
                     ->maxLength(255),
                 TextInput::make('sku')
                     ->maxLength(255),
+                \Filament\Forms\Components\FileUpload::make('image')
+                    ->label('Ikon Produk')
+                    ->image()
+                    ->disk('public')
+                    ->directory('products'),
                 TextInput::make('price_basic')
                     ->numeric()
                     ->required()

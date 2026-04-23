@@ -15,7 +15,7 @@ if not exist .git (
 set /p msg="Masukkan Pesan Commit (Contoh: Update Dashboard): "
 
 if "%msg%"=="" (
-    set msg="Update Project Topup Game"
+    set "msg=Update Project Topup Game"
 )
 
 echo.

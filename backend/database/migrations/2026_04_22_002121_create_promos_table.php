@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('discount_percent', 5, 2)->nullable();
             $table->decimal('max_discount', 15, 2)->nullable();
             $table->timestamp('valid_until')->nullable();
+            $table->integer('quota')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

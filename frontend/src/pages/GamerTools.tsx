@@ -76,7 +76,10 @@ const GamerTools: React.FC = () => {
                  {activeTool === 'winrate' && (
                    <motion.div key="wr" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                       <BrutalCard accent="cyan" className="p-8 md:p-12 space-y-8">
-                         <h2 className="text-3xl font-space font-black uppercase italic">Winrate Calculator</h2>
+                         <h2 className="text-3xl font-space font-black uppercase italic flex items-center gap-4">
+                            Winrate Calculator
+                            <span className="bg-brutal-magenta text-white text-[10px] px-2 py-0.5 not-italic border-2 border-brutal-black shadow-brutal-black">NEW</span>
+                         </h2>
                          <div className="grid md:grid-cols-3 gap-6">
                             <div className="space-y-2">
                                <label className="font-space font-black uppercase text-[10px]">Total Match</label>

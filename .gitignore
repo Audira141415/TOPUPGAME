@@ -5,6 +5,7 @@ brain/
 knowledge/
 artifacts/
 scratch/
+claude-skills-main/
 
 # Backend (Laravel)
 /backend/vendor/

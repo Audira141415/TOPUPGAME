@@ -34,7 +34,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Outfit')
             ->brandName('AUDIRA ZENITH')
-            ->favicon(asset('favicon.ico'))
+            ->brandLogo(asset('logo.png'))
+            ->brandLogoHeight('3rem')
+            ->favicon(asset('logo.png'))
             ->renderHook(
                 'panels::head.end',
                 fn (): string => \Illuminate\Support\Facades\Blade::render('<link rel="stylesheet" href="' . asset('css/custom-filament.css') . '">'),

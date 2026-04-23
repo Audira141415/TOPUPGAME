@@ -16,7 +16,11 @@ class GamesTable
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->label('Logo'),
+                    ->label('Logo')
+                    ->disk('public')
+                    ->size(40)
+                    ->square()
+                    ->circular(),
                 TextColumn::make('name')
                     ->label('Nama Game')
                     ->searchable()

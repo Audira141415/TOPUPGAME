@@ -12,7 +12,7 @@ use Carbon\Carbon;
 class StatsOverview extends BaseWidget
 {
     protected static ?int $sort = 1;
-    protected static ?string $pollingInterval = '15s';
+    protected ?string $pollingInterval = '15s';
 
     protected function getStats(): array
     {
@@ -49,6 +49,16 @@ class StatsOverview extends BaseWidget
                 ->description('Total kewajiban dana mengendap')
                 ->descriptionIcon('heroicon-m-wallet')
                 ->color('warning'),
+
+            Stat::make('Promo Aktif', \App\Models\Promo::count())
+                ->description('Voucher & diskon yang sedang jalan')
+                ->descriptionIcon('heroicon-m-gift')
+                ->color('danger'),
+
+            Stat::make('Support Tickets', \App\Models\SupportTicket::where('status', 'open')->count())
+                ->description('Butuh respon segera')
+                ->descriptionIcon('heroicon-m-chat-bubble-left-right')
+                ->color('info'),
         ];
     }
 }

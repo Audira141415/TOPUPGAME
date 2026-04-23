@@ -14,6 +14,11 @@ class ProductsTable
     {
         return $table
             ->columns([
+                \Filament\Tables\Columns\ImageColumn::make('image')
+                    ->label('Ikon')
+                    ->disk('public')
+                    ->size(40)
+                    ->square(),
                 TextColumn::make('name')
                     ->label('Produk')
                     ->searchable()

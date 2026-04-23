@@ -6,6 +6,7 @@ import BrutalButton from '../components/BrutalButton';
 import GameCard from '../components/GameCard';
 import { Link } from 'react-router-dom';
 import { cmsService, gameService } from '../services/api';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState('All');
@@ -14,6 +15,33 @@ const Home: React.FC = () => {
   const [banners, setBanners] = useState<any[]>([]);
   const [settings, setSettings] = useState<any>({});
   const [allGames, setAllGames] = useState<any[]>([]);
+  const [showSpin, setShowSpin] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [spinResult, setSpinResult] = useState<string | null>(null);
+
+  const rewards = [
+    { label: 'Rp 500', value: 500, color: '#FF00FF' },
+    { label: 'ZONK', value: 0, color: '#000000' },
+    { label: 'Rp 1.000', value: 1000, color: '#00FFFF' },
+    { label: 'VOUCHER 5%', value: 'v5', color: '#FFFF00' },
+    { label: 'Rp 200', value: 200, color: '#FF00FF' },
+    { label: 'ZONK', value: 0, color: '#000000' },
+    { label: 'Rp 5.000', value: 5000, color: '#00FFFF' },
+    { label: 'VOUCHER 10%', value: 'v10', color: '#FFFF00' },
+  ];
+
+  const handleSpin = () => {
+    if (isSpinning) return;
+    setIsSpinning(true);
+    setSpinResult(null);
+    
+    // Simulate spin duration
+    setTimeout(() => {
+      const randomIndex = Math.floor(Math.random() * rewards.length);
+      setSpinResult(rewards[randomIndex].label);
+      setIsSpinning(false);
+    }, 3000);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,8 +76,9 @@ const Home: React.FC = () => {
   const { h, m, s } = formatTime(timeLeft);
 
   const filteredGames = allGames.filter(game => {
-    const categoryName = typeof game.category === 'object' ? game.category.name : game.category;
-    const matchesTab = activeTab === 'All' || categoryName === activeTab;
+    const categoryName = typeof game.category === 'object' ? game.category?.name : game.category;
+    const matchesTab = activeTab === 'All' || 
+                      (categoryName && categoryName.toLowerCase() === activeTab.toLowerCase());
     const matchesSearch = game.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesTab && matchesSearch;
   });
@@ -91,11 +120,143 @@ const Home: React.FC = () => {
                   ) : (
                     <>
                         <div className="absolute top-12 left-0 z-30">
-                            <button className="bg-brutal-black text-brutal-yellow border-2 border-l-0 border-brutal-white px-4 py-2 font-space font-black text-xs uppercase shadow-brutal-magenta hover:translate-x-2 transition-all flex items-center gap-2">
+                            <button 
+                              onClick={() => setShowSpin(true)}
+                              className="bg-brutal-black text-brutal-yellow border-2 border-l-0 border-brutal-white px-4 py-2 font-space font-black text-xs uppercase shadow-brutal-magenta hover:translate-x-2 transition-all flex items-center gap-2"
+                            >
                                 <span className="animate-spin inline-block">🎡</span>
                                 Daily Spin & Win
                             </button>
                         </div>
+
+                        <AnimatePresence>
+                          {showSpin && (
+                            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                              <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => !isSpinning && setShowSpin(false)}
+                                className="absolute inset-0 bg-brutal-black/80 backdrop-blur-md"
+                              />
+                              
+                              <motion.div 
+                                initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
+                                animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                                exit={{ scale: 0.8, rotate: 10, opacity: 0 }}
+                                className="relative bg-brutal-white border-8 border-brutal-black p-8 md:p-12 shadow-[12px_12px_0px_0px_#000] max-w-md w-full text-center overflow-hidden"
+                              >
+                                <div className="absolute top-0 left-0 w-full h-2 bg-brutal-magenta"></div>
+                                <h2 className="text-4xl font-space font-black uppercase italic mb-8 border-b-4 border-brutal-black pb-4">LUCKY WHEEL</h2>
+                                
+                                <div className="relative w-64 h-64 mx-auto mb-12">
+                                  {/* The Wheel */}
+                                  <motion.div 
+                                    animate={isSpinning ? { rotate: [0, 360 * 8 + (Math.random() * 360)] } : {}}
+                                    transition={isSpinning ? { 
+                                      duration: 4, 
+                                      ease: [0.45, 0.05, 0.55, 0.95] // Suspenseful bezier stop
+                                    } : { duration: 0 }}
+                                    className={`w-full h-full rounded-full border-4 border-brutal-black relative overflow-hidden shadow-brutal-black ${isSpinning ? 'brightness-110 shadow-[0_0_30px_rgba(0,255,255,0.4)]' : ''} transition-all`}
+                                    style={{ background: 'conic-gradient(from 0deg, #FF00FF 0% 12.5%, #000 12.5% 25%, #00FFFF 25% 37.5%, #FFFF00 37.5% 50%, #FF00FF 50% 62.5%, #000 62.5% 75%, #00FFFF 75% 87.5%, #FFFF00 87.5% 100%)' }}
+                                  >
+                                    {/* Reward Labels */}
+                                    {rewards.map((reward, i) => {
+                                      const rotation = i * (360 / rewards.length) + (360 / rewards.length / 2);
+                                      return (
+                                        <div 
+                                          key={i}
+                                          className="absolute top-0 left-1/2 w-full h-full origin-center flex items-start justify-center pt-6 pointer-events-none"
+                                          style={{ transform: `translateX(-50%) rotate(${rotation}deg)` }}
+                                        >
+                                          <span 
+                                            className={`font-space font-black text-[9px] uppercase leading-none ${reward.color === '#000000' ? 'text-white' : 'text-brutal-black'}`}
+                                            style={{ 
+                                              writingMode: 'vertical-rl', 
+                                              transform: rotation > 90 && rotation < 270 ? 'rotate(180deg)' : 'none' 
+                                            }}
+                                          >
+                                            {reward.label}
+                                          </span>
+                                        </div>
+                                      );
+                                    })}
+                                    
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                      <div className="w-12 h-12 bg-brutal-white border-4 border-brutal-black rounded-full z-10 flex items-center justify-center">
+                                        <div className={`w-2 h-2 bg-brutal-black rounded-full ${isSpinning ? 'animate-ping' : ''}`}></div>
+                                      </div>
+                                    </div>
+                                  </motion.div>
+                                  
+                                  {/* Pointer with Ticking Animation */}
+                                  <motion.div 
+                                    animate={isSpinning ? { rotate: [45, 35, 45, 55, 45] } : { rotate: 45 }}
+                                    transition={isSpinning ? { repeat: Infinity, duration: 0.1 } : {}}
+                                    className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-brutal-magenta border-4 border-brutal-black z-20 shadow-brutal-black"
+                                    style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)', transformOrigin: 'bottom center' }}
+                                  ></motion.div>
+
+                                  {/* Confetti Celebration */}
+                                  {spinResult && !isSpinning && spinResult !== 'ZONK' && (
+                                    <div className="absolute inset-0 pointer-events-none">
+                                      {[...Array(20)].map((_, i) => (
+                                        <motion.div
+                                          key={i}
+                                          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+                                          animate={{ 
+                                            x: (Math.random() - 0.5) * 400, 
+                                            y: (Math.random() - 0.5) * 400, 
+                                            opacity: 0,
+                                            rotate: 360
+                                          }}
+                                          transition={{ duration: 1.5, ease: "easeOut" }}
+                                          className="absolute top-1/2 left-1/2 w-3 h-3 border-2 border-brutal-black"
+                                          style={{ 
+                                            backgroundColor: ['#FF00FF', '#00FFFF', '#FFFF00', '#00FF00'][i % 4] 
+                                          }}
+                                        />
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+
+                                {spinResult ? (
+                                  <motion.div 
+                                    initial={{ y: 20, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    className="space-y-4"
+                                  >
+                                    <p className="font-space font-black text-xs uppercase opacity-50">Selamat! Anda mendapatkan:</p>
+                                    <h3 className="text-5xl font-space font-black text-brutal-magenta uppercase shadow-brutal-black bg-brutal-white border-4 border-brutal-black p-4 inline-block -rotate-3">{spinResult}</h3>
+                                    <div className="pt-8">
+                                      <BrutalButton onClick={() => setShowSpin(false)} variant="black" className="w-full py-4">KLAIM HADIAH</BrutalButton>
+                                    </div>
+                                  </motion.div>
+                                ) : (
+                                  <div className="space-y-6">
+                                    <p className="font-space font-bold uppercase text-xs opacity-60">Putar roda keberuntungan Anda hari ini dan menangkan hadiah saldo gratis!</p>
+                                    <BrutalButton 
+                                      onClick={handleSpin} 
+                                      disabled={isSpinning}
+                                      variant="cyan" 
+                                      className={`w-full py-6 text-2xl italic ${isSpinning ? 'opacity-50 cursor-wait' : ''}`}
+                                    >
+                                      {isSpinning ? 'SPINNING...' : 'SPIN NOW!'}
+                                    </BrutalButton>
+                                  </div>
+                                )}
+
+                                <button 
+                                  onClick={() => !isSpinning && setShowSpin(false)}
+                                  className="absolute top-4 right-4 w-8 h-8 border-2 border-brutal-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                                >
+                                  ✕
+                                </button>
+                              </motion.div>
+                            </div>
+                          )}
+                        </AnimatePresence>
                         <div className="absolute inset-0 bg-gradient-to-tr from-brutal-magenta/20 to-brutal-cyan/20 mix-blend-overlay z-10"></div>
                         <div className="absolute inset-0 bg-brutal-black flex items-center justify-center text-brutal-white font-space font-black text-8xl md:text-[12rem] opacity-10 select-none">
                             LEVEL UP
@@ -178,7 +339,10 @@ const Home: React.FC = () => {
            
            <div className="max-w-7xl mx-auto relative z-10">
               <div className="text-center mb-16 space-y-4">
-                 <h2 className="text-5xl md:text-8xl font-space font-black text-brutal-black italic uppercase leading-none shadow-brutal-white inline-block">BEST COMBO</h2>
+                 <h2 className="text-5xl md:text-8xl font-space font-black text-brutal-black italic uppercase leading-none shadow-brutal-white inline-block relative">
+                    BEST COMBO
+                    <span className="absolute -top-6 -right-16 bg-brutal-magenta text-white px-3 py-1 font-space font-black text-2xl border-4 border-brutal-black -rotate-6 shadow-brutal-black">NEW</span>
+                 </h2>
                  <p className="bg-brutal-magenta text-brutal-white px-6 py-2 font-space font-black uppercase text-xl border-2 border-brutal-white shadow-brutal-black inline-block ml-4 rotate-2">Hemat Hingga 25%!</p>
               </div>
 
@@ -225,15 +389,9 @@ const Home: React.FC = () => {
           
           {filteredGames.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
-               {filteredGames.map((game) => (
-                 <Link key={game.id} to={`/game/${game.slug}`}>
-                    <GameCard 
-                      id={game.id} 
-                      name={game.name} 
-                      category={typeof game.category === 'object' ? game.category.name : game.category} 
-                    />
-                 </Link>
-               ))}
+                {filteredGames.map((game) => (
+                  <GameCard key={game.id} game={game} />
+                ))}
             </div>
           ) : (
             <div className="py-20 text-center">
@@ -346,16 +504,16 @@ const Home: React.FC = () => {
            </div>
            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
               {[
-                { name: 'Jess No Limit', code: 'JESSLUP', accent: 'cyan' },
-                { name: 'Lemon', code: 'LEMONADE', accent: 'yellow' },
-                { name: 'Windah Basudara', code: 'BRUTAL', accent: 'magenta' },
-                { name: 'Oura', code: 'OURA1', accent: 'cyan' },
-                { name: 'Tuturu', code: 'KINGS', accent: 'yellow' },
+                { name: 'Jess No Limit', code: 'JESSLUP', accent: 'cyan', img: 'jess.png' },
+                { name: 'Lemon', code: 'LEMONADE', accent: 'yellow', img: 'lemon.png' },
+                { name: 'Windah Basudara', code: 'BRUTAL', accent: 'magenta', img: 'windah.png' },
+                { name: 'Oura', code: 'OURA1', accent: 'cyan', img: 'oura.png' },
+                { name: 'Tuturu', code: 'KINGS', accent: 'yellow', img: 'tuturu.png' },
               ].map((p, i) => (
                 <div key={i} className="text-center group cursor-pointer">
                    <div className={`aspect-square bg-brutal-black border-4 border-brutal-black mb-4 flex items-center justify-center overflow-hidden relative shadow-brutal-black group-hover:-translate-y-2 transition-transform`}>
-                      <div className="absolute inset-0 bg-gradient-to-t from-brutal-black to-transparent z-10 opacity-60"></div>
-                      <div className="absolute inset-0 flex items-center justify-center font-space font-black text-xs text-brutal-white z-20">PROFILE PIC</div>
+                      <img src={`http://localhost:8000/storage/partners/${p.img}`} alt={p.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brutal-black to-transparent z-10 opacity-30"></div>
                    </div>
                    <h4 className="font-space font-black uppercase text-sm mb-2">{p.name}</h4>
                    <div className={`bg-brutal-${p.accent} border-2 border-brutal-black py-1 font-space font-black text-[10px] uppercase shadow-brutal-black`}>
@@ -374,12 +532,13 @@ const Home: React.FC = () => {
            </div>
            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
               {[
-                { title: 'New Patch 1.8.66 Mobile Legends: Meta Marksman Kembali?', date: '22 April 2026', tag: 'MLBB' },
-                { title: 'Bocoran Skin Legend Magic Wheel Terbaru, Siapkan Diamonds!', date: '21 April 2026', tag: 'SKIN' },
-                { title: 'Cara Cepat Push Rank ke Mythical Glory di Season Ini', date: '20 April 2026', tag: 'GUIDE' },
+                { title: 'New Patch 1.8.66 Mobile Legends: Meta Marksman Kembali?', date: '22 April 2026', tag: 'MLBB', img: 'patch.png' },
+                { title: 'Bocoran Skin Legend Magic Wheel Terbaru, Siapkan Diamonds!', date: '21 April 2026', tag: 'SKIN', img: 'skin.png' },
+                { title: 'Cara Cepat Push Rank ke Mythical Glory di Season Ini', date: '20 April 2026', tag: 'GUIDE', img: 'rank.png' },
               ].map((news, i) => (
                 <div key={i} className="group cursor-pointer">
                    <div className="aspect-video bg-brutal-black border-4 border-brutal-black mb-6 overflow-hidden relative">
+                      <img src={`http://localhost:8000/storage/news/${news.img}`} alt={news.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                       <div className="absolute inset-0 bg-brutal-cyan/20 group-hover:bg-transparent transition-colors"></div>
                       <span className="absolute top-4 left-4 bg-brutal-yellow text-brutal-black px-3 py-1 font-space font-black text-xs border-2 border-brutal-black">{news.tag}</span>
                    </div>
@@ -395,21 +554,26 @@ const Home: React.FC = () => {
            <div className="max-w-7xl mx-auto relative z-10">
               <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-16">
                  <div className="space-y-2">
-                    <h2 className="text-5xl md:text-7xl font-space font-black text-brutal-black italic uppercase leading-none">ACCOUNT STORE</h2>
+                    <h2 className="text-5xl md:text-7xl font-space font-black text-brutal-black italic uppercase leading-none relative inline-block">
+                       ACCOUNT STORE
+                       <span className="absolute -top-4 -right-12 bg-brutal-black text-brutal-cyan px-2 py-0.5 font-space font-black text-lg border-2 border-brutal-black shadow-brutal-white rotate-12">NEW!</span>
+                    </h2>
                     <p className="bg-brutal-black text-brutal-white px-4 py-1 font-space font-bold uppercase tracking-widest inline-block border-2 border-brutal-white">Jual Beli Akun Sultan - 100% Aman</p>
                  </div>
-                 <BrutalButton variant="black">Lihat Semua Akun</BrutalButton>
+                 <Link to="/account-store">
+                    <BrutalButton variant="black">Lihat Semua Akun</BrutalButton>
+                 </Link>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                  {[
-                   { title: 'MLBB Mythical Glory', price: 'Rp 1.250.000', skins: '150 Skins', hero: '98 Heroes', accent: 'cyan' },
-                   { title: 'Genshin Impact AR 58', price: 'Rp 2.400.000', skins: '8 Char ★5', hero: 'Endgame Ready', accent: 'magenta' },
-                   { title: 'Valorant Ascendant 3', price: 'Rp 850.000', skins: 'Bundle Reaver', hero: 'Full Agent', accent: 'white' },
-                   { title: 'Free Fire Old Acc', price: 'Rp 500.000', skins: 'Set Season 1', hero: 'Elite Pass', accent: 'cyan' },
+                   { id: 1, title: 'MLBB Mythical Glory', price: 'Rp 1.250.000', skins: '150 Skins', hero: '98 Heroes', accent: 'cyan', img: 'mlbb_sultan.png' },
+                   { id: 2, title: 'Genshin Impact AR 58', price: 'Rp 2.400.000', skins: '8 Char ★5', hero: 'Endgame Ready', accent: 'magenta', img: 'genshin_sultan.png' },
+                   { id: 3, title: 'Valorant Ascendant 3', price: 'Rp 850.000', skins: 'Bundle Reaver', hero: 'Full Agent', accent: 'white', img: 'valorant_sultan.png' },
+                   { id: 4, title: 'Free Fire Old Acc', price: 'Rp 500.000', skins: 'Set Season 1', hero: 'Elite Pass', accent: 'cyan', img: 'mlbb_sultan.png' },
                  ].map((acc, i) => (
                    <BrutalCard key={i} accent={acc.accent as any} className="bg-brutal-white hover:-translate-y-2 transition-transform cursor-pointer">
-                      <div className="aspect-square bg-brutal-black/10 border-2 border-brutal-black mb-6 flex items-center justify-center font-black text-xs italic">PREVIEW IMAGE</div>
+                      <div className="aspect-square bg-brutal-black/10 border-2 border-brutal-black mb-6 flex items-center justify-center font-black text-xs italic"><img src={`http://localhost:8000/storage/accounts/${acc.img}`} alt={acc.title} className="w-full h-full object-cover" /></div>
                       <h4 className="text-xl font-black uppercase mb-4">{acc.title}</h4>
                       <div className="space-y-2 mb-6">
                          <div className="flex justify-between text-[10px] font-bold uppercase opacity-60">
@@ -419,82 +583,17 @@ const Home: React.FC = () => {
                          <div className="h-1 bg-brutal-black/10"></div>
                       </div>
                       <p className="text-2xl font-black text-brutal-magenta mb-4">{acc.price}</p>
-                      <BrutalButton variant="black" className="w-full text-xs">Detail Akun</BrutalButton>
+                      <Link to={`/account/${acc.id}`} className="block w-full">
+                          <BrutalButton variant="black" className="w-full text-xs">Detail Akun</BrutalButton>
+                       </Link>
+
                    </BrutalCard>
                  ))}
               </div>
            </div>
         </section>
 
-        {/* Why Choose Us */}
-        <section className="px-4 py-20 max-w-7xl mx-auto text-center border-t-4 border-brutal-black">
-           <h2 className="text-4xl md:text-6xl mb-16 italic">WHY AUDIRA ZENITH?</h2>
-           <div className="grid md:grid-cols-3 gap-12">
-              {[
-                { title: 'INSTANT DELIVERY', desc: 'Orders processed automatically in seconds 24/7.', color: 'bg-brutal-cyan' },
-                { title: 'SECURE PAYMENT', desc: '100% Secure transaction with major payment gateways.', color: 'bg-brutal-magenta' },
-                { title: 'BEST PRICE', desc: 'Competitive prices and daily flash sales for everyone.', color: 'bg-brutal-yellow' },
-              ].map((item, i) => (
-                <div key={i} className="p-8 border-4 border-brutal-black shadow-brutal-black bg-brutal-white">
-                   <div className={`w-16 h-16 ${item.color} border-2 border-brutal-black mx-auto mb-6 flex items-center justify-center font-black text-2xl shadow-brutal-black`}>{i+1}</div>
-                   <h4 className="text-2xl mb-4 font-space font-black uppercase">{item.title}</h4>
-                   <p className="text-sm text-brutal-black/60 font-space font-bold uppercase">{item.desc}</p>
-                </div>
-              ))}
-           </div>
-        </section>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-brutal-white border-t-4 border-brutal-black pt-20 pb-12 px-4">
-         <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
-            <div className="md:col-span-5 space-y-8">
-               <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-brutal-cyan border-2 border-brutal-black flex items-center justify-center font-black text-2xl">AZ</div>
-                  <span className="text-3xl font-space font-black italic">AUDIRA<span className="text-brutal-magenta">ZENITH</span></span>
-               </div>
-               <p className="font-space font-bold text-sm uppercase leading-relaxed text-brutal-black/60">
-                  Audira Zenith adalah platform top-up game paling terpercaya di Indonesia. Kami menyediakan layanan instan 24/7 dengan keamanan tingkat tinggi dan harga yang sangat bersaing untuk para gamer sejati.
-               </p>
-               <div className="flex gap-4">
-                  {['IG', 'FB', 'TT', 'YT'].map(soc => (
-                    <div key={soc} className="w-10 h-10 bg-brutal-white border-2 border-brutal-black flex items-center justify-center font-black text-sm hover:bg-brutal-cyan hover:shadow-brutal-black transition-all cursor-pointer shadow-brutal-black">{soc}</div>
-                  ))}
-               </div>
-            </div>
-            <div className="md:col-span-2 space-y-6">
-               <h4 className="font-space font-black uppercase text-xl italic border-b-2 border-brutal-black pb-2">Links</h4>
-               <ul className="space-y-3 font-space font-bold text-sm uppercase text-brutal-black/60">
-                  <li className="hover:text-brutal-black cursor-pointer">Home</li>
-                  <li className="hover:text-brutal-black cursor-pointer">Track Order</li>
-                  <li className="hover:text-brutal-black cursor-pointer">Gamer Tools</li>
-               </ul>
-            </div>
-            <div className="md:col-span-5 space-y-6">
-               <h4 className="font-space font-black uppercase text-xl italic border-b-2 border-brutal-black pb-2">Metode Pembayaran</h4>
-               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                  {[
-                    { name: 'QRIS', color: 'bg-[#EA1D2C]' },
-                    { name: 'BCA', color: 'bg-[#0060AF]' },
-                    { name: 'BNI', color: 'bg-[#F15A23]' },
-                    { name: 'MANDIRI', color: 'bg-[#00467E]' },
-                    { name: 'OVO', color: 'bg-[#4C2A86]' },
-                    { name: 'DANA', color: 'bg-[#118EEA]' },
-                    { name: 'SHOPEE', color: 'bg-[#EE4D2D]' },
-                    { name: 'LINKAJA', color: 'bg-[#E1251B]' },
-                  ].map((pay, i) => (
-                    <div key={i} className={`${pay.color} h-10 border-2 border-brutal-black flex items-center justify-center text-white font-space font-black text-[8px] uppercase shadow-brutal-black hover:translate-y-[-2px] transition-all cursor-help`}>
-                       {pay.name}
-                    </div>
-                  ))}
-               </div>
-               <p className="text-[9px] font-bold uppercase opacity-40">Terverifikasi & Aman • Otomatis 24 Jam</p>
-            </div>
-         </div>
-         <div className="max-w-7xl mx-auto mt-20 pt-8 border-t-2 border-brutal-black text-center">
-            <p className="font-space font-black text-xs uppercase opacity-40">© 2026 AUDIRA ZENITH COMMAND CENTER. ALL RIGHTS RESERVED.</p>
-         </div>
-      </footer>
     </div>
   );
 };
