@@ -8,4 +8,15 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    watch: {
+      usePolling: true,
+      interval: 1000,
+    },
+    hmr: {
+      clientPort: 3000, // Sinkronkan dengan port luar docker-compose
+    }
+  }
 })

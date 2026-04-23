@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 /**
  * Purpose: API Route definitions for Audira Zenith Backend.
  * Caller: Used by Frontend Axios (api.ts).
- * Dependencies: Laravel Models (Game, Banner, Setting, Category), Controllers.
- * Main Functions: Auth, Games, Checkout, CMS (Banners, Settings, Categories).
+ * Dependencies: Laravel Models (Game, Banner, Setting, Category, FlashSale), Controllers.
+ * Main Functions: Auth, Games, Checkout, CMS (Banners, Settings, Categories, FlashSales).
  * Side Effects: Database read/write operations.
  */
 Route::post('/register', [\App\Http\Controllers\Api\AuthController::class, 'register']);
@@ -41,3 +41,4 @@ Route::get('/settings', function() {
 });
 
 Route::get('/categories', [GameController::class, 'categories']);
+Route::get('/flash-sales', [GameController::class, 'flashSales']);
