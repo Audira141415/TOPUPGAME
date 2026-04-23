@@ -58,6 +58,9 @@ const Navbar: React.FC = () => {
               <Link to="/account-store" className="hover:text-brutal-cyan transition-colors font-space font-black uppercase text-[11px] tracking-tight relative">
                 Accounts
               </Link>
+              <Link to="/news" className="hover:text-brutal-cyan transition-colors font-space font-black uppercase text-[11px] tracking-tight relative">
+                News
+              </Link>
            </div>
            <div className="flex items-center gap-6 px-6 h-10">
               <Link to="/tournaments" className="hover:text-brutal-magenta transition-colors font-space font-black uppercase text-[11px] tracking-tight text-brutal-magenta">Tournaments</Link>

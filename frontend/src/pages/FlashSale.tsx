@@ -10,6 +10,7 @@ import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { gameService, STORAGE_URL } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
+import FlashSaleCard from '../components/FlashSaleCard';
 
 const FlashSale: React.FC = () => {
   const [flashSales, setFlashSales] = useState<any[]>([]);
@@ -100,45 +101,11 @@ const FlashSale: React.FC = () => {
                 <div className="w-16 h-16 border-8 border-brutal-black border-t-brutal-magenta animate-spin"></div>
              </div>
            ) : (
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                {flashSales.map((item, i) => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <BrutalCard accent="cyan" className="group hover:-rotate-1 transition-transform relative overflow-hidden h-full flex flex-col">
-                      <div className="absolute top-4 right-4 bg-brutal-magenta text-white text-xs font-black px-3 py-1 border-2 border-brutal-black z-20">
-                        -{Math.round(((item.product.price - item.flash_price) / item.product.price) * 100)}%
-                      </div>
-                      
-                      <div className="aspect-video bg-brutal-black/5 border-4 border-brutal-black mb-6 overflow-hidden">
-                        <img 
-                          src={`${STORAGE_URL}/${item.product.game?.image}`} 
-                          alt={item.product.name} 
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-
-                      <div className="flex-grow space-y-4">
-                        <div className="flex justify-between items-end">
-                           <h3 className="text-2xl font-space font-black uppercase leading-tight line-clamp-2 flex-grow pr-4">{item.product.name}</h3>
-                           <div className="text-right">
-                              <span className="text-[10px] font-black uppercase opacity-40">Flash Price</span>
-                              <p className="text-3xl font-space font-black text-brutal-magenta leading-none">Rp {Number(item.flash_price).toLocaleString('id-ID')}</p>
-                           </div>
-                        </div>
-                        <p className="text-sm font-space font-bold opacity-40 line-through">Normal Price: Rp {Number(item.product.price).toLocaleString('id-ID')}</p>
-                      </div>
-
-                      <div className="mt-8">
-                        <BrutalButton variant="black" className="w-full text-xl py-4">BELI SEKARANG</BrutalButton>
-                      </div>
-                    </BrutalCard>
-                  </motion.div>
-                ))}
-             </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                 {flashSales.map((item, i) => (
+                   <FlashSaleCard key={item.id} item={item} index={i} />
+                 ))}
+              </div>
            )}
         </section>
 

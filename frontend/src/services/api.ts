@@ -87,6 +87,14 @@ export const cmsService = {
     const response = await api.get('/categories');
     return response.data;
   },
+  getNews: async () => {
+    const response = await api.get('/news');
+    return response.data;
+  },
+  getNewsBySlug: async (slug: string) => {
+    const response = await api.get(`/news/${slug}`);
+    return response.data;
+  },
 };
 
 export default api;

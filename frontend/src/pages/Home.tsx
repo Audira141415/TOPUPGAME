@@ -14,6 +14,7 @@ import GameCard from '../components/GameCard';
 import { Link } from 'react-router-dom';
 import { cmsService, gameService, STORAGE_URL } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
+import FlashSaleCard from '../components/FlashSaleCard';
 
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState('All');
@@ -63,18 +64,29 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      // Robust fetching: Each call is independent
       try {
-        const [bannerData, settingsData, gameData, categoryData, flashSaleData] = await Promise.all([
-          cmsService.getBanners(),
-          cmsService.getSettings(),
-          gameService.getGames(),
-          cmsService.getCategories(),
-          gameService.getFlashSales()
-        ]);
+        const bannerData = await cmsService.getBanners().catch(() => []);
         setBanners(bannerData);
+      } catch (e) {}
+
+      try {
+        const settingsData = await cmsService.getSettings().catch(() => ({}));
         setSettings(settingsData);
+      } catch (e) {}
+
+      try {
+        const gameData = await gameService.getGames().catch(() => []);
         setAllGames(gameData);
+      } catch (e) {}
+
+      try {
+        const categoryData = await cmsService.getCategories().catch(() => []);
         setCategories(categoryData);
+      } catch (e) {}
+
+      try {
+        const flashSaleData = await gameService.getFlashSales().catch(() => []);
         setFlashSales(flashSaleData);
 
         if (flashSaleData.length > 0) {
@@ -83,9 +95,7 @@ const Home: React.FC = () => {
           const diff = Math.floor((endTime - now) / 1000);
           setTimeLeft(diff > 0 ? diff : 0);
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      } catch (e) {}
     };
     fetchData();
 
@@ -127,7 +137,7 @@ const Home: React.FC = () => {
                <div className="relative h-[400px] md:h-[500px] border-4 border-brutal-black shadow-brutal-black group overflow-hidden bg-brutal-black">
                   {banners.length > 0 ? (
                     <div className="absolute inset-0">
-                        <img src={`${STORAGE_URL}/${banners[0].image_path}`} alt={banners[0].title} className="w-full h-full object-cover opacity-80" />
+                        <img src={banners[0].image_path.startsWith('http') ? banners[0].image_path : `${STORAGE_URL}/${banners[0].image_path}`} alt={banners[0].title} className="w-full h-full object-cover opacity-80" />
                         <div className="absolute bottom-12 left-12 z-20 space-y-4">
                             <h1 className="text-5xl md:text-7xl font-space font-black text-brutal-white bg-brutal-black inline-block px-4 border-2 border-brutal-white shadow-brutal-magenta">{banners[0].title}</h1>
                             <div className="flex gap-4">
@@ -187,17 +197,10 @@ const Home: React.FC = () => {
                   </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                  {flashSales.map((item, i) => (
-                    <div key={i} className="bg-brutal-white border-4 border-brutal-black p-4 shadow-brutal-black hover:-translate-y-1 transition-transform cursor-pointer relative overflow-hidden group">
-                      <div className="absolute top-2 right-2 bg-brutal-magenta text-white text-[10px] font-black px-2 py-0.5 border-2 border-brutal-black z-20">-{Math.round(((item.product.price - item.flash_price) / item.product.price) * 100)}%</div>
-                      <div className="aspect-square bg-brutal-cyan/10 border-2 border-brutal-black mb-4 flex items-center justify-center overflow-hidden">
-                          <img src={`${STORAGE_URL}/${item.product.game?.image}`} alt={item.product.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform" />
-                      </div>
-                      <h4 className="font-space font-black text-xs uppercase mb-2 line-clamp-1">{item.product.name}</h4>
-                      <p className="font-space font-black text-lg text-brutal-magenta">Rp {Number(item.flash_price).toLocaleString('id-ID')}</p>
-                    </div>
+                  {flashSales.slice(0, 5).map((item, i) => (
+                    <FlashSaleCard key={item.id} item={item} index={i} />
                   ))}
-              </div>
+               </div>
             </div>
           </section>
         )}
@@ -247,7 +250,7 @@ const Home: React.FC = () => {
                ].map((p, i) => (
                  <div key={i} className="text-center group cursor-pointer">
                     <div className={`aspect-square bg-brutal-black border-4 border-brutal-black mb-4 flex items-center justify-center overflow-hidden relative shadow-brutal-black group-hover:-translate-y-2 transition-transform`}>
-                       <img src={`${STORAGE_URL}/partners/${p.img}`} alt={p.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                       <img src={p.img.startsWith('http') ? p.img : `${STORAGE_URL}/partners/${p.img}`} alt={p.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <h4 className="font-space font-black uppercase text-sm mb-2">{p.name}</h4>
                  </div>

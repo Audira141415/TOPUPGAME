@@ -45,3 +45,5 @@ Route::get('/settings', function() {
 
 Route::get('/categories', [GameController::class, 'categories']);
 Route::get('/flash-sales', [GameController::class, 'flashSales']);
+Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index']);
+Route::get('/news/{slug}', [\App\Http\Controllers\NewsController::class, 'show']);
