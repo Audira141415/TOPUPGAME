@@ -5,6 +5,8 @@ import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { STORAGE_URL } from '../services/api';
+
 const AccountDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const AccountDetail: React.FC = () => {
       skins: '150 Skins', 
       hero: '98 Heroes', 
       accent: 'cyan',
-      image: 'http://localhost:8000/storage/accounts/mlbb_sultan.png',
+      image: `${STORAGE_URL}/accounts/mlbb_sultan.png`,
       description: 'Akun pribadi tangan pertama. Full skin KOF (Chou, Gusion), Skin Legend Granger & Gusion. Winrate overall 65%+. Emblem Max All.',
       specs: [
         { label: 'Rank', value: 'Mythical Glory 75★' },
@@ -38,7 +40,7 @@ const AccountDetail: React.FC = () => {
       skins: '8 Char ★5', 
       hero: 'Endgame Ready', 
       accent: 'magenta',
-      image: 'http://localhost:8000/storage/accounts/genshin_sultan.png',
+      image: `${STORAGE_URL}/accounts/genshin_sultan.png`,
       description: 'Akun rawat sejak day 1. Raiden C2 + EL, Zhongli, Nahida, Kazuha. Spiral Abyss easy floor 12-3. Resource berlimpah.',
       specs: [
         { label: 'Adventure Rank', value: '58' },
@@ -56,7 +58,7 @@ const AccountDetail: React.FC = () => {
       skins: 'Bundle Reaver', 
       hero: 'Full Agent', 
       accent: 'yellow',
-      image: 'http://localhost:8000/storage/accounts/valorant_sultan.png',
+      image: `${STORAGE_URL}/accounts/valorant_sultan.png`,
       description: 'Skin Reaver Full Bundle (Vandal, Operator, Sheriff, Knife). Semua Agent terbuka. BP Season ini On.',
       specs: [
         { label: 'Rank', value: 'Ascendant 3' },

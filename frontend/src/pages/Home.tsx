@@ -5,7 +5,7 @@ import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import GameCard from '../components/GameCard';
 import { Link } from 'react-router-dom';
-import { cmsService, gameService } from '../services/api';
+import { cmsService, gameService, STORAGE_URL } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Home: React.FC = () => {
@@ -107,7 +107,7 @@ const Home: React.FC = () => {
                   {banners.length > 0 ? (
                     <div className="absolute inset-0">
                         <img 
-                            src={`http://localhost:8000/storage/${banners[0].image_path}`} 
+                            src={`${STORAGE_URL}/${banners[0].image_path}`} 
                             alt={banners[0].title}
                             className="w-full h-full object-cover opacity-80"
                         />
@@ -382,7 +382,7 @@ const Home: React.FC = () => {
         {/* Game Grid */}
         <section className="px-4 py-16 max-w-7xl mx-auto min-h-[400px]">
           <div className="flex items-center gap-4 mb-12">
-            <h2 className="text-4xl md:text-6xl uppercase italic">AVAILABLE GAMES</h2>
+            <h2 className="text-4xl md:text-6xl uppercase italic">GAMES READY FOR TOPUP</h2>
             <div className="flex-grow h-1 bg-brutal-black"></div>
             <span className="font-space font-black text-xl">TOTAL: {filteredGames.length}</span>
           </div>
@@ -512,7 +512,7 @@ const Home: React.FC = () => {
               ].map((p, i) => (
                 <div key={i} className="text-center group cursor-pointer">
                    <div className={`aspect-square bg-brutal-black border-4 border-brutal-black mb-4 flex items-center justify-center overflow-hidden relative shadow-brutal-black group-hover:-translate-y-2 transition-transform`}>
-                      <img src={`http://localhost:8000/storage/partners/${p.img}`} alt={p.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                      <img src={`${STORAGE_URL}/partners/${p.img}`} alt={p.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                       <div className="absolute inset-0 bg-gradient-to-t from-brutal-black to-transparent z-10 opacity-30"></div>
                    </div>
                    <h4 className="font-space font-black uppercase text-sm mb-2">{p.name}</h4>
@@ -538,7 +538,7 @@ const Home: React.FC = () => {
               ].map((news, i) => (
                 <div key={i} className="group cursor-pointer">
                    <div className="aspect-video bg-brutal-black border-4 border-brutal-black mb-6 overflow-hidden relative">
-                      <img src={`http://localhost:8000/storage/news/${news.img}`} alt={news.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                      <img src={`${STORAGE_URL}/news/${news.img}`} alt={news.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                       <div className="absolute inset-0 bg-brutal-cyan/20 group-hover:bg-transparent transition-colors"></div>
                       <span className="absolute top-4 left-4 bg-brutal-yellow text-brutal-black px-3 py-1 font-space font-black text-xs border-2 border-brutal-black">{news.tag}</span>
                    </div>
@@ -573,7 +573,7 @@ const Home: React.FC = () => {
                    { id: 4, title: 'Free Fire Old Acc', price: 'Rp 500.000', skins: 'Set Season 1', hero: 'Elite Pass', accent: 'cyan', img: 'mlbb_sultan.png' },
                  ].map((acc, i) => (
                    <BrutalCard key={i} accent={acc.accent as any} className="bg-brutal-white hover:-translate-y-2 transition-transform cursor-pointer">
-                      <div className="aspect-square bg-brutal-black/10 border-2 border-brutal-black mb-6 flex items-center justify-center font-black text-xs italic"><img src={`http://localhost:8000/storage/accounts/${acc.img}`} alt={acc.title} className="w-full h-full object-cover" /></div>
+                      <div className="aspect-square bg-brutal-black/10 border-2 border-brutal-black mb-6 flex items-center justify-center font-black text-xs italic"><img src={`${STORAGE_URL}/accounts/${acc.img}`} alt={acc.title} className="w-full h-full object-cover" /></div>
                       <h4 className="text-xl font-black uppercase mb-4">{acc.title}</h4>
                       <div className="space-y-2 mb-6">
                          <div className="flex justify-between text-[10px] font-bold uppercase opacity-60">

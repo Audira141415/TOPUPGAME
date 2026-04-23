@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { gameService } from '../services/api';
+import { gameService, STORAGE_URL } from '../services/api';
 
 const GameDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -82,7 +82,7 @@ const GameDetail: React.FC = () => {
          <div className="max-w-7xl mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center gap-8">
             <div className="w-48 h-64 border-4 border-brutal-white shadow-brutal-cyan overflow-hidden bg-brutal-white">
                <img 
-                 src={game.image ? `http://localhost:8000/storage/${game.image}` : '/placeholder.png'} 
+                 src={game.image ? `${STORAGE_URL}/${game.image}` : '/placeholder.png'} 
                  alt={game.name}
                  className="w-full h-full object-cover"
                />
@@ -157,7 +157,7 @@ const GameDetail: React.FC = () => {
                         <div className="flex justify-between items-start mb-3">
                            <div className="w-10 h-10 bg-brutal-black/5 p-1 border border-brutal-black/10 group-hover:rotate-12 transition-transform">
                               <img 
-                                src={product.image ? `http://localhost:8000/storage/${product.image}` : `http://localhost:8000/storage/products/mlbb_diamond.png`} 
+                                src={product.image ? `${STORAGE_URL}/${product.image}` : `${STORAGE_URL}/products/mlbb_diamond.png`} 
                                 alt="Currency"
                                 className="w-full h-full object-contain"
                               />

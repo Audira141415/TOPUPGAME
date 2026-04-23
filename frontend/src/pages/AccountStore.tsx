@@ -5,6 +5,8 @@ import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion } from 'framer-motion';
 
+import { STORAGE_URL } from '../services/api';
+
 const AccountStore: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,7 +20,7 @@ const AccountStore: React.FC = () => {
       skins: '150 Skins', 
       hero: '98 Heroes', 
       accent: 'cyan',
-      image: 'http://localhost:8000/storage/accounts/mlbb_sultan.png',
+      image: `${STORAGE_URL}/accounts/mlbb_sultan.png`,
       isHot: true
     },
     { 
@@ -29,7 +31,7 @@ const AccountStore: React.FC = () => {
       skins: '8 Char ★5', 
       hero: 'Endgame Ready', 
       accent: 'magenta',
-      image: 'http://localhost:8000/storage/accounts/genshin_sultan.png',
+      image: `${STORAGE_URL}/accounts/genshin_sultan.png`,
       isHot: false
     },
     { 
@@ -40,7 +42,7 @@ const AccountStore: React.FC = () => {
       skins: 'Bundle Reaver', 
       hero: 'Full Agent', 
       accent: 'yellow',
-      image: 'http://localhost:8000/storage/accounts/valorant_sultan.png',
+      image: `${STORAGE_URL}/accounts/valorant_sultan.png`,
       isHot: true
     },
     { 

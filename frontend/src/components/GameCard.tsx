@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { STORAGE_URL } from '../services/api';
+
 interface GameCardProps {
   game: any;
 }
@@ -29,7 +31,7 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
       <div className="aspect-[3/4] bg-brutal-white border-4 border-brutal-black mb-4 group-hover:translate-x-2 group-hover:translate-y-2 group-hover:shadow-[8px_8px_0px_0px_#000] transition-all relative overflow-hidden">
         {image ? (
           <img 
-            src={image.startsWith('http') ? image : `http://localhost:8000/storage/${image}`} 
+            src={image.startsWith('http') ? image : `${STORAGE_URL}/${image}`} 
             alt={name} 
             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
           />
