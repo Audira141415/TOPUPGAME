@@ -3,7 +3,7 @@
  * Caller: Used by all services and components (Home, GameCard, etc.) to communicate with the backend.
  * Dependencies: axios, import.meta.env (Vite).
  * Main Functions: axios instance (api), STORAGE_URL constant, gameService, authService, cmsService.
- * Side Effects: Performs HTTP calls to the Laravel backend.
+ * Side Effects: Performs HTTP calls to the Laravel backend for games, auth, banners, settings, and categories.
  */
 import axios from 'axios';
 
@@ -50,6 +50,10 @@ export const cmsService = {
   },
   getSettings: async () => {
     const response = await api.get('/settings');
+    return response.data;
+  },
+  getCategories: async () => {
+    const response = await api.get('/categories');
     return response.data;
   },
 };
