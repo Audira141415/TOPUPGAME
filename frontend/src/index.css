@@ -9,6 +9,12 @@
   --color-brutal-magenta: #ff00ff;
   --color-brutal-yellow: #ffff00;
   
+  /* Dark Mode Variables */
+  --color-dark-bg: #121212;
+  --color-dark-card: #1e1e1e;
+  --color-dark-text: #ffffff;
+  --color-dark-border: #ffffff;
+  
   --font-space: "Space Grotesk", sans-serif;
   --font-inter: "Inter", sans-serif;
   
@@ -16,13 +22,14 @@
   --shadow-brutal-cyan: 8px 8px 0px 0px #00ffff;
   --shadow-brutal-magenta: 8px 8px 0px 0px #ff00ff;
   --shadow-brutal-yellow: 8px 8px 0px 0px #ffff00;
+  --shadow-brutal-white: 4px 4px 0px 0px #ffffff;
 }
 
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
   body {
-    @apply bg-brutal-bg text-brutal-text font-inter selection:bg-brutal-black selection:text-brutal-white overflow-x-hidden;
+    @apply bg-brutal-bg text-brutal-text font-inter selection:bg-brutal-black selection:text-brutal-white overflow-x-hidden transition-colors duration-300;
     background-image: 
       linear-gradient(var(--color-brutal-black) 1px, transparent 1px),
       linear-gradient(90deg, var(--color-brutal-black) 1px, transparent 1px);
@@ -30,6 +37,14 @@
     background-color: #ffffff;
     background-position: center center;
     position: relative;
+  }
+
+  body.dark {
+    @apply bg-[#121212] text-white;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-color: #121212;
   }
 
   body::before {
@@ -44,6 +59,10 @@
     z-index: 1;
   }
 
+  body.dark::before {
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-space font-bold uppercase;
   }
@@ -51,23 +70,23 @@
 
 @layer components {
   .brutal-border {
-    @apply border-2 border-brutal-black;
+    @apply border-2 border-brutal-black dark:border-brutal-white;
   }
 
   .brutal-card {
-    @apply bg-brutal-white border-2 border-brutal-black shadow-brutal-black transition-all duration-200;
+    @apply bg-brutal-white border-2 border-brutal-black shadow-brutal-black transition-all duration-200 dark:bg-brutal-black dark:border-brutal-white dark:shadow-brutal-white;
   }
 
   .brutal-button {
-    @apply px-6 py-2 bg-brutal-black text-brutal-white font-space font-bold uppercase border-2 border-brutal-black shadow-brutal-cyan active:translate-x-1 active:translate-y-1 active:shadow-none transition-all;
+    @apply px-6 py-2 bg-brutal-black text-brutal-white font-space font-bold uppercase border-2 border-brutal-black shadow-brutal-cyan active:translate-x-1 active:translate-y-1 active:shadow-none transition-all dark:bg-brutal-white dark:text-brutal-black dark:border-brutal-white;
   }
 
   .brutal-input {
-    @apply w-full bg-brutal-white border-2 border-brutal-black p-3 text-brutal-black focus:outline-none focus:border-brutal-cyan focus:shadow-brutal-cyan transition-all;
+    @apply w-full bg-brutal-white border-2 border-brutal-black p-3 text-brutal-black focus:outline-none focus:border-brutal-cyan focus:shadow-brutal-cyan transition-all dark:bg-brutal-black dark:text-brutal-white dark:border-brutal-white;
   }
 
   .brutal-marquee {
-    @apply overflow-hidden whitespace-nowrap bg-brutal-yellow text-brutal-black py-2 font-space font-black uppercase border-y-2 border-brutal-black;
+    @apply overflow-hidden whitespace-nowrap bg-brutal-yellow text-brutal-black py-2 font-space font-black uppercase border-y-2 border-brutal-black dark:bg-brutal-magenta dark:text-white dark:border-brutal-white;
   }
 }
 
