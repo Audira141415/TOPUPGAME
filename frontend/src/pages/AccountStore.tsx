@@ -221,15 +221,48 @@ const AccountStore: React.FC = () => {
             ))}
          </div>
 
-         {/* Call to Action */}
-         <section className="mt-20 bg-brutal-black p-12 border-4 border-brutal-black shadow-brutal-cyan text-center space-y-8 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-            <div className="relative z-10 space-y-4">
-               <h2 className="text-4xl md:text-6xl font-space font-black text-brutal-white uppercase italic">PUNYA AKUN SULTAN UNTUK DIJUAL?</h2>
-               <p className="text-brutal-yellow font-space font-bold uppercase text-xl">Titip jual akunmu di Audira Zenith & dapatkan harga terbaik!</p>
-               <div className="flex justify-center gap-6 pt-4">
-                  <BrutalButton variant="yellow" className="px-12 py-4 text-xl">HUBUNGI ADMIN</BrutalButton>
-                  <BrutalButton variant="white" className="px-12 py-4 text-xl">PELAJARI SYARAT</BrutalButton>
+         {/* Call to Action - Sell Account */}
+         <section className="mt-20 relative">
+            <div className="bg-brutal-black p-12 md:p-20 border-8 border-brutal-black shadow-[16px_16px_0px_0px_#000] shadow-brutal-yellow text-center space-y-8 relative overflow-hidden group">
+               {/* Background Banner */}
+               <div className="absolute inset-0 z-0">
+                  <img 
+                    src={`${STORAGE_URL}/banners/sell_account_cta.png`} 
+                    className="w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-[3000ms]" 
+                    alt="Sell Account CTA" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brutal-black via-brutal-black/40 to-transparent"></div>
+               </div>
+
+               <div className="relative z-10 space-y-6">
+                  <motion.h2 
+                    initial={{ y: 30, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    className="text-4xl md:text-7xl font-space font-black text-brutal-white uppercase italic leading-none"
+                  >
+                    PUNYA AKUN SULTAN <br /><span className="text-brutal-yellow">UNTUK DIJUAL?</span>
+                  </motion.h2>
+                  <motion.p 
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-brutal-white/80 font-space font-bold uppercase text-xl max-w-3xl mx-auto"
+                  >
+                    Titip jual akunmu di Audira Zenith & dapatkan harga terbaik dengan sistem keamanan yang terjamin!
+                  </motion.p>
+                  <div className="flex flex-col md:flex-row justify-center gap-6 pt-4">
+                     <BrutalButton variant="yellow" className="px-16 py-5 text-2xl shadow-brutal-white hover:shadow-brutal-magenta transition-all">
+                        HUBUNGI ADMIN
+                     </BrutalButton>
+                     <BrutalButton variant="white" className="px-16 py-5 text-2xl">
+                        PELAJARI SYARAT
+                     </BrutalButton>
+                  </div>
+               </div>
+
+               {/* Floating Icon Decoration */}
+               <div className="absolute -bottom-10 -right-10 text-brutal-yellow opacity-20 text-9xl font-black -rotate-12 group-hover:rotate-0 transition-transform duration-700 select-none">
+                  $$$
                </div>
             </div>
          </section>
