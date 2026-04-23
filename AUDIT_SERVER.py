@@ -1,6 +1,6 @@
 import paramiko
 
-def audit_file():
+def audit_server():
     host = "192.168.100.156"
     user = "audira"
     password = "Sigma1993"
@@ -10,18 +10,24 @@ def audit_file():
     
     try:
         ssh.connect(host, username=user, password=password)
-        print("[*] Auditing api.ts on Server...")
+        print("====================================================")
+        print("          DOCKER CONTAINER STATUS")
+        print("====================================================\n")
         
-        stdin, stdout, stderr = ssh.exec_command("cat /home/audira/TOPUPGAME/frontend/src/services/api.ts")
-        content = stdout.read().decode()
-        print("\n--- SERVER FILE CONTENT ---")
-        print(content[:500]) # First 500 chars
-        print("---------------------------")
+        stdin, stdout, stderr = ssh.exec_command('cd /home/audira/TOPUPGAME && docker compose ps')
+        print("--- [DOCKER COMPOSE STATUS] ---")
+        print(stdout.read().decode())
+        
+        stdin, stdout, stderr = ssh.exec_command('docker ps -a')
+        print("\n--- [ALL CONTAINERS (PS -A)] ---")
+        print(stdout.read().decode())
+        
+        print("\n====================================================")
         
     except Exception as e:
-        print(f"[ERROR] {str(e)}")
+        print(f"Error connecting: {str(e)}")
     finally:
         ssh.close()
 
 if __name__ == "__main__":
-    audit_file()
+    audit_server()

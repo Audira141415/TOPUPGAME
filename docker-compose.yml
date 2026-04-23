@@ -21,6 +21,7 @@ services:
     depends_on:
       - db
       - redis
+    restart: unless-stopped
 
   # Frontend
   frontend:
@@ -33,6 +34,7 @@ services:
       - /app/node_modules
     ports:
       - "3000:5173"
+    restart: unless-stopped
 
   # Database
   db:
@@ -46,6 +48,7 @@ services:
     command: --skip-name-resolve
     volumes:
       - topup_db_data:/var/lib/mysql
+    restart: unless-stopped
 
   # Redis
   redis:
@@ -53,6 +56,7 @@ services:
     container_name: topup_redis
     ports:
       - "6379:6379"
+    restart: unless-stopped
 
   # Nginx
   nginx:
@@ -65,6 +69,7 @@ services:
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - backend
+    restart: unless-stopped
 
 volumes:
   topup_db_data:
