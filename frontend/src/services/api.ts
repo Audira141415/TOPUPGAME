@@ -1,3 +1,10 @@
+/**
+ * Purpose: Centralized API and Storage configuration for the frontend.
+ * Caller: Used by all services and components (Home, GameCard, etc.) to communicate with the backend.
+ * Dependencies: axios, import.meta.env (Vite).
+ * Main Functions: axios instance (api), STORAGE_URL constant, gameService, authService, cmsService.
+ * Side Effects: Performs HTTP calls to the Laravel backend.
+ */
 import axios from 'axios';
 
 const api = axios.create({

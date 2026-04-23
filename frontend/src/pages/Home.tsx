@@ -1,3 +1,10 @@
+/**
+ * Purpose: Main landing page of the Audira Zenith platform.
+ * Caller: App.tsx / Root router ('/').
+ * Dependencies: React, Navbar, Marquee, BrutalCard, api.ts.
+ * Main Functions: Home component, handles game filtering, search, and banner display.
+ * Side Effects: Fetches banners, settings, and games from the API on mount.
+ */
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Marquee from '../components/Marquee';
@@ -382,7 +389,7 @@ const Home: React.FC = () => {
         {/* Game Grid */}
         <section className="px-4 py-16 max-w-7xl mx-auto min-h-[400px]">
           <div className="flex items-center gap-4 mb-12">
-            <h2 className="text-4xl md:text-6xl uppercase italic">GAMES READY FOR TOPUP</h2>
+            <h2 className="text-4xl md:text-6xl uppercase italic">AVAILABLE GAMES</h2>
             <div className="flex-grow h-1 bg-brutal-black"></div>
             <span className="font-space font-black text-xl">TOTAL: {filteredGames.length}</span>
           </div>
