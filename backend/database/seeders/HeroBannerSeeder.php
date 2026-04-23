@@ -69,6 +69,13 @@ class HeroBannerSeeder extends Seeder
                 'order' => 9,
                 'is_active' => true,
             ],
+            [
+                'title' => 'Rekber Zenith Hero',
+                'image_path' => 'banners/rekber_hero.png',
+                'link_url' => '/rekber',
+                'order' => 10,
+                'is_active' => true,
+            ],
         ];
 
         foreach ($banners as $bannerData) {

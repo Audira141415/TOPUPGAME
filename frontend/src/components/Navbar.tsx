@@ -89,6 +89,7 @@ const Navbar: React.FC = () => {
              <div className="absolute top-full left-0 w-48 hidden group-hover/nav:block z-50 pt-2">
                <div className="bg-brutal-white border-4 border-brutal-black shadow-[4px_4px_0px_0px_#000]">
                  <Link to="/tools" className="block px-4 py-3 border-b-2 border-brutal-black hover:bg-brutal-cyan font-black text-[10px] uppercase transition-colors">Gamer Tools</Link>
+                 <Link to="/rekber" className="block px-4 py-3 border-b-2 border-brutal-black hover:bg-brutal-magenta hover:text-white font-black text-[10px] uppercase transition-colors">Rekber Zenith</Link>
                  <Link to="/track" className="block px-4 py-3 hover:bg-brutal-yellow font-black text-[10px] uppercase transition-colors">Order Tracking</Link>
                </div>
              </div>
