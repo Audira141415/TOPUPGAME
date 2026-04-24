@@ -37,6 +37,14 @@ export const gameService = {
     const response = await api.get('/flash-sales');
     return response.data;
   },
+  getUpcomingFlashSales: async () => {
+    const response = await api.get('/upcoming-flash-sales');
+    return response.data;
+  },
+  getVouchers: async () => {
+    const response = await api.get('/vouchers');
+    return response.data;
+  },
   getOrder: async (orderId: string) => {
     const response = await api.get(`/orders/${orderId}`);
     return response.data;
@@ -93,6 +101,78 @@ export const cmsService = {
   },
   getNewsBySlug: async (slug: string) => {
     const response = await api.get(`/news/${slug}`);
+    return response.data;
+  },
+};
+
+export const adminService = {
+  getStatsOverview: async () => {
+    const response = await api.get('/admin/stats/overview');
+    return response.data;
+  },
+  getChartData: async () => {
+    const response = await api.get('/admin/stats/charts');
+    return response.data;
+  },
+  getTopProducts: async () => {
+    const response = await api.get('/admin/stats/top-products');
+    return response.data;
+  },
+
+  // Management
+  getUsers: async (page = 1) => {
+    const response = await api.get(`/admin/users?page=${page}`);
+    return response.data;
+  },
+  updateUser: async (userId: number, data: any) => {
+    const response = await api.patch(`/admin/users/${userId}`, data);
+    return response.data;
+  },
+  deleteUser: async (userId: number) => {
+    const response = await api.delete(`/admin/users/${userId}`);
+    return response.data;
+  },
+
+  getOrders: async (page = 1) => {
+    const response = await api.get(`/admin/orders?page=${page}`);
+    return response.data;
+  },
+  updateOrderStatus: async (orderId: number, status: string) => {
+    const response = await api.patch(`/admin/orders/${orderId}/status`, { status });
+    return response.data;
+  },
+
+  getGames: async () => {
+    const response = await api.get('/admin/games');
+    return response.data;
+  },
+  createGame: async (data: any) => {
+    const response = await api.post('/admin/games', data);
+    return response.data;
+  },
+  updateGame: async (gameId: number, data: any) => {
+    const response = await api.patch(`/admin/games/${gameId}`, data);
+    return response.data;
+  },
+  deleteGame: async (gameId: number) => {
+    const response = await api.delete(`/admin/games/${gameId}`);
+    return response.data;
+  },
+
+  getProducts: async (gameId: number) => {
+    const response = await api.get(`/admin/games/${gameId}/products`);
+    return response.data;
+  },
+  createProduct: async (data: any) => {
+    const response = await api.post('/admin/products', data);
+    return response.data;
+  },
+  updateProduct: async (productId: number, data: any) => {
+    const response = await api.patch(`/admin/products/${productId}`, data);
+    return response.data;
+  },
+  deleteProduct: async (productId: number) => {
+    const response = await api.delete(`/admin/products/${productId}`);
     return response.data;
   },
 };

@@ -38,8 +38,27 @@ class GameController extends Controller
     public function flashSales()
     {
         return \App\Models\FlashSale::where('is_active', true)
+            ->where('start_time', '<=', now())
             ->where('end_time', '>', now())
             ->with(['product.game'])
+            ->get();
+    }
+
+    public function upcomingFlashSales()
+    {
+        return \App\Models\FlashSale::where('is_active', true)
+            ->where('start_time', '>', now())
+            ->with(['product.game'])
+            ->get();
+    }
+
+    public function vouchers()
+    {
+        return \App\Models\Voucher::where('is_active', true)
+            ->where(function($query) {
+                $query->whereNull('end_date')
+                      ->orWhere('end_date', '>', now());
+            })
             ->get();
     }
 }

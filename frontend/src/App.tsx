@@ -19,8 +19,10 @@ import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import Settings from './pages/Settings';
 import RekberService from './pages/RekberService';
+import ZenithPrime from './pages/ZenithPrime';
+import AdminDashboard from './pages/AdminDashboard';
+import ZenithSocialProof from './components/ZenithSocialProof';
 import WhatsAppWidget from './components/WhatsAppWidget';
-import LiveSocialProof from './components/LiveSocialProof';
 import AIAssistant from './components/AIAssistant';
 import Footer from './components/Footer';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -125,12 +127,22 @@ function App() {
               <RekberService />
             </motion.div>
           } />
+          <Route path="/prime" element={
+            <motion.div initial={{ opacity: 0, scale: 1.2 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.4, ease: "circOut" }}>
+              <ZenithPrime />
+            </motion.div>
+          } />
+          <Route path="/admin" element={
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.2 }} transition={{ duration: 0.3, ease: "circOut" }}>
+              <AdminDashboard />
+            </motion.div>
+          } />
         </Routes>
       </AnimatePresence>
       <Footer />
       <WhatsAppWidget />
       <AIAssistant />
-      <LiveSocialProof />
+      <ZenithSocialProof />
     </Router>
   );
 }

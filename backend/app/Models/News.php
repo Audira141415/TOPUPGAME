@@ -12,6 +12,15 @@ class News extends Model
         'content',
         'image',
         'category',
-        'is_active'
+        'is_active',
+        'is_featured',
+        'author',
+        'tags'
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_featured' => 'boolean',
+        'tags' => 'array'
     ];
 }

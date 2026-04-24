@@ -97,6 +97,7 @@ const Navbar: React.FC = () => {
                    <span className="bg-yellow-400 text-black px-1 text-[8px] border border-black shadow-[1px_1px_0px_0px_#000]">HOT</span>
                  </Link>
                  <Link to="/mystery-box" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-yellow dark:hover:text-brutal-black font-black text-[10px] uppercase transition-colors">Mystery Box</Link>
+                 <Link to="/prime" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-magenta hover:text-white font-black text-[10px] uppercase transition-colors">Zenith Prime</Link>
                  <Link to="/account-store" className="block px-4 py-3 hover:bg-brutal-cyan dark:hover:text-brutal-black font-black text-[10px] uppercase transition-colors">Account Store</Link>
                </div>
              </div>
@@ -126,8 +127,7 @@ const Navbar: React.FC = () => {
              <div className="absolute top-full left-0 w-48 hidden group-hover/nav:block z-50 pt-2">
                <div className="bg-brutal-white dark:bg-brutal-black border-4 border-brutal-black dark:border-brutal-white shadow-[4px_4px_0px_0px_#000] dark:shadow-brutal-white">
                  <Link to="/tools" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-cyan dark:hover:text-brutal-black font-black text-[10px] uppercase transition-colors">Gamer Tools</Link>
-                 <Link to="/rekber" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-magenta hover:text-white font-black text-[10px] uppercase transition-colors">Rekber Zenith</Link>
-                 <Link to="/track" className="block px-4 py-3 hover:bg-brutal-yellow dark:hover:text-brutal-black font-black text-[10px] uppercase transition-colors">Order Tracking</Link>
+                 <Link to="/rekber" className="block px-4 py-3 hover:bg-brutal-magenta hover:text-white font-black text-[10px] uppercase transition-colors">Rekber Zenith</Link>
                </div>
              </div>
            </div>
@@ -180,6 +180,14 @@ const Navbar: React.FC = () => {
                )}
             </button>
    
+            {/* Track Order Link - Unified and Always Visible */}
+            <Link 
+              to="/track" 
+              className="hidden sm:flex h-9 items-center px-3 border-2 border-brutal-black dark:border-brutal-white bg-brutal-yellow hover:bg-brutal-magenta hover:text-white transition-all shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff] font-space font-black text-[10px] uppercase"
+            >
+              Track Order
+            </Link>
+
             {/* Notifications */}
             <div className="relative" ref={notificationRef}>
               <button 
@@ -248,13 +256,23 @@ const Navbar: React.FC = () => {
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         className="absolute top-full right-0 mt-3 w-48 bg-brutal-white border-4 border-brutal-black shadow-[6px_6px_0px_0px_#000] z-[60] overflow-hidden"
                       >
-                        <Link to="/dashboard" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-3 p-4 hover:bg-brutal-cyan border-b-2 border-brutal-black transition-colors group">
-                           <div className="w-2 h-2 bg-brutal-black group-hover:scale-150 transition-transform"></div>
-                           <span className="font-space font-black text-[10px] uppercase">Dashboard</span>
-                        </Link>
+                         <Link to="/dashboard" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-3 p-4 hover:bg-brutal-cyan border-b-2 border-brutal-black transition-colors group">
+                            <div className="w-2 h-2 bg-brutal-black group-hover:scale-150 transition-transform"></div>
+                            <span className="font-space font-black text-[10px] uppercase">Dashboard</span>
+                         </Link>
+                         {user?.role === 'admin' && (
+                           <Link to="/admin" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-3 p-4 bg-brutal-black text-white hover:bg-brutal-magenta transition-colors group border-b-2 border-white/20">
+                              <div className="w-2 h-2 bg-white group-hover:scale-150 transition-transform"></div>
+                              <span className="font-space font-black text-[10px] uppercase italic">Admin Panel</span>
+                           </Link>
+                         )}
                         <Link to="/settings" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-3 p-4 hover:bg-brutal-yellow border-b-2 border-brutal-black transition-colors group">
                            <div className="w-2 h-2 bg-brutal-black group-hover:scale-150 transition-transform"></div>
                            <span className="font-space font-black text-[10px] uppercase">Settings</span>
+                        </Link>
+                        <Link to="/prime" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-3 p-4 bg-brutal-yellow hover:bg-brutal-black hover:text-white border-b-2 border-brutal-black transition-colors group">
+                           <div className="w-2 h-2 bg-brutal-black group-hover:bg-white group-hover:scale-150 transition-transform"></div>
+                           <span className="font-space font-black text-[10px] uppercase italic">Zenith Prime</span>
                         </Link>
                         <button 
                           onClick={() => { logout(); setShowProfileMenu(false); }}
@@ -296,6 +314,55 @@ const Navbar: React.FC = () => {
           </button>
         </div>
       </div>
+   
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            className="fixed inset-0 z-[100] bg-brutal-white dark:bg-brutal-black p-6 flex flex-col"
+          >
+             <div className="flex justify-between items-center mb-12">
+                <div className="font-space font-black text-2xl uppercase italic tracking-tighter">
+                   Audira<span className="text-brutal-magenta">Zenith</span>
+                </div>
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-12 h-12 border-4 border-brutal-black dark:border-brutal-white flex items-center justify-center font-black text-2xl shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]"
+                >
+                   &times;
+                </button>
+             </div>
+
+             <div className="flex flex-col gap-4 overflow-y-auto">
+                <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic hover:text-brutal-magenta transition-colors">Home</Link>
+                <Link to="/flash-sale" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic hover:text-brutal-cyan transition-colors">Flash Sale</Link>
+                <Link to="/prime" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic text-brutal-magenta bg-brutal-yellow px-2 border-4 border-brutal-black shadow-[6px_6px_0px_0px_#000]">Zenith Prime</Link>
+                <Link to="/news" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic hover:text-brutal-yellow transition-colors">News</Link>
+                <Link to="/tools" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic hover:text-brutal-cyan transition-colors">Tools</Link>
+             </div>
+
+             <div className="mt-auto pt-8 border-t-4 border-brutal-black dark:border-brutal-white flex flex-col gap-4">
+                {!isAuthenticated ? (
+                  <>
+                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                       <BrutalButton variant="white" className="w-full py-4 text-xl">LOGIN</BrutalButton>
+                    </Link>
+                    <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)}>
+                       <BrutalButton variant="cyan" className="w-full py-4 text-xl">DAFTAR</BrutalButton>
+                    </Link>
+                  </>
+                ) : (
+                  <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                     <BrutalButton variant="magenta" className="w-full py-4 text-xl text-white">MY DASHBOARD</BrutalButton>
+                  </Link>
+                )}
+             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

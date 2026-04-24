@@ -36,33 +36,49 @@ const UserDashboard: React.FC = () => {
           <div className="lg:w-1/3 space-y-6">
              <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-brutal-cyan via-brutal-magenta to-brutal-yellow blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                <BrutalCard accent="cyan" className="relative p-8 text-center bg-white/80 backdrop-blur-xl border-4">
+                <BrutalCard accent="cyan" className="relative p-8 text-center bg-white/80 dark:bg-brutal-black/80 backdrop-blur-xl border-4">
                    <div className="relative inline-block mb-6">
                       <div className="w-28 h-28 bg-gradient-to-br from-brutal-magenta to-brutal-cyan border-4 border-brutal-black mx-auto flex items-center justify-center font-space font-black text-5xl text-white shadow-[8px_8px_0px_0px_#000] rotate-3 group-hover:rotate-0 transition-transform">
                         {user?.name.substring(0, 2).toUpperCase()}
                       </div>
                       <div className="absolute -bottom-2 -right-2 bg-brutal-yellow border-2 border-brutal-black px-3 py-1 font-space font-black text-sm shadow-[4px_4px_0px_0px_#000] animate-bounce">
-                         PRO
+                         LV.12
                       </div>
                    </div>
                    
                    <div className="mb-6">
-                     <h2 className="text-3xl font-black uppercase italic tracking-tighter mb-1">{user?.name}</h2>
-                     <p className="text-xs font-space font-bold uppercase text-brutal-black/40 tracking-widest">{user?.email}</p>
+                     <h2 className="text-3xl font-black uppercase italic tracking-tighter mb-1 dark:text-white">{user?.name}</h2>
+                     <p className="text-xs font-space font-bold uppercase text-brutal-black/40 dark:text-white/40 tracking-widest">{user?.email}</p>
+                   </div>
+
+                   {/* XP Bar Gamification */}
+                   <div className="mb-8 bg-brutal-bg dark:bg-zinc-800 border-2 border-brutal-black p-2 shadow-[4px_4px_0px_0px_#000]">
+                      <div className="flex justify-between items-center mb-1 px-1">
+                         <span className="text-[8px] font-black uppercase dark:text-white">XP PROGRESS</span>
+                         <span className="text-[8px] font-black uppercase text-brutal-magenta">750 / 1000</span>
+                      </div>
+                      <div className="h-4 w-full bg-white dark:bg-black border-2 border-brutal-black overflow-hidden">
+                         <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: '75%' }}
+                          transition={{ duration: 1, delay: 0.5 }}
+                          className="h-full bg-brutal-magenta border-r-2 border-brutal-black"
+                         />
+                      </div>
                    </div>
 
                    <div className="flex items-center justify-center gap-2 mb-8">
-                      <span className="bg-brutal-black text-white px-4 py-1 font-space font-black uppercase text-[10px] tracking-widest">
-                         {user?.role} TIER
+                      <span className="bg-brutal-black text-white px-4 py-1 font-space font-black uppercase text-[10px] tracking-widest border-2 border-brutal-black">
+                         SULTAN TIER
                       </span>
                       <span className="bg-brutal-cyan border-2 border-brutal-black px-4 py-1 font-space font-black uppercase text-[10px]">
                          VERIFIED
                       </span>
                    </div>
                    
-                   <div className="pt-6 border-t-4 border-brutal-black/5">
-                      <p className="text-[10px] font-space font-black text-brutal-black/30 uppercase mb-2">Current Liquidity</p>
-                      <p className="text-5xl font-space font-black text-brutal-black tracking-tighter">
+                   <div className="pt-6 border-t-4 border-brutal-black/5 dark:border-white/5">
+                      <p className="text-[10px] font-space font-black text-brutal-black/30 dark:text-white/30 uppercase mb-2">Current Liquidity</p>
+                      <p className="text-5xl font-space font-black text-brutal-black dark:text-white tracking-tighter">
                         <span className="text-sm align-top mr-1">RP</span>
                         {user?.balance ? Number(user.balance).toLocaleString('id-ID') : 0}
                       </p>
@@ -94,14 +110,15 @@ const UserDashboard: React.FC = () => {
 
           {/* Main Content: Stats & Transactions */}
           <div className="lg:w-2/3 space-y-8">
-             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
                   { label: 'Total Orders', value: '12', color: 'bg-brutal-yellow' },
                   { label: 'Coins Earned', value: '2.5K', color: 'bg-brutal-magenta' },
                   { label: 'Win Rate', value: '88%', color: 'bg-brutal-cyan' },
+                  { label: 'Zenith Rank', value: '#128', color: 'bg-brutal-black text-white' },
                 ].map((stat, i) => (
                   <div key={i} className={`${stat.color} border-4 border-brutal-black p-4 shadow-[4px_4px_0px_0px_#000]`}>
-                    <p className="text-[8px] font-black uppercase opacity-60">{stat.label}</p>
+                    <p className={`text-[8px] font-black uppercase ${stat.color.includes('black') ? 'opacity-40' : 'opacity-60 text-brutal-black'}`}>{stat.label}</p>
                     <p className="text-3xl font-black uppercase italic">{stat.value}</p>
                   </div>
                 ))}
@@ -109,8 +126,8 @@ const UserDashboard: React.FC = () => {
 
              <section>
                 <div className="flex items-center justify-between mb-8">
-                   <h3 className="text-4xl font-black uppercase italic tracking-tighter">Activity Log</h3>
-                   <span className="text-[10px] font-black uppercase bg-brutal-black text-white px-3 py-1">Last 30 Days</span>
+                   <h3 className="text-4xl font-black uppercase italic tracking-tighter dark:text-white">Activity Log</h3>
+                   <span className="text-[10px] font-black uppercase bg-brutal-black text-white dark:bg-brutal-white dark:text-brutal-black px-3 py-1">Last 30 Days</span>
                 </div>
                 
                 <div className="space-y-4">
@@ -118,28 +135,50 @@ const UserDashboard: React.FC = () => {
                      <motion.div 
                        whileHover={{ x: 10 }}
                        key={item.id} 
-                       className="flex flex-col sm:flex-row sm:items-center justify-between p-6 border-4 border-brutal-black bg-white shadow-[8px_8px_0px_0px_#000] hover:shadow-brutal-cyan transition-all group relative overflow-hidden"
+                       className="flex flex-col sm:flex-row sm:items-center justify-between p-6 border-4 border-brutal-black bg-white dark:bg-brutal-black shadow-[8px_8px_0px_0px_#000] dark:shadow-brutal-white hover:shadow-brutal-cyan transition-all group relative overflow-hidden"
                      >
                         <div className="absolute top-0 left-0 w-2 h-full bg-brutal-cyan opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div className="flex items-center gap-6">
-                           <div className="w-16 h-16 bg-brutal-black flex items-center justify-center text-white text-4xl shadow-[4px_4px_0px_0px_#000] group-hover:-rotate-6 transition-transform">
+                           <div className="w-16 h-16 bg-brutal-black dark:bg-white flex items-center justify-center text-white dark:text-brutal-black text-4xl shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] group-hover:-rotate-6 transition-transform">
                               {item.icon}
                            </div>
                            <div>
-                              <h4 className="text-xl font-black uppercase italic tracking-tight">{item.game}</h4>
-                              <p className="text-[10px] font-space font-bold uppercase text-brutal-black/40">Ref: {item.id} • {item.date}</p>
+                              <h4 className="text-xl font-black uppercase italic tracking-tight dark:text-white">{item.game}</h4>
+                              <p className="text-[10px] font-space font-bold uppercase text-brutal-black/40 dark:text-white/40">Ref: {item.id} • {item.date}</p>
                            </div>
                         </div>
                         <div className="flex items-center justify-between sm:justify-end gap-10 mt-6 sm:mt-0">
                            <div className="text-right">
-                              <p className="text-2xl font-black tracking-tighter">{item.amount}</p>
+                              <p className="text-2xl font-black tracking-tighter dark:text-white">{item.amount}</p>
                               <p className="text-[8px] font-black text-brutal-cyan uppercase">Payment Verified</p>
                            </div>
-                           <div className="bg-brutal-black text-white px-6 py-2 border-2 border-brutal-black font-space font-black text-xs uppercase italic group-hover:bg-brutal-cyan group-hover:text-black transition-colors">
+                           <div className="bg-brutal-black text-white dark:bg-brutal-white dark:text-brutal-black px-6 py-2 border-2 border-brutal-black font-space font-black text-xs uppercase italic group-hover:bg-brutal-cyan group-hover:text-black transition-colors">
                               {item.status}
                            </div>
                         </div>
                      </motion.div>
+                   ))}
+                </div>
+             </section>
+
+             {/* Achievements Section */}
+             <section>
+                <div className="flex items-center justify-between mb-8">
+                   <h3 className="text-4xl font-black uppercase italic tracking-tighter dark:text-white">Achievements</h3>
+                   <span className="text-[10px] font-black uppercase bg-brutal-yellow text-black px-3 py-1 border-2 border-brutal-black">6 / 12 Unlocked</span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                   {[
+                     { icon: '⭐', name: 'First Step', desc: 'First Top Up', unlocked: true },
+                     { icon: '🛡️', name: 'Safe Hands', desc: 'Used Rekber 5x', unlocked: true },
+                     { icon: '💰', name: 'Big Spender', desc: 'Spend > 1jt', unlocked: false },
+                     { icon: '👑', name: 'Zenith King', desc: 'Reach Sultan Rank', unlocked: true },
+                   ].map((ach, i) => (
+                     <div key={i} className={`border-4 border-brutal-black p-4 text-center space-y-2 shadow-[4px_4px_0px_0px_#000] dark:shadow-brutal-white transition-all hover:-translate-y-1 ${ach.unlocked ? 'bg-white dark:bg-zinc-800 opacity-100' : 'bg-brutal-bg dark:bg-zinc-900 opacity-40'}`}>
+                        <div className={`text-4xl mb-2 ${!ach.unlocked && 'grayscale'}`}>{ach.icon}</div>
+                        <h5 className="font-black uppercase text-[10px] tracking-tighter dark:text-white">{ach.name}</h5>
+                        <p className="text-[8px] font-bold uppercase opacity-60 dark:text-white/60">{ach.desc}</p>
+                     </div>
                    ))}
                 </div>
              </section>

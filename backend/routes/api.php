@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\GameController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,5 +46,32 @@ Route::get('/settings', function() {
 
 Route::get('/categories', [GameController::class, 'categories']);
 Route::get('/flash-sales', [GameController::class, 'flashSales']);
+Route::get('/upcoming-flash-sales', [GameController::class, 'upcomingFlashSales']);
+Route::get('/vouchers', [GameController::class, 'vouchers']);
 Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index']);
 Route::get('/news/{slug}', [\App\Http\Controllers\NewsController::class, 'show']);
+
+// Admin Dashboard Stats
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/stats/overview', [DashboardController::class, 'overview']);
+    Route::get('/stats/charts', [DashboardController::class, 'chartData']);
+    Route::get('/stats/top-products', [DashboardController::class, 'topProducts']);
+
+    // Management
+    Route::get('/users', [\App\Http\Controllers\Api\AdminManagementController::class, 'usersIndex']);
+    Route::patch('/users/{user}', [\App\Http\Controllers\Api\AdminManagementController::class, 'updateUser']);
+    Route::delete('/users/{user}', [\App\Http\Controllers\Api\AdminManagementController::class, 'deleteUser']);
+
+    Route::get('/orders', [\App\Http\Controllers\Api\AdminManagementController::class, 'ordersIndex']);
+    Route::patch('/orders/{order}/status', [\App\Http\Controllers\Api\AdminManagementController::class, 'updateOrderStatus']);
+
+    Route::get('/games', [\App\Http\Controllers\Api\AdminManagementController::class, 'gamesIndex']);
+    Route::post('/games', [\App\Http\Controllers\Api\AdminManagementController::class, 'storeGame']);
+    Route::patch('/games/{game}', [\App\Http\Controllers\Api\AdminManagementController::class, 'updateGame']);
+    Route::delete('/games/{game}', [\App\Http\Controllers\Api\AdminManagementController::class, 'deleteGame']);
+
+    Route::get('/games/{gameId}/products', [\App\Http\Controllers\Api\AdminManagementController::class, 'productsIndex']);
+    Route::post('/products', [\App\Http\Controllers\Api\AdminManagementController::class, 'storeProduct']);
+    Route::patch('/products/{product}', [\App\Http\Controllers\Api\AdminManagementController::class, 'updateProduct']);
+    Route::delete('/products/{product}', [\App\Http\Controllers\Api\AdminManagementController::class, 'deleteProduct']);
+});
