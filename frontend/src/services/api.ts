@@ -49,6 +49,14 @@ export const gameService = {
     const response = await api.get(`/orders/${orderId}`);
     return response.data;
   },
+  getUserOrders: async () => {
+    const response = await api.get('/me/orders');
+    return response.data;
+  },
+  getLatestOrders: async () => {
+    const response = await api.get('/orders/latest');
+    return response.data;
+  },
 };
 
 export const authService = {

@@ -19,6 +19,7 @@ import AccountDetail from './pages/AccountDetail';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import Settings from './pages/Settings';
+import FAQ from './pages/FAQ';
 import RekberService from './pages/RekberService';
 import ZenithPrime from './pages/ZenithPrime';
 import AdminDashboard from './pages/AdminDashboard';
@@ -121,6 +122,11 @@ function App() {
           <Route path="/news/:slug" element={
             <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.3, ease: "circOut" }}>
               <NewsDetail />
+            </motion.div>
+          } />
+          <Route path="/faq" element={
+            <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -100 }} transition={{ duration: 0.3, ease: "circOut" }}>
+              <FAQ />
             </motion.div>
           } />
           <Route path="/rekber" element={

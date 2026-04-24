@@ -30,6 +30,7 @@ class OrderController extends Controller
 
         $order = Order::create([
             'order_id' => 'TUP-' . strtoupper(Str::random(10)),
+            'user_id' => $user?->id,
             'game_id' => $request->game_id,
             'product_id' => $request->product_id,
             'target_user_id' => $request->user_id_game,
@@ -62,6 +63,28 @@ class OrderController extends Controller
             'message' => 'Pesanan berhasil dibuat',
             'data' => $order->load(['game', 'product', 'paymentMethod'])
         ], 201);
+    }
+
+    public function userOrders()
+    {
+        $user = auth('sanctum')->user();
+        $orders = Order::where('user_id', $user->id)
+            ->with(['game', 'product'])
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        return response()->json($orders);
+    }
+
+    public function latest()
+    {
+        $orders = Order::with(['game', 'product'])
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return response()->json($orders);
     }
 
     public function show($order_id)

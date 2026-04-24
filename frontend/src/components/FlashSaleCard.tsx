@@ -8,6 +8,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import BrutalCard from './BrutalCard';
 import BrutalButton from './BrutalButton';
+import { useNavigate } from 'react-router-dom';
 import { STORAGE_URL } from '../services/api';
 
 interface FlashSaleCardProps {
@@ -16,6 +17,7 @@ interface FlashSaleCardProps {
 }
 
 const FlashSaleCard: React.FC<FlashSaleCardProps> = ({ item, index }) => {
+  const navigate = useNavigate();
   const product = item?.product || {};
   const game = product?.game || {};
   
@@ -31,6 +33,12 @@ const FlashSaleCard: React.FC<FlashSaleCardProps> = ({ item, index }) => {
     ? rawImage 
     : `${STORAGE_URL}/${rawImage}`;
 
+  const handleBuy = () => {
+    if (game?.slug) {
+      navigate(`/game/${game.slug}?flash_sale=${item.id}`);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -39,7 +47,7 @@ const FlashSaleCard: React.FC<FlashSaleCardProps> = ({ item, index }) => {
       transition={{ delay: index * 0.05 }}
       className="h-full"
     >
-      <BrutalCard accent="cyan" className="group hover:-rotate-1 transition-transform relative overflow-hidden h-full flex flex-col">
+      <BrutalCard accent="cyan" className="group hover:-rotate-1 transition-transform relative overflow-hidden h-full flex flex-col cursor-pointer" onClick={handleBuy}>
         {discount > 0 && (
           <div className="absolute top-4 right-4 bg-brutal-magenta text-white text-xs font-black px-3 py-1 border-2 border-brutal-black z-20">
             -{discount}%
@@ -66,7 +74,7 @@ const FlashSaleCard: React.FC<FlashSaleCardProps> = ({ item, index }) => {
         </div>
 
         <div className="mt-8">
-          <BrutalButton variant="black" className="w-full text-sm py-3">BELI SEKARANG</BrutalButton>
+          <BrutalButton variant="black" className="w-full text-sm py-3" onClick={(e) => { e.stopPropagation(); handleBuy(); }}>BELI SEKARANG</BrutalButton>
         </div>
       </BrutalCard>
     </motion.div>

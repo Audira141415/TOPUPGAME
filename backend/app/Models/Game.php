@@ -8,12 +8,13 @@ class Game extends Model
 {
     protected $fillable = [
         'category_id', 'name', 'slug', 'description', 
-        'image', 'banner', 'is_active', 'validation_config'
+        'image', 'banner', 'is_active', 'is_popular', 'validation_config'
     ];
 
     protected $casts = [
         'validation_config' => 'array',
         'is_active' => 'boolean',
+        'is_popular' => 'boolean',
     ];
 
     public function category()

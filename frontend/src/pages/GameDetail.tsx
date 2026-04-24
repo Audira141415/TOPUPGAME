@@ -34,9 +34,15 @@ const GameDetail: React.FC = () => {
     fetchGame();
   }, [slug]);
 
-  const handleOrder = () => {
+  const [lastOrder, setLastOrder] = useState<any>(null);
+
+  const handleOrder = async () => {
     if (!userId) {
        alert('Mohon masukkan User ID Anda!');
+       return;
+    }
+    if (!whatsapp || whatsapp.length < 9) {
+       alert('Mohon masukkan nomor WhatsApp yang valid!');
        return;
     }
     if (!selectedProduct) {
@@ -49,10 +55,26 @@ const GameDetail: React.FC = () => {
     }
     
     setIsProcessing(true);
-    setTimeout(() => {
-       setIsProcessing(false);
-       setShowSuccess(true);
-    }, 2000);
+    try {
+        const orderPayload = {
+            game_id: game.id,
+            product_id: selectedProduct.id,
+            user_id_game: userId,
+            server_id_game: serverId,
+            payment_method_id: selectedPayment, // Menggunakan ID (1-4)
+            whatsapp_number: whatsapp
+        };
+
+        const response = await api.post('/checkout', orderPayload);
+        if (response.data.success) {
+            setLastOrder(response.data.data);
+            setShowSuccess(true);
+        }
+    } catch (error: any) {
+        alert(error.response?.data?.message || 'Gagal membuat pesanan. Silakan coba lagi.');
+    } finally {
+        setIsProcessing(false);
+    }
   };
 
   if (loading) {
@@ -77,30 +99,64 @@ const GameDetail: React.FC = () => {
       <Navbar />
       
       {/* Hero Header */}
-      <div className="bg-brutal-black py-12 border-b-4 border-brutal-black relative overflow-hidden">
-         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-         <div className="max-w-7xl mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center gap-8">
-            <div className="w-48 h-64 border-4 border-brutal-white shadow-brutal-cyan overflow-hidden bg-brutal-white">
+      <div className="bg-brutal-black py-12 border-b-8 border-brutal-black relative overflow-hidden min-h-[400px] flex items-center group">
+         {/* Banner Background */}
+         {game.banner ? (
+           <div className="absolute inset-0 z-0 transition-transform duration-[5000ms] group-hover:scale-110">
+              <img 
+                src={`${STORAGE_URL}/${game.banner}`} 
+                alt="Banner" 
+                className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-1000" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-brutal-black via-brutal-black/40 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-brutal-black/80 to-transparent"></div>
+           </div>
+         ) : (
+           <div className="absolute inset-0 z-0 bg-brutal-black overflow-hidden flex items-center justify-center">
+              <div className="absolute inset-0 bg-gradient-to-br from-brutal-magenta/20 via-brutal-black to-brutal-cyan/20 animate-gradient-shift"></div>
+              <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] animate-slide"></div>
+              <h2 className="text-[15vw] font-black opacity-5 italic -rotate-12 select-none uppercase leading-none">AUDIRA ZENITH</h2>
+           </div>
+         )}
+
+         <div className="max-w-7xl mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center gap-12 w-full">
+            <motion.div 
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              className="w-48 h-64 border-4 border-brutal-white shadow-[8px_8px_0px_0px_#00FFFF] overflow-hidden bg-brutal-white shrink-0 group-hover:-rotate-3 transition-transform"
+            >
                <img 
                  src={game.image ? `${STORAGE_URL}/${game.image}` : '/placeholder.png'} 
                  alt={game.name}
                  className="w-full h-full object-cover"
                />
-            </div>
-            <div className="text-center md:text-left space-y-4">
-               <span className="bg-brutal-yellow text-brutal-black px-4 py-1 font-space font-black uppercase text-sm border-2 border-brutal-black">
+            </motion.div>
+            <div className="text-center md:text-left space-y-6 flex-grow">
+               <motion.span 
+                 initial={{ y: 20, opacity: 0 }}
+                 animate={{ y: 0, opacity: 1 }}
+                 className="bg-brutal-yellow text-brutal-black px-4 py-1 font-space font-black uppercase text-sm border-2 border-brutal-black shadow-[4px_4px_0px_0px_#000]"
+               >
                   Official Partner
-               </span>
-               <h1 className="text-5xl md:text-7xl font-space font-black text-brutal-white italic uppercase tracking-tighter shadow-brutal-magenta">
+               </motion.span>
+               <motion.h1 
+                 initial={{ y: 30, opacity: 0 }}
+                 animate={{ y: 0, opacity: 1 }}
+                 transition={{ delay: 0.1 }}
+                 className="text-5xl md:text-8xl font-space font-black text-brutal-white italic uppercase tracking-tighter drop-shadow-[8px_8px_0px_#000] leading-none"
+               >
                   {game.name}
-               </h1>
-               <div className="flex flex-wrap justify-center md:justify-start gap-4">
-                  <span className="text-brutal-cyan font-space font-bold uppercase italic">⚡ INSTANT DELIVERY</span>
-                  <span className="text-brutal-white/40">•</span>
-                  <span className="text-brutal-yellow font-space font-bold uppercase italic">🛡️ 100% SECURE</span>
-                  <span className="text-brutal-white/40">•</span>
-                  <span className="text-brutal-magenta font-space font-bold uppercase italic">⭐ 24/7 SUPPORT</span>
-               </div>
+               </motion.h1>
+               <motion.div 
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                 transition={{ delay: 0.3 }}
+                 className="flex flex-wrap justify-center md:justify-start gap-4"
+               >
+                  <span className="bg-brutal-cyan text-brutal-black px-3 py-1 font-space font-bold uppercase italic text-xs border-2 border-brutal-black">⚡ INSTANT DELIVERY</span>
+                  <span className="bg-brutal-magenta text-brutal-white px-3 py-1 font-space font-bold uppercase italic text-xs border-2 border-brutal-black">🛡️ 100% SECURE</span>
+                  <span className="bg-brutal-yellow text-brutal-black px-3 py-1 font-space font-bold uppercase italic text-xs border-2 border-brutal-black">⭐ 24/7 SUPPORT</span>
+               </motion.div>
             </div>
          </div>
       </div>
@@ -138,7 +194,27 @@ const GameDetail: React.FC = () => {
                       />
                    </div>
                 </div>
-                <p className="text-[10px] font-bold opacity-40 uppercase italic">Pastikan ID yang Anda masukkan sudah benar untuk menghindari kesalahan pengiriman.</p>
+
+                {/* WhatsApp Input with +62 Prefix */}
+                <div className="space-y-2">
+                   <label className="font-space font-black uppercase text-xs">Nomor WhatsApp</label>
+                   <div className="flex">
+                      <div className="bg-brutal-black text-brutal-white px-4 flex items-center justify-center font-black border-2 border-brutal-black border-r-0">
+                         +62
+                      </div>
+                      <input 
+                        type="text" 
+                        className="brutal-input border-l-0" 
+                        placeholder="812xxxxxx"
+                        value={whatsapp}
+                        onChange={(e) => setWhatsapp(e.target.value.replace(/[^0-9]/g, ''))} // Hanya angka
+                      />
+                   </div>
+                   <div className="flex flex-col gap-1 mt-2">
+                      <p className="text-[10px] font-bold opacity-40 uppercase italic">*Kami akan menghubungi nomor WhatsApp terdaftar jika ada kendala.</p>
+                      <p className="text-[10px] font-bold opacity-40 uppercase italic">*Kode Voucher akan dikirimkan melalui nomor WhatsApp terdaftar.</p>
+                   </div>
+                </div>
              </BrutalCard>
 
              {/* Step 2: Select Package */}
@@ -178,24 +254,24 @@ const GameDetail: React.FC = () => {
                    <h3 className="text-xl font-space font-black uppercase">Metode Pembayaran</h3>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                   {[
-                     { name: 'QRIS', provider: 'Semua E-Wallet' },
-                     { name: 'BCA Virtual Account', provider: 'Transfer Bank' },
-                     { name: 'Mandiri VA', provider: 'Transfer Bank' },
-                     { name: 'ShopeePay', provider: 'E-Wallet' }
-                   ].map((method) => (
-                     <button
-                       key={method.name}
-                       onClick={() => setSelectedPayment(method.name)}
-                       className={`p-4 border-2 border-brutal-black font-space flex justify-between items-center transition-all ${selectedPayment === method.name ? 'bg-brutal-cyan shadow-[4px_4px_0px_0px_#000] -translate-y-1' : 'bg-brutal-white hover:bg-brutal-cyan/5'}`}
-                     >
-                        <div className="text-left">
-                           <span className="font-black uppercase text-xs block">{method.name}</span>
-                           <span className="text-[8px] opacity-40 font-bold uppercase">{method.provider}</span>
-                        </div>
-                        <div className={`w-4 h-4 border-2 border-brutal-black rounded-full ${selectedPayment === method.name ? 'bg-brutal-black' : ''}`}></div>
-                     </button>
-                   ))}
+                  {[
+                    { id: 1, name: 'QRIS', provider: 'Semua E-Wallet' },
+                    { id: 2, name: 'BCA Transfer', provider: 'Transfer Bank' },
+                    { id: 3, name: 'Mandiri Transfer', provider: 'Transfer Bank' },
+                    { id: 4, name: 'Dana', provider: 'E-Wallet' }
+                  ].map((method) => (
+                    <button
+                      key={method.id}
+                      onClick={() => setSelectedPayment(method.id.toString())}
+                      className={`p-4 border-2 border-brutal-black font-space flex justify-between items-center transition-all ${selectedPayment === method.id.toString() ? 'bg-brutal-cyan shadow-[4px_4px_0px_0px_#000] -translate-y-1' : 'bg-brutal-white hover:bg-brutal-cyan/5'}`}
+                    >
+                       <div className="text-left">
+                          <span className="font-black uppercase text-xs block">{method.name}</span>
+                          <span className="text-[8px] opacity-40 font-bold uppercase">{method.provider}</span>
+                       </div>
+                       <div className={`w-4 h-4 border-2 border-brutal-black rounded-full ${selectedPayment === method.id.toString() ? 'bg-brutal-black' : ''}`}></div>
+                    </button>
+                  ))}
                 </div>
              </BrutalCard>
           </div>
@@ -210,17 +286,6 @@ const GameDetail: React.FC = () => {
 
                 <BrutalCard accent="yellow" className="p-6 space-y-6">
                    <div className="space-y-4">
-                      <div className="space-y-2">
-                         <label className="font-space font-black uppercase text-xs">No. WhatsApp</label>
-                         <input 
-                           type="text" 
-                           className="brutal-input" 
-                           placeholder="08xxxxxxxx"
-                           value={whatsapp}
-                           onChange={(e) => setWhatsapp(e.target.value)}
-                         />
-                      </div>
-                      
                       <div className="border-t-2 border-brutal-black/10 pt-4 space-y-3">
                          <div className="flex justify-between text-[10px] font-black uppercase">
                             <span className="opacity-40">Item:</span>
@@ -269,23 +334,28 @@ const GameDetail: React.FC = () => {
                 
                 <div className="space-y-2">
                    <h2 className="text-4xl font-space font-black uppercase italic">ORDER SUCCESS!</h2>
-                   <p className="font-space font-bold uppercase text-[10px] opacity-60">Pesanan {selectedProduct?.name} sedang diproses. Cek WhatsApp untuk detail pembayaran.</p>
+                   <p className="font-space font-bold uppercase text-[10px] opacity-60">Pesanan {selectedProduct?.name} sedang diproses. Silakan selesaikan pembayaran.</p>
                 </div>
 
                 <div className="bg-brutal-black/5 p-4 border-2 border-dashed border-brutal-black text-left space-y-2">
                    <div className="flex justify-between text-[10px] font-black uppercase">
                       <span>Order ID:</span>
-                      <span className="text-brutal-magenta">#AZ-{Math.floor(Math.random() * 1000000)}</span>
+                      <span className="text-brutal-magenta font-black">{lastOrder?.order_id}</span>
                    </div>
                    <div className="flex justify-between text-[10px] font-black uppercase">
-                      <span>Game:</span>
-                      <span>{game.name}</span>
+                      <span>Total Bayar:</span>
+                      <span className="text-brutal-black">Rp {lastOrder?.total_amount.toLocaleString()}</span>
                    </div>
                 </div>
 
-                <BrutalButton variant="black" className="w-full py-4" onClick={() => navigate('/')}>
-                   KEMBALI KE BERANDA
-                </BrutalButton>
+                <div className="grid grid-cols-2 gap-4">
+                   <BrutalButton variant="white" className="py-4 text-xs" onClick={() => navigate(`/track?id=${lastOrder?.order_id}`)}>
+                      LACAK PESANAN
+                   </BrutalButton>
+                   <BrutalButton variant="black" className="py-4 text-xs" onClick={() => navigate('/')}>
+                      BERANDA
+                   </BrutalButton>
+                </div>
              </motion.div>
           </div>
         )}

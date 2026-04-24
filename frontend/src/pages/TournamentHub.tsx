@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { STORAGE_URL } from '../services/api';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const TournamentHub: React.FC = () => {
+  const [showRegister, setShowRegister] = useState(false);
+  const [selectedTourney, setSelectedTourney] = useState<any>(null);
+  const [isSearching, setIsSearching] = useState(false);
+
   const tournaments = [
-    { id: 1, title: 'ZENITH MLBB CHAMPIONSHIP', prize: 'Rp 5.000.000', date: '25 Mei 2026', slots: '12/32 Teams', status: 'Open', accent: 'cyan' },
-    { id: 2, title: 'FREE FIRE FAST CUP', prize: 'Rp 2.000.000', date: '30 Mei 2026', slots: 'Full', status: 'Closed', accent: 'magenta' },
-    { id: 3, title: 'VALORANT NEON BATTLE', prize: 'Rp 3.500.000', date: '05 Juni 2026', slots: '20/64 Players', status: 'Open', accent: 'yellow' },
+    { id: 1, title: 'ZENITH MLBB CHAMPIONSHIP', prize: 'Rp 5.000.000', date: '25 Mei 2026', slots: 12, maxSlots: 32, type: 'Teams', status: 'Open', accent: 'cyan' },
+    { id: 2, title: 'FREE FIRE FAST CUP', prize: 'Rp 2.000.000', date: '30 Mei 2026', slots: 32, maxSlots: 32, type: 'Teams', status: 'Closed', accent: 'magenta' },
+    { id: 3, title: 'VALORANT NEON BATTLE', prize: 'Rp 3.500.000', date: '05 Juni 2026', slots: 20, maxSlots: 64, type: 'Players', status: 'Open', accent: 'yellow' },
   ];
 
+  const handleRegister = (tourney: any) => {
+    setSelectedTourney(tourney);
+    setShowRegister(true);
+  };
+
+  const handleScrimSearch = () => {
+    setIsSearching(true);
+    setTimeout(() => {
+        setIsSearching(false);
+        window.open('https://chat.whatsapp.com/example', '_blank'); // Simulasi masuk grup komunitas
+    }, 2000);
+  };
+
   return (
-    <div className="min-h-screen bg-brutal-bg flex flex-col">
+    <div className="min-h-screen bg-brutal-bg flex flex-col overflow-x-hidden">
       <Navbar />
       
       <main className="flex-grow max-w-7xl mx-auto px-4 py-16 w-full">
@@ -30,7 +47,7 @@ const TournamentHub: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-brutal-black via-transparent to-transparent opacity-80"></div>
              </div>
 
-             <div className="relative z-10 space-y-8">
+             <div className="relative z-10 space-y-8 text-center md:text-left">
                 <motion.div 
                   initial={{ x: -100, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
@@ -53,7 +70,7 @@ const TournamentHub: React.FC = () => {
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="max-w-2xl font-space font-bold uppercase text-xl text-brutal-white/80 border-l-4 border-brutal-cyan pl-6"
+                  className="max-w-2xl font-space font-bold uppercase text-xl text-brutal-white/80 border-l-4 border-brutal-cyan pl-6 hidden md:block"
                 >
                   Tunjukkan skill-mu, bangun tim pemenang, dan raih hadiah jutaan Rupiah di ekosistem E-Sport Audira Zenith.
                 </motion.p>
@@ -63,7 +80,7 @@ const TournamentHub: React.FC = () => {
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.6 }}
                 >
-                  <BrutalButton variant="cyan" className="text-2xl px-16 py-5 shadow-brutal-white group-hover:shadow-brutal-magenta transition-all">
+                  <BrutalButton variant="cyan" className="text-2xl px-16 py-5 shadow-brutal-white group-hover:shadow-brutal-magenta transition-all w-full md:w-auto">
                     DAFTARKAN TIMMU SEKARANG
                   </BrutalButton>
                 </motion.div>
@@ -79,24 +96,34 @@ const TournamentHub: React.FC = () => {
         {/* Tournament List */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
            {tournaments.map((t) => (
-             <BrutalCard key={t.id} accent={t.accent as any} className="flex flex-col h-full bg-brutal-white">
+             <BrutalCard key={t.id} accent={t.accent as any} className="flex flex-col h-full bg-brutal-white hover:-translate-y-2 transition-transform group">
                 <div className="flex justify-between items-start mb-6">
-                   <span className={`px-3 py-1 font-space font-black text-xs border-2 border-brutal-black shadow-brutal-black ${t.status === 'Open' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                   <span className={`px-3 py-1 font-space font-black text-xs border-2 border-brutal-black shadow-brutal-black ${t.status === 'Open' ? 'bg-green-500 text-white animate-pulse' : 'bg-red-500 text-white'}`}>
                       {t.status.toUpperCase()}
                    </span>
                    <p className="font-space font-black text-xs opacity-40">{t.date}</p>
                 </div>
                 
-                <h3 className="text-2xl font-space font-black uppercase mb-6 flex-grow">{t.title}</h3>
+                <h3 className="text-2xl font-space font-black uppercase mb-6 flex-grow group-hover:text-brutal-magenta transition-colors">{t.title}</h3>
                 
                 <div className="space-y-4 mb-8">
                    <div className="flex justify-between border-b-2 border-brutal-black/10 pb-2">
                       <span className="text-[10px] font-black uppercase opacity-40">Prizepool</span>
                       <span className="font-space font-black text-brutal-magenta text-xl">{t.prize}</span>
                    </div>
-                   <div className="flex justify-between">
-                      <span className="text-[10px] font-black uppercase opacity-40">Slot Tersedia</span>
-                      <span className="font-space font-black">{t.slots}</span>
+                   <div className="space-y-2">
+                      <div className="flex justify-between">
+                         <span className="text-[10px] font-black uppercase opacity-40">Slot Tersedia</span>
+                         <span className="font-space font-black text-xs">{t.slots}/{t.maxSlots} {t.type}</span>
+                      </div>
+                      {/* Progress Bar */}
+                      <div className="h-4 bg-brutal-black/10 border-2 border-brutal-black relative overflow-hidden">
+                         <motion.div 
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${(t.slots / t.maxSlots) * 100}%` }}
+                            className={`h-full border-r-2 border-brutal-black ${t.slots === t.maxSlots ? 'bg-red-500' : 'bg-brutal-cyan'}`}
+                         />
+                      </div>
                    </div>
                 </div>
 
@@ -104,6 +131,7 @@ const TournamentHub: React.FC = () => {
                   variant={t.status === 'Open' ? 'black' : 'white'} 
                   className="w-full"
                   disabled={t.status === 'Closed'}
+                  onClick={() => handleRegister(t)}
                 >
                    {t.status === 'Open' ? 'Daftar Sekarang' : 'Pendaftaran Tutup'}
                 </BrutalButton>
@@ -112,12 +140,73 @@ const TournamentHub: React.FC = () => {
         </div>
 
         {/* Scrims/Latih Tanding Section */}
-        <section className="mt-32 p-12 bg-brutal-yellow border-4 border-brutal-black shadow-brutal-black text-center space-y-6">
-           <h2 className="text-4xl font-space font-black uppercase italic">INGIN LATIH TANDING (SCRIM)?</h2>
-           <p className="font-space font-bold uppercase text-sm">Cari lawan seimbang untuk timmu dan tingkatkan rank bersama komunitas Audira.</p>
-           <BrutalButton variant="black" className="px-12 py-4">Cari Lawan Scrim</BrutalButton>
+        <section className="mt-32 relative group">
+           <div className="absolute inset-0 bg-brutal-black translate-x-4 translate-y-4 -z-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform"></div>
+           <div className="bg-brutal-yellow border-4 border-brutal-black p-12 md:p-20 text-center space-y-8">
+              <div className="inline-block bg-brutal-black text-brutal-white px-8 py-2 font-space font-black text-xl italic uppercase skew-x-[-10deg] mb-4">
+                 LIVE MATCHMAKING
+              </div>
+              <h2 className="text-4xl md:text-7xl font-space font-black uppercase italic leading-none">INGIN LATIH TANDING (SCRIM)?</h2>
+              <p className="font-space font-bold uppercase text-lg max-w-3xl mx-auto opacity-60">CARI LAWAN SEIMBANG UNTUK TIMMU DAN TINGKATKAN RANK BERSAMA KOMUNITAS AUDIRA ZENITH.</p>
+              
+              <div className="flex justify-center pt-8">
+                <BrutalButton 
+                    variant="black" 
+                    className={`px-16 py-6 text-2xl relative overflow-hidden ${isSearching ? 'animate-pulse bg-brutal-magenta' : ''}`}
+                    onClick={handleScrimSearch}
+                    disabled={isSearching}
+                >
+                    {isSearching ? (
+                        <span className="flex items-center gap-4">
+                            <span className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
+                            MENCARI LAWAN...
+                        </span>
+                    ) : 'CARI LAWAN SCRIM SEKARANG'}
+                </BrutalButton>
+              </div>
+           </div>
         </section>
       </main>
+
+      {/* Registration Modal */}
+      <AnimatePresence>
+        {showRegister && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-brutal-black/80 backdrop-blur-md">
+                <motion.div 
+                    initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
+                    animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    className="bg-brutal-white border-8 border-brutal-black p-8 md:p-12 max-w-2xl w-full shadow-brutal-cyan relative"
+                >
+                    <button className="absolute top-4 right-4 text-4xl font-black hover:rotate-90 transition-transform" onClick={() => setShowRegister(false)}>×</button>
+                    <div className="space-y-8">
+                        <div className="space-y-2">
+                            <span className="bg-brutal-black text-white px-4 py-1 text-xs font-black uppercase tracking-widest">Registrasi Terbuka</span>
+                            <h2 className="text-4xl font-space font-black uppercase italic leading-none">{selectedTourney?.title}</h2>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase opacity-40">Nama Tim / Player</label>
+                                <input type="text" className="brutal-input w-full" placeholder="Contoh: Audira Gaming" />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase opacity-40">WhatsApp Kapten</label>
+                                <input type="text" className="brutal-input w-full" placeholder="0812xxxxxx" />
+                            </div>
+                        </div>
+
+                        <div className="bg-brutal-black text-brutal-white p-6 border-4 border-brutal-black space-y-4">
+                            <p className="font-space font-black text-sm uppercase">INSTRUKSI PEMBAYARAN:</p>
+                            <p className="text-xs opacity-60">Biaya pendaftaran sebesar <span className="text-brutal-yellow">Gratis (Sponsored)</span>. Harap lengkapi data dan admin kami akan menghubungi Anda dalam 1x24 jam.</p>
+                        </div>
+
+                        <BrutalButton variant="cyan" className="w-full py-5 text-xl" onClick={() => setShowRegister(false)}>KONFIRMASI PENDAFTARAN</BrutalButton>
+                    </div>
+                </motion.div>
+            </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -29,6 +29,27 @@ const OrderTracking: React.FC = () => {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id) {
+      setOrderId(id);
+      // Auto-trigger search
+      const triggerSearch = async (searchId: string) => {
+        setLoading(true);
+        try {
+          const data = await gameService.getOrder(searchId);
+          setOrderData(data);
+        } catch (err) {
+          setError('Nomor pesanan tidak ditemukan.');
+        } finally {
+          setLoading(false);
+        }
+      };
+      triggerSearch(id);
+    }
+  }, []);
+
+  useEffect(() => {
     let interval: any;
     if (orderData && !['success', 'failed', 'completed', 'canceled'].includes(orderData.status.toLowerCase())) {
       interval = setInterval(async () => {

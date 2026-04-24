@@ -20,6 +20,7 @@ Route::post('/auth/otp/verify', [\App\Http\Controllers\Api\AuthController::class
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [\App\Http\Controllers\Api\AuthController::class, 'me']);
+    Route::get('/me/orders', [OrderController::class, 'userOrders']);
     Route::post('/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
     Route::patch('/profile/update', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
     Route::post('/password/update', [\App\Http\Controllers\Api\AuthController::class, 'updatePassword']);
@@ -32,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/games', [GameController::class, 'index']);
 Route::get('/games/{slug}', [GameController::class, 'show']);
 
+Route::get('/orders/latest', [OrderController::class, 'latest']);
 Route::post('/checkout', [OrderController::class, 'store']);
 Route::get('/orders/{order_id}', [OrderController::class, 'show']);
 

@@ -33,3 +33,6 @@ claude-skills-main/
 .DS_Store
 Thumbs.db
 *.log
+*.tar.gz
+*.zip
+*.rar

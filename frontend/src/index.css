@@ -114,6 +114,17 @@
   100% { transform: translateX(-50%); }
 }
 
+@keyframes slide {
+  from { background-position: 0 0; }
+  to { background-position: 100px 100px; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .animate-marquee {
   display: inline-flex;
   animation: marquee 30s linear infinite;
@@ -121,4 +132,13 @@
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+.animate-slide {
+  animation: slide 20s linear infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 10s ease infinite;
 }

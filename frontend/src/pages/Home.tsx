@@ -217,14 +217,49 @@ const Home: React.FC = () => {
           </section>
         )}
 
-        {/* Game Grid */}
-        <section className="px-4 py-16 max-w-7xl mx-auto min-h-[400px]">
-          <div className="flex items-center gap-4 mb-12">
-             <h2 className="text-4xl md:text-6xl font-space font-black italic uppercase">AVAILABLE GAMES</h2>
+        {/* Most Popular Section */}
+        <section className="px-4 py-12 max-w-7xl mx-auto">
+          <div className="flex items-center gap-4 mb-10">
+             <div className="bg-brutal-yellow border-4 border-brutal-black px-6 py-2 shadow-brutal-black -rotate-2">
+                <h2 className="text-3xl md:text-5xl font-space font-black italic uppercase">TOPUP TERPOPULER</h2>
+             </div>
              <div className="flex-grow h-1 bg-brutal-black"></div>
           </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+            {allGames.filter(g => g.is_popular).slice(0, 6).map((game, i) => (
+              <motion.div 
+                key={game.id}
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ delay: i * 0.1 }}
+                className="relative group"
+              >
+                <div className="absolute -top-3 -right-3 z-20 bg-brutal-magenta text-brutal-white font-space font-black text-xs px-3 py-1 border-2 border-brutal-black shadow-brutal-black rotate-12 group-hover:rotate-0 transition-transform">
+                  HOT 🔥
+                </div>
+                <GameCard game={game} />
+                <div className="mt-2 bg-brutal-black text-brutal-cyan text-[10px] font-space font-black uppercase text-center py-1 border-2 border-brutal-black">
+                  {Math.floor(Math.random() * 500) + 500}+ Transaksi
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Game Grid */}
+        <section className="px-4 py-16 max-w-7xl mx-auto min-h-[400px]">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
+             <div className="flex items-center gap-4 flex-grow">
+                <h2 className="text-4xl md:text-6xl font-space font-black italic uppercase">AVAILABLE GAMES</h2>
+                <div className="hidden md:block flex-grow h-1 bg-brutal-black"></div>
+             </div>
+             <Link to="/store">
+                <BrutalButton variant="black" className="px-8 py-3 whitespace-nowrap">Lihat Semua Game</BrutalButton>
+             </Link>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
-              {filteredGames.map((game) => (
+              {filteredGames.slice(0, 12).map((game) => (
                 <GameCard key={game.id} game={game} />
               ))}
           </div>
