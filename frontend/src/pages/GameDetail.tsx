@@ -4,11 +4,13 @@ import Navbar from '../components/Navbar';
 import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { gameService, STORAGE_URL } from '../services/api';
+import { api, gameService, STORAGE_URL } from '../services/api';
+import { useAuthStore } from '../store/useAuthStore';
 
 const GameDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { user } = useAuthStore();
   const [game, setGame] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState('');
@@ -16,6 +18,7 @@ const GameDetail: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const [whatsapp, setWhatsapp] = useState('');
+  const [referralCode, setReferralCode] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -61,8 +64,9 @@ const GameDetail: React.FC = () => {
             product_id: selectedProduct.id,
             user_id_game: userId,
             server_id_game: serverId,
-            payment_method_id: selectedPayment, // Menggunakan ID (1-4)
-            whatsapp_number: whatsapp
+            payment_method_id: selectedPayment,
+            whatsapp_number: whatsapp,
+            referral_code: referralCode
         };
 
         const response = await api.post('/checkout', orderPayload);
@@ -210,10 +214,21 @@ const GameDetail: React.FC = () => {
                         onChange={(e) => setWhatsapp(e.target.value.replace(/[^0-9]/g, ''))} // Hanya angka
                       />
                    </div>
-                   <div className="flex flex-col gap-1 mt-2">
-                      <p className="text-[10px] font-bold opacity-40 uppercase italic">*Kami akan menghubungi nomor WhatsApp terdaftar jika ada kendala.</p>
-                      <p className="text-[10px] font-bold opacity-40 uppercase italic">*Kode Voucher akan dikirimkan melalui nomor WhatsApp terdaftar.</p>
-                   </div>
+                </div>
+
+                {/* Affiliate Code Input */}
+                <div className="space-y-2 pt-4 border-t-2 border-brutal-black/10">
+                   <label className="font-space font-black uppercase text-xs flex justify-between">
+                      Kode Referral (Opsional)
+                      <span className="text-brutal-magenta italic">Dapatkan Diskon!</span>
+                   </label>
+                   <input 
+                     type="text" 
+                     className="brutal-input bg-brutal-black/5" 
+                     placeholder="Masukkan Kode Referral"
+                     value={referralCode}
+                     onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                   />
                 </div>
              </BrutalCard>
 
@@ -241,7 +256,17 @@ const GameDetail: React.FC = () => {
                            {selectedProduct?.id === product.id && <div className="text-[8px] font-black uppercase bg-brutal-black text-brutal-white px-1">Selected</div>}
                         </div>
                         <p className="text-[10px] font-black uppercase leading-tight h-8 line-clamp-2">{product.name}</p>
-                        <p className="text-lg font-black italic">Rp {new Intl.NumberFormat('id-ID').format(product.price_basic)}</p>
+                        <div className="flex flex-col">
+                           {user?.is_prime && (
+                              <span className="text-[10px] font-black text-brutal-magenta uppercase line-through opacity-40">Rp {new Intl.NumberFormat('id-ID').format(product.price_basic)}</span>
+                           )}
+                           <p className="text-lg font-black italic">
+                              Rp {new Intl.NumberFormat('id-ID').format(user?.is_prime ? product.price_basic * 0.98 : product.price_basic)}
+                           </p>
+                           {user?.is_prime && (
+                              <span className="bg-brutal-cyan text-brutal-black text-[8px] px-1 font-black uppercase w-fit">VIP PRICE</span>
+                           )}
+                        </div>
                      </button>
                    ))}
                 </div>

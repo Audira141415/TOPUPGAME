@@ -25,7 +25,13 @@ class OrderController extends Controller
         
         $user = auth('sanctum')->user();
         $amount = $product->getPriceForUser($user);
-        $fee = 1000; // Contoh fee statis
+
+        // Feature: Zenith Prime Discount (Extra 2% off)
+        if ($user && $user->is_prime) {
+            $amount = $amount * 0.98;
+        }
+
+        $fee = 1000; 
         $total_amount = $amount + $fee;
 
         $order = Order::create([
@@ -42,9 +48,19 @@ class OrderController extends Controller
             'total_amount' => $total_amount,
             'payment_method_id' => $request->payment_method_id,
             'whatsapp_number' => $request->whatsapp_number,
+            'referral_code' => $request->referral_code, // Tambahkan kolom ini di DB jika belum
             'status' => 'pending',
             'payment_status' => 'unpaid',
         ]);
+
+        // Feature: Affiliate Commission (1% to the referral code owner)
+        if ($request->referral_code) {
+            $referrer = \App\Models\User::where('affiliate_code', $request->referral_code)->first();
+            if ($referrer) {
+                $commission = $total_amount * 0.01;
+                $referrer->increment('affiliate_balance', $commission);
+            }
+        }
 
         // Integrate Tripay
         $tripay = new \App\Services\TripayService();

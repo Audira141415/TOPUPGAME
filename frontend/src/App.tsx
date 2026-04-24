@@ -22,6 +22,8 @@ import Settings from './pages/Settings';
 import FAQ from './pages/FAQ';
 import RekberService from './pages/RekberService';
 import ZenithPrime from './pages/ZenithPrime';
+import Leaderboard from './pages/Leaderboard';
+import AffiliateDashboard from './pages/AffiliateDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import ZenithSocialProof from './components/ZenithSocialProof';
 import WhatsAppWidget from './components/WhatsAppWidget';
@@ -137,6 +139,16 @@ function App() {
           <Route path="/prime" element={
             <motion.div initial={{ opacity: 0, scale: 1.2 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.4, ease: "circOut" }}>
               <ZenithPrime />
+            </motion.div>
+          } />
+          <Route path="/leaderboard" element={
+            <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -100 }} transition={{ duration: 0.3, ease: "circOut" }}>
+              <Leaderboard />
+            </motion.div>
+          } />
+          <Route path="/affiliate" element={
+            <motion.div initial={{ opacity: 0, x: 100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -100 }} transition={{ duration: 0.3, ease: "circOut" }}>
+              <AffiliateDashboard />
             </motion.div>
           } />
           <Route path="/store" element={

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\GameController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\LeaderboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/profile/update', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
     Route::post('/password/update', [\App\Http\Controllers\Api\AuthController::class, 'updatePassword']);
     Route::post('/profile/avatar', [\App\Http\Controllers\Api\AuthController::class, 'updateAvatar']);
+    Route::get('/prime/status', [LeaderboardController::class, 'primeStatus']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
@@ -32,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/games', [GameController::class, 'index']);
 Route::get('/games/{slug}', [GameController::class, 'show']);
-
+Route::get('/leaderboard', [LeaderboardController::class, 'index']);
 Route::get('/orders/latest', [OrderController::class, 'latest']);
 Route::post('/checkout', [OrderController::class, 'store']);
 Route::get('/orders/{order_id}', [OrderController::class, 'show']);
