@@ -73,6 +73,7 @@ def deploy():
             "docker exec topup_frontend rm -rf node_modules/.vite || true",
             f"cd {remote_path} && docker compose up -d --build --force-recreate",
             "sleep 10",
+            "docker exec topup_frontend npm install",
             f"docker exec topup_backend mkdir -p storage/app/public storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs",
             f"docker exec topup_backend chmod -R 777 storage bootstrap/cache",
             f"docker exec topup_backend composer install --no-dev --optimize-autoloader --ignore-platform-reqs",
