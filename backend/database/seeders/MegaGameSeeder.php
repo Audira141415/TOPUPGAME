@@ -43,7 +43,7 @@ class MegaGameSeeder extends Seeder
                 'category_id' => $mobileCat->id,
                 'name' => $g['name'],
                 'description' => "Layanan top up {$g['name']} paling murah dan aman di Audira Zenith.",
-                'image' => $g['image'],
+                'image' => "games/{$g['slug']}.png",
                 'validation_config' => [
                     'fields' => [
                         ['name' => 'User ID', 'key' => 'user_id', 'type' => 'text', 'placeholder' => '12345678'],

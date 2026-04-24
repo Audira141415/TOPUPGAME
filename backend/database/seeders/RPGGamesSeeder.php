@@ -60,7 +60,9 @@ class RPGGamesSeeder extends Seeder
         foreach ($games as $gameData) {
             Game::updateOrCreate(
                 ['slug' => $gameData['slug']],
-                $gameData
+                array_merge($gameData, [
+                    'image' => "games/{$gameData['slug']}.png"
+                ])
             );
         }
     }

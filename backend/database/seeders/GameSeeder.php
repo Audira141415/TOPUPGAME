@@ -36,7 +36,7 @@ class GameSeeder extends Seeder
                 'name' => 'Mobile Legends',
                 'slug' => 'mobile-legends',
                 'description' => 'Top up Diamond Mobile Legends termurah dan tercepat.',
-                'image' => 'games/mlbb.png',
+                'image' => 'games/mobile-legends.png',
                 'validation_config' => [
                     'fields' => [
                         ['name' => 'User ID', 'key' => 'user_id', 'type' => 'number', 'placeholder' => '12345678'],
@@ -49,7 +49,7 @@ class GameSeeder extends Seeder
                 'name' => 'Free Fire',
                 'slug' => 'free-fire',
                 'description' => 'Top up Diamond Free Fire termurah dan tercepat.',
-                'image' => 'games/ff.png',
+                'image' => 'games/free-fire.png',
                 'validation_config' => [
                     'fields' => [
                         ['name' => 'Player ID', 'key' => 'user_id', 'type' => 'number', 'placeholder' => '123456789'],
@@ -61,7 +61,7 @@ class GameSeeder extends Seeder
                 'name' => 'PUBG Mobile',
                 'slug' => 'pubg-mobile',
                 'description' => 'Top up UC PUBG Mobile termurah.',
-                'image' => 'games/pubg.png',
+                'image' => 'games/pubg-mobile.png',
                 'validation_config' => [
                     'fields' => [
                         ['name' => 'Character ID', 'key' => 'user_id', 'type' => 'number', 'placeholder' => '512345678'],
@@ -73,7 +73,7 @@ class GameSeeder extends Seeder
                 'name' => 'Genshin Impact',
                 'slug' => 'genshin-impact',
                 'description' => 'Top up Genesis Crystal Genshin Impact.',
-                'image' => 'games/genshin.png',
+                'image' => 'games/genshin-impact.png',
                 'validation_config' => [
                     'fields' => [
                         ['name' => 'User ID (UID)', 'key' => 'user_id', 'type' => 'number', 'placeholder' => '801234567'],
@@ -91,7 +91,7 @@ class GameSeeder extends Seeder
                 'name' => 'Honor of Kings',
                 'slug' => 'honor-of-kings',
                 'description' => 'Top up Token Honor of Kings.',
-                'image' => 'games/hok.png',
+                'image' => 'games/honor-of-kings.png',
                 'validation_config' => [
                     'fields' => [
                         ['name' => 'User ID', 'key' => 'user_id', 'type' => 'number', 'placeholder' => '12345678'],

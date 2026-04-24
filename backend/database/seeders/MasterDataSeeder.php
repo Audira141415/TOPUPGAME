@@ -87,7 +87,7 @@ class MasterDataSeeder extends Seeder
                 [
                     'category_id' => $gameData['category_id'],
                     'name' => $gameData['name'],
-                    'image' => $gameData['image']
+                    'image' => "games/{$gameData['slug']}.png"
                 ]
             );
 
