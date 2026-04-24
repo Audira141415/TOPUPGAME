@@ -16,7 +16,7 @@ export default defineConfig({
       interval: 1000,
     },
     hmr: {
-      clientPort: 1415,
+      clientPort: 3000,
     }
   }
 })
