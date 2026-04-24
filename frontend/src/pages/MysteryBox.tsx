@@ -4,7 +4,7 @@ import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '../store/useAuthStore';
-import { api, STORAGE_URL } from '../services/api';
+import api, { STORAGE_URL } from '../services/api';
 import toast from 'react-hot-toast';
 
 const MysteryBox: React.FC = () => {
