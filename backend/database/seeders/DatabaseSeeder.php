@@ -45,7 +45,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CmsSeeder::class,
-            GameSeeder::class,
+            UltimateGameSeeder::class,
+            AutoSyncGameSeeder::class,
             PaymentMethodSeeder::class,
             FlashSaleSeeder::class,
             NewsSeeder::class,

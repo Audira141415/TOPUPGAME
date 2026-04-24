@@ -13,13 +13,7 @@ class UltimateGameSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Truncate tables to clean up duplicates
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        DB::table('products')->truncate();
-        DB::table('games')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-        // 2. Ensure Categories exist
+        // 1. Ensure Categories exist
         $categories = [
             ['name' => 'Mobile Game', 'slug' => 'mobile-game'],
             ['name' => 'PC Game', 'slug' => 'pc-game'],
@@ -92,19 +86,6 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'black-clover',
                 'description' => 'Top up Black Clover Mobile termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/black-clover.png',
-                'is_active' => true,
-                'validation_config' => [
-                    'fields' => [
-                        ['name' => 'User ID', 'key' => 'user_id', 'type' => 'text', 'placeholder' => '12345678'],
-                    ]
-                ],
-            ],
-            [
-                'category_id' => $cats['mobile-game'],
-                'name' => 'Black Clover M',
-                'slug' => 'black-clover-m',
-                'description' => 'Top up Black Clover M termurah dan tercepat hanya di Audira Zenith.',
-                'image' => 'games/black-clover-m.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -417,19 +398,6 @@ class UltimateGameSeeder extends Seeder
                 'name' => 'Nikke: Goddess of Victory',
                 'slug' => 'nikke',
                 'description' => 'Top up Nikke: Goddess of Victory termurah dan tercepat hanya di Audira Zenith.',
-                'image' => 'games/nikke.png',
-                'is_active' => true,
-                'validation_config' => [
-                    'fields' => [
-                        ['name' => 'User ID', 'key' => 'user_id', 'type' => 'text', 'placeholder' => '12345678'],
-                    ]
-                ],
-            ],
-            [
-                'category_id' => $cats['mobile-game'],
-                'name' => 'Goddess of Victory: Nikke',
-                'slug' => 'nikke-goddess-of-victory',
-                'description' => 'Top up Goddess of Victory: Nikke termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/nikke-goddess-of-victory.png',
                 'is_active' => true,
                 'validation_config' => [
@@ -623,19 +591,6 @@ class UltimateGameSeeder extends Seeder
             ],
             [
                 'category_id' => $cats['mobile-game'],
-                'name' => 'Solo Leveling: Arise',
-                'slug' => 'solo-leveling-arise',
-                'description' => 'Top up Solo Leveling: Arise termurah dan tercepat hanya di Audira Zenith.',
-                'image' => 'games/solo-leveling-arise.png',
-                'is_active' => true,
-                'validation_config' => [
-                    'fields' => [
-                        ['name' => 'User ID', 'key' => 'user_id', 'type' => 'text', 'placeholder' => '12345678'],
-                    ]
-                ],
-            ],
-            [
-                'category_id' => $cats['mobile-game'],
                 'name' => 'State of Survival',
                 'slug' => 'state-of-survival',
                 'description' => 'Top up State of Survival termurah dan tercepat hanya di Audira Zenith.',
@@ -769,7 +724,7 @@ class UltimateGameSeeder extends Seeder
         ];
 
         foreach ($games as $gameData) {
-            $game = Game::create($gameData);
+            $game = Game::updateOrCreate(['slug' => $gameData['slug']], $gameData);
 
             // Add sample products
             $products = [
@@ -779,12 +734,14 @@ class UltimateGameSeeder extends Seeder
             ];
 
             foreach ($products as $p) {
-                Product::create(array_merge($p, [
-                    'game_id' => $game->id,
-                    'stock' => 999,
-                    'is_active' => true,
-                    'provider_product_id' => $p['sku']
-                ]));
+                Product::updateOrCreate(
+                    ['game_id' => $game->id, 'sku' => $p['sku']],
+                    array_merge($p, [
+                        'stock' => 999,
+                        'is_active' => true,
+                        'provider_product_id' => $p['sku']
+                    ])
+                );
             }
         }
     }

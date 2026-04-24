@@ -7,22 +7,16 @@
  */
 import axios from 'axios';
 
-// Dynamic host detection for production environments
-const host = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
-const protocol = typeof window !== 'undefined' ? window.location.protocol : 'http:';
-
-// If we are on port 3000 (production deploy), we expect backend on 8080
-const baseHost = host === 'localhost' ? 'http://localhost:8080' : `${protocol}//${host}:8080`;
-
+// Default to relative paths to allow Nginx proxy to handle requests correctly
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || `${baseHost}/api`,
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
 });
 
-export const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || `${baseHost}/storage`;
+export const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || '/storage';
 
 export const gameService = {
   getGames: async () => {
