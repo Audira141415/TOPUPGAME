@@ -41,7 +41,7 @@ const Store: React.FC = () => {
     <div className="min-h-screen bg-brutal-bg flex flex-col">
       <Navbar />
       
-      <Marquee text="🎮 BROWSE ALL GAMES • 💎 BEST PRICES GUARANTEED • ⚡ INSTANT DELIVERY ACTIVE • 🔥 NEW GAMES ADDED WEEKLY" />
+      <Marquee text="🏠 HOME • 🎮 BROWSE ALL GAMES • 💎 BEST PRICES GUARANTEED • ⚡ INSTANT DELIVERY ACTIVE • 🔥 NEW GAMES ADDED WEEKLY" />
 
       <main className="flex-grow max-w-7xl mx-auto px-4 py-12 w-full">
         {/* Header Section */}

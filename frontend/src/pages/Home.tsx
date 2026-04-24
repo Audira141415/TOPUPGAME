@@ -132,30 +132,37 @@ const Home: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-brutal-bg">
       <Navbar />
       
-      <Marquee text="⚡ FASTEST DELIVERY IN 12 SECONDS • 💎 PROMO DISCOUNT APPLIED! • 🔥 NEW UPDATE: TOP UP VIA QRIS ACTIVE" />
+      <Marquee text="🏠 HOME • ⚡ FASTEST DELIVERY IN 12 SECONDS • 💎 PROMO DISCOUNT APPLIED! • 🔥 NEW UPDATE: TOP UP VIA QRIS ACTIVE" />
 
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="px-4 py-12 max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8">
-               <div className="relative h-[400px] md:h-[500px] border-4 border-brutal-black shadow-brutal-black group overflow-hidden bg-brutal-black">
-                  {banners.length > 0 ? (
-                    <div className="absolute inset-0">
-                        <img src={banners[0].image_path.startsWith('http') ? banners[0].image_path : `${STORAGE_URL}/${banners[0].image_path}`} alt={banners[0].title} className="w-full h-full object-cover opacity-80" />
-                        <div className="absolute bottom-12 left-12 z-20 space-y-4">
-                            <h1 className="text-5xl md:text-7xl font-space font-black text-brutal-white bg-brutal-black inline-block px-4 border-2 border-brutal-white shadow-brutal-magenta">{banners[0].title}</h1>
-                            <div className="flex gap-4">
-                                <BrutalButton variant="yellow">TOP UP NOW</BrutalButton>
-                                <BrutalButton variant="white">SEE PROMO</BrutalButton>
-                            </div>
-                        </div>
-                    </div>
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center bg-brutal-yellow">
-                        <h1 className="text-9xl font-space font-black italic -rotate-12 opacity-20 uppercase">LEVEL UP</h1>
-                    </div>
-                  )}
+               <div className="relative h-[400px] md:h-[500px] border-8 border-brutal-black shadow-[16px_16px_0px_0px_#000] shadow-brutal-magenta group overflow-hidden bg-brutal-black">
+                  {/* Premium Banner Background */}
+                  <div className="absolute inset-0">
+                      <img 
+                        src={`${STORAGE_URL}/banners/home_hero.png`} 
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[2000ms]" 
+                        alt="Hero" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-brutal-black via-transparent to-transparent"></div>
+                  </div>
+                  
+                  <div className="absolute bottom-12 left-12 z-20 space-y-6 max-w-xl">
+                      <motion.h1 
+                        initial={{ x: -100, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        className="text-5xl md:text-8xl font-space font-black text-brutal-white bg-brutal-black inline-block px-4 border-4 border-brutal-white shadow-[8px_8px_0px_0px_#FF00FF] italic uppercase leading-none"
+                      >
+                        {banners.length > 0 ? banners[0].title : "AUDIRA ZENITH"}
+                      </motion.h1>
+                      <div className="flex gap-4">
+                          <BrutalButton variant="yellow" className="px-8 py-4 text-xl">TOP UP NOW</BrutalButton>
+                          <BrutalButton variant="white" className="px-8 py-4 text-xl">SEE PROMO</BrutalButton>
+                      </div>
+                  </div>
                </div>
             </div>
 

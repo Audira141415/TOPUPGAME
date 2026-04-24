@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
              </button>
              <div className="absolute top-full left-0 w-48 hidden group-hover/nav:block z-50 pt-2">
                <div className="bg-brutal-white dark:bg-brutal-black border-4 border-brutal-black dark:border-brutal-white shadow-[4px_4px_0px_0px_#000] dark:shadow-brutal-white">
-                 <Link to="/store" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-cyan dark:hover:text-brutal-black font-black text-[10px] uppercase transition-colors">All Games</Link>
+                 <Link to="/" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-cyan dark:hover:text-brutal-black font-black text-[10px] uppercase transition-colors">Home</Link>
                  <Link to="/flash-sale" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-magenta hover:text-white font-black text-[10px] uppercase transition-colors flex justify-between items-center">
                    Flash Sale
                    <span className="bg-yellow-400 text-black px-1 text-[8px] border border-black shadow-[1px_1px_0px_0px_#000]">HOT</span>
