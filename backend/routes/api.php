@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
  */
 Route::post('/register', [\App\Http\Controllers\Api\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\Api\AuthController::class, 'login']);
+Route::post('/auth/otp/send', [\App\Http\Controllers\Api\AuthController::class, 'sendOtp']);
+Route::post('/auth/otp/verify', [\App\Http\Controllers\Api\AuthController::class, 'verifyOtp']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [\App\Http\Controllers\Api\AuthController::class, 'me']);

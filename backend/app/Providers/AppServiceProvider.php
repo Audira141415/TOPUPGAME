@@ -20,5 +20,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Illuminate\Support\Facades\Schema::defaultStringLength(191);
+        \App\Models\Order::observe(\App\Observers\OrderObserver::class);
     }
 }

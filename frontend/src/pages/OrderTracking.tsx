@@ -28,6 +28,21 @@ const OrderTracking: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    let interval: any;
+    if (orderData && !['success', 'failed', 'completed', 'canceled'].includes(orderData.status.toLowerCase())) {
+      interval = setInterval(async () => {
+        try {
+          const data = await gameService.getOrder(orderId);
+          setOrderData(data);
+        } catch (err) {
+          console.error('Polling error:', err);
+        }
+      }, 10000); // Poll every 10 seconds
+    }
+    return () => clearInterval(interval);
+  }, [orderData, orderId]);
+
   const getStatusStep = (status: string) => {
     switch (status.toLowerCase()) {
       case 'pending': return 1;

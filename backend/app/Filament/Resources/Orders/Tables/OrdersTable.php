@@ -66,24 +66,25 @@ class OrdersTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-                Action::make('export_csv')
-                    ->label('Export CSV')
-                    ->icon('heroicon-o-arrow-down-tray')
+                Action::make('export_excel')
+                    ->label('Export Excel')
+                    ->icon('heroicon-o-document-chart-bar')
                     ->color('success')
                     ->action(function () {
-                        $orders = Order::all();
-                        $csvData = "ID Pesanan,Game,Produk,Total,Profit,Status Bayar,Status Proses,Waktu\n";
-                        
-                        foreach ($orders as $order) {
-                            $csvData .= "{$order->order_id},{$order->game?->name},{$order->product?->name},{$order->total_amount},{$order->profit},{$order->payment_status},{$order->status},{$order->created_at}\n";
-                        }
-
-                        return Response::streamDownload(function () use ($csvData) {
-                            echo $csvData;
-                        }, 'laporan_transaksi_' . date('Y-m-d') . '.csv');
+                        return \Maatwebsite\Excel\Facades\Excel::download(
+                            new \App\Exports\OrdersExport, 
+                            'laporan_transaksi_' . date('Y-m-d') . '.xlsx'
+                        );
                     }),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    \Filament\Tables\Actions\BulkAction::make('export_selected')
+                        ->label('Export Selected')
+                        ->icon('heroicon-o-document-chart-bar')
+                        ->action(fn (\Illuminate\Support\Collection $records) => \Maatwebsite\Excel\Facades\Excel::download(
+                            new \App\Exports\OrdersExport($records), 
+                            'laporan_pilihan_' . date('Y-m-d') . '.xlsx'
+                        )),
                 ]),
             ]);
     }

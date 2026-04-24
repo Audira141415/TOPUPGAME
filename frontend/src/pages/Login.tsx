@@ -7,9 +7,12 @@ import { motion } from 'framer-motion';
 import { authService } from '../services/api';
 import { useAuthStore } from '../store/useAuthStore';
 
+import Turnstile from '../components/Turnstile';
+
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
@@ -18,13 +21,20 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!turnstileToken) {
+      setError('Selesaikan verifikasi keamanan (Turnstile).');
+      return;
+    }
     setLoading(true);
     setError(null);
 
     try {
-      const data = await authService.login({ email, password });
+      const data = await authService.login({ 
+        email, 
+        password,
+        turnstile_token: turnstileToken 
+      });
       setAuth(data.user, data.access_token);
-      // Redirect to User Dashboard
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Gagal login. Cek email dan password Anda.');
@@ -85,6 +95,8 @@ const Login: React.FC = () => {
                   <input type="checkbox" className="w-4 h-4 accent-brutal-magenta border-2 border-brutal-black" />
                   <span className="text-[10px] font-black uppercase italic">Ingat Saya</span>
                </div>
+
+               <Turnstile onVerify={setTurnstileToken} />
 
                <BrutalButton 
                 variant="black" 

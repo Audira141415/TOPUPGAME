@@ -7,11 +7,14 @@ import { motion } from 'framer-motion';
 import { authService } from '../services/api';
 import { useAuthStore } from '../store/useAuthStore';
 
+import Turnstile from '../components/Turnstile';
+
 const Signup: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,6 +23,10 @@ const Signup: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!turnstileToken) {
+      setError('Selesaikan verifikasi keamanan (Turnstile).');
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -35,6 +42,7 @@ const Signup: React.FC = () => {
         email,
         password,
         password_confirmation: passwordConfirmation,
+        turnstile_token: turnstileToken,
       });
       setAuth(data.user, data.access_token);
       navigate('/');
@@ -112,6 +120,8 @@ const Signup: React.FC = () => {
                     required
                   />
                </div>
+
+               <Turnstile onVerify={setTurnstileToken} />
                
                <div className="pt-4">
                   <BrutalButton 
