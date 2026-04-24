@@ -67,7 +67,7 @@ class OrdersTable
             ])
             ->toolbarActions([
                 Action::make('export_excel')
-                    ->label('Export Excel')
+                    ->label('Export Excel (NEW)')
                     ->icon('heroicon-o-document-chart-bar')
                     ->color('success')
                     ->action(function () {

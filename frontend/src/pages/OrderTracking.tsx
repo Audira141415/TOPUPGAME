@@ -95,7 +95,7 @@ const OrderTracking: React.FC = () => {
                       transition={{ delay: 0.2 }}
                       className="text-6xl md:text-[8rem] font-space font-black text-brutal-white uppercase italic leading-none tracking-tighter"
                    >
-                      TRACK <br /><span className="text-brutal-magenta text-brutal-black-outline">ORDER</span>
+                      TRACK <br /><span className="text-brutal-magenta text-brutal-black-outline inline-flex items-center gap-4">ORDER <span className="bg-red-600 text-white text-[12px] not-italic px-2 py-1 border-2 border-white animate-pulse shadow-[2px_2px_0px_0px_#000]">LIVE</span></span>
                    </motion.h1>
                    <motion.p 
                       initial={{ opacity: 0 }}

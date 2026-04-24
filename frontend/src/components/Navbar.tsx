@@ -83,6 +83,12 @@ const Navbar: React.FC = () => {
 
         {/* Center: Main Navigation Grouped */}
         <div className="hidden lg:flex flex-1 items-center justify-center gap-8">
+           {/* Store Link - NEW */}
+           <Link to="/store" className="font-space font-black uppercase text-[12px] tracking-tight hover:text-brutal-magenta dark:text-brutal-white transition-colors h-10 flex items-center gap-2">
+             STORE
+             <span className="bg-brutal-yellow text-brutal-black px-1 text-[8px] border border-brutal-black shadow-[1px_1px_0px_0px_#000] animate-pulse">NEW</span>
+           </Link>
+
            {/* Marketplace Group */}
            <div className="relative group/nav">
              <button className="flex items-center gap-2 font-space font-black uppercase text-[12px] tracking-tight hover:text-brutal-magenta dark:text-brutal-white transition-colors h-10">
@@ -91,7 +97,7 @@ const Navbar: React.FC = () => {
              </button>
              <div className="absolute top-full left-0 w-48 hidden group-hover/nav:block z-50 pt-2">
                <div className="bg-brutal-white dark:bg-brutal-black border-4 border-brutal-black dark:border-brutal-white shadow-[4px_4px_0px_0px_#000] dark:shadow-brutal-white">
-                 <Link to="/" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-cyan dark:hover:text-brutal-black font-black text-[10px] uppercase transition-colors">All Games</Link>
+                 <Link to="/store" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-cyan dark:hover:text-brutal-black font-black text-[10px] uppercase transition-colors">All Games</Link>
                  <Link to="/flash-sale" className="block px-4 py-3 border-b-2 border-brutal-black dark:border-brutal-white hover:bg-brutal-magenta hover:text-white font-black text-[10px] uppercase transition-colors flex justify-between items-center">
                    Flash Sale
                    <span className="bg-yellow-400 text-black px-1 text-[8px] border border-black shadow-[1px_1px_0px_0px_#000]">HOT</span>
@@ -183,9 +189,12 @@ const Navbar: React.FC = () => {
             {/* Track Order Link - Unified and Always Visible */}
             <Link 
               to="/track" 
-              className="hidden sm:flex h-9 items-center px-3 border-2 border-brutal-black dark:border-brutal-white bg-brutal-yellow hover:bg-brutal-magenta hover:text-white transition-all shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff] font-space font-black text-[10px] uppercase"
+              className="hidden sm:flex h-9 items-center px-3 border-2 border-brutal-black dark:border-brutal-white bg-brutal-yellow hover:bg-brutal-magenta hover:text-white transition-all shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff] font-space font-black text-[10px] uppercase relative"
             >
               Track Order
+              <span className="absolute -top-2 -right-2 bg-brutal-magenta text-white text-[8px] px-1 border border-brutal-black shadow-[1px_1px_0px_0px_#000] animate-bounce">
+                NEW
+              </span>
             </Link>
 
             {/* Notifications */}
@@ -338,6 +347,7 @@ const Navbar: React.FC = () => {
 
              <div className="flex flex-col gap-4 overflow-y-auto">
                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic hover:text-brutal-magenta transition-colors">Home</Link>
+                <Link to="/store" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic text-brutal-cyan hover:text-brutal-magenta transition-colors">Store</Link>
                 <Link to="/flash-sale" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic hover:text-brutal-cyan transition-colors">Flash Sale</Link>
                 <Link to="/prime" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic text-brutal-magenta bg-brutal-yellow px-2 border-4 border-brutal-black shadow-[6px_6px_0px_0px_#000]">Zenith Prime</Link>
                 <Link to="/news" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-space font-black uppercase italic hover:text-brutal-yellow transition-colors">News</Link>

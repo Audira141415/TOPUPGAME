@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import GameDetail from './pages/GameDetail';
+import Store from './pages/Store';
 import OrderTracking from './pages/OrderTracking';
 import UserDashboard from './pages/UserDashboard';
 import GamerTools from './pages/GamerTools';
@@ -130,6 +131,11 @@ function App() {
           <Route path="/prime" element={
             <motion.div initial={{ opacity: 0, scale: 1.2 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.4, ease: "circOut" }}>
               <ZenithPrime />
+            </motion.div>
+          } />
+          <Route path="/store" element={
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3, ease: "circOut" }}>
+              <Store />
             </motion.div>
           } />
           <Route path="/admin" element={

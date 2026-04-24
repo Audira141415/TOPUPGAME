@@ -21,6 +21,9 @@ const WhatsAppWidget: React.FC = () => {
         <span className="absolute -top-12 -right-4 w-40 bg-brutal-black text-white text-[10px] font-black py-1 px-2 border-2 border-brutal-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none uppercase">
           Butuh Bantuan? Chat Admin!
         </span>
+        <div className="absolute -top-3 -right-6 bg-brutal-yellow text-brutal-black border-2 border-brutal-black px-2 py-0.5 text-[8px] font-black uppercase italic shadow-[2px_2px_0px_0px_#000] animate-bounce">
+          NEW
+        </div>
         <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse"></div>
       </div>
     </motion.a>
