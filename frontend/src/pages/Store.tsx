@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import GameCard from '../components/GameCard';
 import Marquee from '../components/Marquee';
-import { gameService, cmsService } from '../services/api';
+import { gameService, cmsService, STORAGE_URL } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Store: React.FC = () => {
@@ -46,20 +46,35 @@ const Store: React.FC = () => {
       <main className="flex-grow max-w-7xl mx-auto px-4 py-12 w-full">
         {/* Header Section */}
         <section className="mb-16">
-          <div className="bg-brutal-black border-8 border-brutal-black p-8 md:p-12 shadow-[16px_16px_0px_0px_#000] shadow-brutal-cyan relative overflow-hidden group">
-             <div className="relative z-10 space-y-4">
+          <div className="bg-brutal-black border-8 border-brutal-black p-8 md:p-12 shadow-[16px_16px_0px_0px_#000] shadow-brutal-cyan relative overflow-hidden group min-h-[400px] flex items-center">
+             {/* Background Image Overlay */}
+             <div className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-700">
+                <img 
+                  src={`${STORAGE_URL}/banners/store_hero.png`} 
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+                  alt="Store Hero"
+                />
+             </div>
+
+             <div className="relative z-10 space-y-4 md:w-2/3">
                 <motion.h1 
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  className="text-5xl md:text-8xl font-space font-black text-brutal-white uppercase italic leading-none"
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  className="text-5xl md:text-8xl font-space font-black text-brutal-white uppercase italic leading-none drop-shadow-[4px_4px_0px_#000]"
                 >
                   GAME <span className="text-brutal-cyan text-brutal-black-outline">CATALOG</span>
                 </motion.h1>
-                <p className="text-brutal-white/70 font-space font-bold uppercase text-lg max-w-2xl border-l-4 border-brutal-yellow pl-4">
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-brutal-white font-space font-bold uppercase text-lg max-w-2xl border-l-4 border-brutal-yellow pl-4 bg-brutal-black/50 backdrop-blur-sm p-4"
+                >
                   Temukan game favoritmu dan lakukan top up dalam hitungan detik. Semua produk dijamin resmi dan aman.
-                </p>
+                </motion.p>
              </div>
-             <div className="absolute top-1/2 -translate-y-1/2 -right-20 text-[20rem] font-black text-brutal-white/5 select-none rotate-12 group-hover:rotate-0 transition-transform duration-1000">
+             
+             <div className="absolute top-1/2 -translate-y-1/2 -right-20 text-[20rem] font-black text-brutal-white/5 select-none rotate-12 group-hover:rotate-0 transition-transform duration-1000 hidden md:block">
                 STORE
              </div>
           </div>
