@@ -19,7 +19,22 @@ def create_archive(source_dir, output_filename):
             if 'vendor' in dirs: dirs.remove('vendor')
             if '.git' in dirs: dirs.remove('.git')
             if '.gemini' in dirs: dirs.remove('.gemini')
-            if 'storage' in dirs: dirs.remove('storage')
+            
+            # Special handling for storage: only keep app/public
+            if 'storage' in dirs:
+                # We don't remove 'storage' from dirs, but we handle its children
+                pass
+            
+            if root.endswith('storage'):
+                if 'framework' in dirs: dirs.remove('framework')
+                if 'logs' in dirs: dirs.remove('logs')
+                # keep 'app'
+            
+            if root.endswith('storage/app'):
+                # only keep 'public'
+                for d in list(dirs):
+                    if d != 'public':
+                        dirs.remove(d)
             
             for file in files:
                 full_path = os.path.join(root, file)
@@ -60,11 +75,9 @@ def deploy():
             "sleep 10",
             f"docker exec topup_backend mkdir -p storage/app/public storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs",
             f"docker exec topup_backend chmod -R 777 storage bootstrap/cache",
-            f"docker exec topup_backend composer install --no-dev --optimize-autoloader",
+            f"docker exec topup_backend composer install --no-dev --optimize-autoloader --ignore-platform-reqs",
             f"docker exec topup_backend php artisan migrate --force",
-            f"docker exec topup_backend php artisan db:seed --force", # RUN SEEDER
-            f"docker exec topup_backend php artisan config:cache",
-            f"docker exec topup_backend php artisan storage:link || true"
+            f"docker exec topup_backend php artisan config:cache",            f"docker exec topup_backend php artisan storage:link || true"
         ]
         
         for cmd in commands:
