@@ -69,31 +69,57 @@ const UserDashboard: React.FC = () => {
                    </div>
                    
                    <div className="mb-6">
-                     <h2 className="text-3xl font-black uppercase italic tracking-tighter mb-1">{user?.name}</h2>
+                     <h2 className="text-3xl font-black uppercase italic tracking-tighter mb-1 flex items-center justify-center gap-2">
+                        {user?.name}
+                        {user?.is_prime && (
+                           <motion.span 
+                              animate={{ rotate: [0, 10, -10, 0] }}
+                              transition={{ repeat: Infinity, duration: 2 }}
+                              className="bg-brutal-cyan text-brutal-black text-[10px] px-2 py-1 border-2 border-brutal-black shadow-[2px_2px_0px_0px_#000] not-italic"
+                           >
+                              PRIME
+                           </motion.span>
+                        )}
+                     </h2>
                      <p className="text-xs font-space font-bold uppercase text-brutal-black/40 tracking-widest">{user?.email}</p>
                    </div>
 
-                   <div className="pt-6 border-t-4 border-brutal-black/5">
-                      <p className="text-[10px] font-space font-black text-brutal-black/30 uppercase mb-2">Total Saldo</p>
-                      <p className="text-5xl font-space font-black text-brutal-black tracking-tighter">
-                        <span className="text-sm align-top mr-1">RP</span>
-                        {user?.balance ? Number(user.balance).toLocaleString('id-ID') : 0}
-                      </p>
+                   <div className="grid grid-cols-2 gap-4 py-6 border-y-4 border-brutal-black/5">
+                      <div className="text-center">
+                         <p className="text-[10px] font-space font-black text-brutal-black/30 uppercase mb-1">Total Saldo</p>
+                         <p className="text-2xl font-space font-black text-brutal-black tracking-tighter">
+                           <span className="text-xs align-top mr-0.5">RP</span>
+                           {user?.balance ? Number(user.balance).toLocaleString('id-ID') : 0}
+                         </p>
+                      </div>
+                      <div className="text-center border-l-2 border-brutal-black/10">
+                         <p className="text-[10px] font-space font-black text-brutal-black/30 uppercase mb-1">Komisi Afiliasi</p>
+                         <p className="text-2xl font-space font-black text-brutal-magenta tracking-tighter">
+                           <span className="text-xs align-top mr-0.5">RP</span>
+                           {user?.affiliate_balance ? Number(user.affiliate_balance).toLocaleString('id-ID') : 0}
+                         </p>
+                      </div>
                    </div>
                    
-                   <div className="mt-8">
+                   <div className="mt-8 space-y-3">
                       <BrutalButton variant="cyan" className="w-full py-4 text-xl">
                          TOP UP SALDO
+                      </BrutalButton>
+                      <BrutalButton variant="white" className="w-full py-3 text-xs" onClick={() => window.location.href='/affiliate'}>
+                         MANAJEMEN AFILIASI
                       </BrutalButton>
                    </div>
                 </BrutalCard>
              </div>
 
-             <BrutalCard accent="magenta" className="p-6 bg-brutal-black text-white">
-                <h4 className="text-2xl font-space font-black uppercase italic mb-2">Elite Rank</h4>
-                <p className="text-[10px] font-bold uppercase opacity-60 mb-6">Anda berada di urutan top 5% sultan bulan ini.</p>
+             <BrutalCard accent="magenta" className="p-6 bg-brutal-black text-white relative overflow-hidden">
+                <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/5 rotate-12 flex items-center justify-center text-8xl">👑</div>
+                <h4 className="text-2xl font-space font-black uppercase italic mb-2">Social Rank</h4>
+                <p className="text-[10px] font-bold uppercase opacity-60 mb-6">Status Anda berdasarkan total belanja bulan ini.</p>
                 <div className="bg-white/10 p-4 border-2 border-dashed border-white/20">
-                    <p className="font-space font-black text-brutal-cyan text-lg">PRO GAMER</p>
+                    <p className="font-space font-black text-brutal-cyan text-lg">
+                       {orders.length > 20 ? '👑 ZEUS SULTAN' : orders.length > 10 ? '💎 POSEIDON WHALE' : '🛡️ ELITE MEMBER'}
+                    </p>
                 </div>
              </BrutalCard>
           </div>

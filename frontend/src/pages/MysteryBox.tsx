@@ -1,284 +1,190 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import Marquee from '../components/Marquee';
 import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { STORAGE_URL } from '../services/api';
+import { useAuthStore } from '../store/useAuthStore';
+import { api, STORAGE_URL } from '../services/api';
+import toast from 'react-hot-toast';
 
 const MysteryBox: React.FC = () => {
+  const { user, isAuthenticated, setUser } = useAuthStore();
   const [isSpinning, setIsSpinning] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [reward, setReward] = useState<any>(null);
   const [selectedBox, setSelectedBox] = useState<any>(null);
-  const [userBalance, setUserBalance] = useState(15000); // Simulasi Saldo Awal
-  const [showPayment, setShowPayment] = useState(false);
-  const [paymentStep, setPaymentStep] = useState<'summary' | 'qris' | 'success'>('summary');
 
-  const boxTiers = [
-    { 
-        id: 'bronze', 
-        title: 'STARTER BOX', 
-        price: 5000, 
-        priceFormatted: 'Rp 5.000',
-        img: 'bronze.png', 
-        accent: 'cyan',
-        prizes: ['50 Diamonds', '100 Diamonds', 'Rp 1.000 Cashback', 'Zonk! Coba Lagi']
-    },
-    { 
-        id: 'gold', 
-        title: 'PRO BOX', 
-        price: 25000, 
-        priceFormatted: 'Rp 25.000',
-        img: 'gold.png', 
-        accent: 'yellow',
-        prizes: ['500 Diamonds', '1,000 Diamonds', 'Weekly Pass', 'Rp 10.000 Cashback']
-    },
-    { 
-        id: 'diamond', 
-        title: 'SULTAN BOX', 
-        price: 50000, 
-        priceFormatted: 'Rp 50.000',
-        img: 'diamond.png', 
-        accent: 'magenta',
-        prizes: ['2,500 Diamonds', '5,000 Diamonds', 'Legendary Skin', 'Rp 25.000 Balance']
-    },
+  const boxes = [
+    { id: 'bronze', name: 'BRONZE BOX', price: 10000, color: 'bg-[#CD7F32]', icon: '📦', rewards: [
+        { name: 'Zonk', value: 0 },
+        { name: 'Saldo Rp 5.000', value: 5000 },
+        { name: 'Saldo Rp 15.000', value: 15000 },
+        { name: 'MLBB 5 Diamonds', value: 0 }
+    ]},
+    { id: 'gold', name: 'GOLD BOX', price: 50000, color: 'bg-brutal-yellow', icon: '🎁', rewards: [
+        { name: 'Saldo Rp 10.000', value: 10000 },
+        { name: 'Saldo Rp 75.000', value: 75000 },
+        { name: 'Saldo Rp 150.000', value: 150000 },
+        { name: 'Genshin 60 Genesis', value: 0 }
+    ]},
+    { id: 'diamond', name: 'DIAMOND BOX', price: 250000, color: 'bg-brutal-cyan', icon: '💎', rewards: [
+        { name: 'Saldo Rp 50.000', value: 50000 },
+        { name: 'Saldo Rp 500.000', value: 500000 },
+        { name: 'Saldo Rp 1.000.000', value: 1000000 },
+        { name: 'iPhone 15 Pro (Simulated)', value: 0 }
+    ]}
   ];
 
-  const handlePurchase = (box: any) => {
-    setSelectedBox(box);
-    if (userBalance >= box.price) {
-        setUserBalance(prev => prev - box.price);
-        startGacha(box);
-    } else {
-        setPaymentStep('summary');
-        setShowPayment(true);
+  const handleSpin = async (box: any) => {
+    if (!isAuthenticated) {
+        toast.error('Silakan login untuk bermain!');
+        return;
     }
-  };
 
-  const startGacha = (box: any) => {
+    if (user?.balance < box.price) {
+        toast.error('Saldo Anda tidak cukup!');
+        return;
+    }
+
+    setSelectedBox(box);
     setIsSpinning(true);
-    setResult(null);
-    
-    setTimeout(() => {
-      setIsSpinning(false);
-      const randomPrize = box.prizes[Math.floor(Math.random() * box.prizes.length)];
-      setResult({
-          name: randomPrize,
-          boxName: box.title,
-          accent: box.accent
-      });
+    setReward(null);
+
+    // Simulate Spin Animation Delay
+    setTimeout(async () => {
+        const randomIndex = Math.floor(Math.random() * box.rewards.length);
+        const winReward = box.rewards[randomIndex];
+
+        try {
+            const response = await api.post('/mystery-box/win', {
+                box_type: box.name,
+                reward_name: winReward.name,
+                reward_value: winReward.value,
+                cost: box.price
+            });
+
+            if (response.data.success) {
+                setReward(winReward);
+                // Update local balance
+                if (user) {
+                    setUser({ ...user, balance: response.data.new_balance });
+                }
+                toast.success(`Selamat! Anda mendapatkan ${winReward.name}`);
+            }
+        } catch (error: any) {
+            toast.error(error.response?.data?.error || 'Gagal memproses gacha');
+        } finally {
+            setIsSpinning(false);
+        }
     }, 3000);
   };
 
-  const completePayment = () => {
-    setPaymentStep('success');
-    setTimeout(() => {
-        setShowPayment(false);
-        startGacha(selectedBox);
-    }, 2000);
-  };
-
   return (
-    <div className="min-h-screen bg-brutal-bg flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-brutal-bg flex flex-col">
       <Navbar />
       
-      <Marquee text="🎰 MYSTERY BOX LIVE • @USER1 WON 1000 DM • @USER2 WON LEGEND SKIN • @USER3 WON CASHBACK • 🔥 TRY YOUR LUCK NOW!" />
+      <main className="flex-grow max-w-6xl mx-auto px-4 py-16 w-full">
+        <header className="text-center mb-16 space-y-4">
+            <h1 className="text-6xl md:text-9xl font-space font-black uppercase italic leading-none tracking-tighter">
+                MYSTERY <span className="text-brutal-magenta text-brutal-black-outline">GACHA</span>
+            </h1>
+            <p className="text-brutal-black font-space font-bold uppercase max-w-2xl mx-auto border-4 border-brutal-black bg-brutal-yellow p-4 shadow-[8px_8px_0px_0px_#000]">
+                Uji keberuntunganmu! Dapatkan Saldo hingga Rp 1.000.000 atau hadiah menarik lainnya langsung ke akunmu.
+            </p>
+            {isAuthenticated && (
+                <div className="inline-block bg-brutal-black text-white px-6 py-2 border-2 border-white font-space font-black mt-4">
+                   SALDO ANDA: RP {Number(user?.balance).toLocaleString('id-ID')}
+                </div>
+            )}
+        </header>
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 py-16 w-full">
-        {/* User Stats Bar */}
-        <div className="flex justify-end mb-8">
-            <div className="bg-brutal-black border-4 border-brutal-black p-4 shadow-brutal-cyan flex items-center gap-6">
-                <span className="text-brutal-white font-space font-black uppercase text-xs">Saldo Anda:</span>
-                <span className="text-brutal-cyan font-space font-black text-2xl">Rp {userBalance.toLocaleString()}</span>
-                <button className="bg-brutal-yellow px-4 py-1 border-2 border-brutal-black font-black text-[10px] uppercase hover:bg-white transition-colors" onClick={() => setUserBalance(prev => prev + 50000)}>Top Up Saldo</button>
-            </div>
+        <div className="grid md:grid-cols-3 gap-12">
+            {boxes.map((box) => (
+                <BrutalCard key={box.id} accent="black" className={`${box.color} p-8 flex flex-col items-center gap-6 group hover:-translate-y-4 transition-all`}>
+                    <div className="text-8xl group-hover:scale-125 transition-transform">{box.icon}</div>
+                    <h3 className="text-3xl font-space font-black uppercase italic">{box.name}</h3>
+                    <div className="w-full bg-brutal-black text-white p-4 text-center font-space font-black">
+                        Harga: Rp {box.price.toLocaleString('id-ID')}
+                    </div>
+                    <BrutalButton 
+                        variant="black" 
+                        className="w-full py-4"
+                        onClick={() => handleSpin(box)}
+                        disabled={isSpinning}
+                    >
+                        {isSpinning && selectedBox?.id === box.id ? 'MEMBUKA...' : 'BUKA BOX'}
+                    </BrutalButton>
+                </BrutalCard>
+            ))}
         </div>
 
-        {/* Hero Mystery Box */}
-        <section className="mb-20 relative">
-          <div className="bg-brutal-black border-8 border-brutal-black p-8 md:p-16 shadow-[16px_16px_0px_0px_#000] shadow-brutal-magenta relative overflow-hidden group">
-             {/* Background Banner */}
-             <div className="absolute inset-0 z-0">
-                <img 
-                  src={`${STORAGE_URL}/banners/mysterybox_hero.png`} 
-                  className="w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-[5000ms]" 
-                  alt="Mystery Box Hero" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-brutal-black via-brutal-black/40 to-transparent"></div>
-             </div>
-
-             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
-                <div className="space-y-6 max-w-2xl">
-                   <motion.div 
-                      initial={{ x: -50, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      className="inline-block bg-brutal-magenta text-brutal-white font-black uppercase text-xs px-4 py-1 border-2 border-brutal-white shadow-[4px_4px_0px_0px_#000]"
-                   >
-                      Feeling Lucky?
-                   </motion.div>
-                   <motion.h1 
-                      initial={{ y: 50, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                      className="text-6xl md:text-8xl font-space font-black text-brutal-white uppercase italic leading-none"
-                   >
-                      MYSTERY <br /><span className="text-brutal-magenta text-brutal-black-outline">BOX</span>
-                   </motion.h1>
-                </div>
-
-                <div className="bg-brutal-white border-4 border-brutal-black p-6 shadow-brutal-cyan rotate-3 hidden md:block">
-                   <p className="font-space font-black text-brutal-black uppercase text-sm">Gacha Winner:</p>
-                   <p className="font-space font-black text-brutal-magenta uppercase text-xs">@ZenityGamer99</p>
-                   <p className="font-space font-black text-brutal-black uppercase text-[10px] opacity-40 italic">Baru saja memenangkan 1000 DM!</p>
-                </div>
-             </div>
-          </div>
-        </section>
-
-        <div className="max-w-4xl mx-auto text-center">
-            {/* Gacha Area */}
-            <div className="relative mb-24 min-h-[400px] flex items-center justify-center">
-               <div className="absolute inset-0 bg-brutal-cyan/10 blur-[100px] rounded-full animate-pulse"></div>
-               
-               <AnimatePresence mode="wait">
-                  {isSpinning ? (
-                    <motion.div 
-                      key="spinning"
-                      initial={{ scale: 0.8, rotate: 0 }}
-                      animate={{ 
-                          scale: [1, 1.2, 1],
-                          rotate: [0, -10, 10, -10, 10, 0] 
-                      }}
-                      transition={{ 
-                          scale: { repeat: Infinity, duration: 0.5 },
-                          rotate: { repeat: Infinity, duration: 0.2 }
-                      }}
-                      className="relative z-10"
-                    >
-                       <img src={`${STORAGE_URL}/boxes/${selectedBox.img}`} className="w-64 h-64 object-contain drop-shadow-[0_0_50px_rgba(255,0,255,0.5)]" alt="Spinning" />
-                       <div className="absolute inset-0 bg-brutal-white mix-blend-overlay animate-pulse opacity-50"></div>
-                    </motion.div>
-                  ) : result ? (
-                    <motion.div 
-                      key="result"
-                      initial={{ scale: 0, y: 100 }}
-                      animate={{ 
-                          scale: 1, 
-                          y: 0,
-                          x: [0, -5, 5, -5, 5, 0] 
-                      }}
-                      className="relative z-20 bg-brutal-white border-8 border-brutal-black p-12 shadow-brutal-magenta mx-auto max-w-md"
-                    >
-                       <div className="absolute -top-6 -left-6 bg-brutal-black text-white px-4 py-1 font-black text-xs uppercase italic shadow-brutal-cyan animate-bounce">
-                           {result.boxName} REWARD
-                       </div>
-                       <h2 className="text-2xl font-space font-black uppercase mb-4">SELAMAT! KAMU DAPAT:</h2>
-                       <p className="text-5xl font-space font-black text-brutal-magenta uppercase italic mb-8 drop-shadow-[4px_4px_0px_#000] scale-110 animate-pulse">{result.name}</p>
-                       <BrutalButton variant="black" className="w-full text-xl py-4" onClick={() => setResult(null)}>AMBIL HADIAH SEKARANG</BrutalButton>
-                    </motion.div>
-                  ) : (
-                    <motion.div 
-                      key="idle"
-                      initial={{ y: 0 }}
-                      animate={{ y: [0, -20, 0] }}
-                      transition={{ repeat: Infinity, duration: 4 }}
-                      className="relative z-10 text-center space-y-8"
-                    >
-                       <div className="relative inline-block group">
-                          <div className="absolute inset-0 bg-brutal-black translate-x-4 translate-y-4 group-hover:translate-x-6 group-hover:translate-y-6 transition-transform"></div>
-                          <div className="bg-brutal-white border-4 border-brutal-black p-12 relative">
-                             <img src={`${STORAGE_URL}/boxes/gold.png`} className="w-48 h-48 object-contain mb-6 grayscale group-hover:grayscale-0 transition-all duration-700" alt="Main Box" />
-                             <h3 className="text-3xl font-space font-black uppercase italic">PILIH BOX DIBAWAH</h3>
-                          </div>
-                       </div>
-                    </motion.div>
-                  )}
-               </AnimatePresence>
-            </div>
-
-            {/* Box Selection Grid */}
-            <div className="grid md:grid-cols-3 gap-12">
-               {boxTiers.map((box, i) => (
-                 <motion.div key={box.id} className="group">
-                    <BrutalCard accent={box.accent as any} className="flex flex-col h-full bg-brutal-white group-hover:-translate-y-4 transition-transform p-0 overflow-hidden">
-                        <div className="p-8 space-y-6 flex-grow">
-                            <div className="aspect-square bg-brutal-black/5 border-2 border-brutal-black relative overflow-hidden">
-                                <img src={`${STORAGE_URL}/boxes/${box.img}`} className="w-full h-full object-contain scale-90 group-hover:scale-110 transition-transform duration-700" alt={box.title} />
-                            </div>
-                            <div className="space-y-1">
-                                <h4 className="text-2xl font-black uppercase italic leading-none">{box.title}</h4>
-                                <p className="text-3xl font-black text-brutal-magenta drop-shadow-[2px_2px_0px_#000]">{box.priceFormatted}</p>
-                            </div>
-                        </div>
-                        <button 
-                            onClick={() => handlePurchase(box)}
-                            className={`w-full py-6 font-space font-black uppercase text-xl border-t-4 border-brutal-black transition-all ${isSpinning ? 'bg-gray-400' : `bg-brutal-${box.accent} hover:bg-brutal-black hover:text-white`}`}
-                            disabled={isSpinning}
-                        >
-                            {isSpinning ? 'SPINNING...' : 'BELI & BUKA'}
-                        </button>
-                    </BrutalCard>
-                 </motion.div>
-               ))}
-            </div>
-        </div>
-      </main>
-
-      {/* Payment Modal */}
-      <AnimatePresence>
-        {showPayment && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-brutal-black/80 backdrop-blur-md">
+        {/* Animation Overlay */}
+        <AnimatePresence>
+            {isSpinning && (
                 <motion.div 
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.9, opacity: 0 }}
-                    className="bg-brutal-white border-8 border-brutal-black p-8 md:p-12 max-w-md w-full shadow-brutal-yellow text-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[200] bg-brutal-black/90 flex flex-col items-center justify-center p-4 backdrop-blur-xl"
                 >
-                    <button className="absolute top-4 right-4 text-3xl font-black" onClick={() => setShowPayment(false)}>×</button>
-                    
-                    {paymentStep === 'summary' && (
-                        <div className="space-y-8">
-                            <h2 className="text-3xl font-space font-black uppercase italic">BUKTI TRANSAKSI</h2>
-                            <div className="bg-brutal-black/5 p-6 border-4 border-brutal-black space-y-4 text-left">
-                                <div className="flex justify-between border-b-2 border-brutal-black/10 pb-2">
-                                    <span className="text-[10px] font-black uppercase opacity-40">Item</span>
-                                    <span className="font-bold">{selectedBox?.title}</span>
-                                </div>
-                                <div className="flex justify-between border-b-2 border-brutal-black/10 pb-2">
-                                    <span className="text-[10px] font-black uppercase opacity-40">Harga</span>
-                                    <span className="font-bold">{selectedBox?.priceFormatted}</span>
-                                </div>
-                                <div className="flex justify-between text-brutal-magenta font-black">
-                                    <span>SALDO KURANG</span>
-                                    <span>Rp {(selectedBox?.price - userBalance).toLocaleString()}</span>
-                                </div>
-                            </div>
-                            <BrutalButton variant="yellow" className="w-full py-4 text-xl" onClick={() => setPaymentStep('qris')}>BAYAR DENGAN QRIS</BrutalButton>
-                        </div>
-                    )}
-
-                    {paymentStep === 'qris' && (
-                        <div className="space-y-8">
-                            <h2 className="text-3xl font-space font-black uppercase italic">SCAN UNTUK BAYAR</h2>
-                            <div className="bg-white p-4 border-4 border-brutal-black inline-block">
-                                <img src={`${STORAGE_URL}/qris_dummy.png`} alt="QRIS" className="w-48 h-48" />
-                            </div>
-                            <p className="text-xs font-bold uppercase opacity-40 italic">Selesaikan pembayaran dalam 05:00</p>
-                            <BrutalButton variant="black" className="w-full py-4" onClick={completePayment}>SAYA SUDAH BAYAR</BrutalButton>
-                        </div>
-                    )}
-
-                    {paymentStep === 'success' && (
-                        <div className="space-y-8 py-12">
-                            <div className="text-6xl animate-bounce">✅</div>
-                            <h2 className="text-3xl font-space font-black uppercase text-green-600">PEMBAYARAN BERHASIL!</h2>
-                            <p className="font-space font-black uppercase text-xs italic">Menyiapkan Mystery Box Anda...</p>
-                        </div>
-                    )}
+                    <motion.div 
+                        animate={{ 
+                            rotate: [0, -10, 10, -10, 10, 0],
+                            scale: [1, 1.2, 1.2, 1.2, 1.2, 1]
+                        }}
+                        transition={{ duration: 3, ease: "easeInOut" }}
+                        className="text-[12rem]"
+                    >
+                        {selectedBox?.icon}
+                    </motion.div>
+                    <h2 className="text-4xl font-space font-black text-white uppercase italic animate-pulse mt-8">Sedang Membuka Box...</h2>
                 </motion.div>
-            </div>
-        )}
-      </AnimatePresence>
+            )}
+
+            {reward && (
+                <motion.div 
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="fixed inset-0 z-[201] flex items-center justify-center p-4 bg-brutal-cyan/20 backdrop-blur-sm"
+                    onClick={() => setReward(null)}
+                >
+                    <BrutalCard accent="yellow" className="p-12 text-center max-w-md bg-white shadow-[24px_24px_0px_0px_#000] border-8">
+                        <h2 className="text-3xl font-space font-black uppercase mb-4">CONGRATULATIONS!</h2>
+                        <div className="text-8xl mb-6">🎉</div>
+                        <p className="text-[10px] font-bold uppercase opacity-40 mb-2">Anda Memenangkan:</p>
+                        <h3 className="text-4xl font-space font-black text-brutal-magenta uppercase italic mb-8">{reward.name}</h3>
+                        <BrutalButton variant="black" className="w-full" onClick={() => setReward(null)}>AMBIL HADIAH</BrutalButton>
+                    </BrutalCard>
+                </motion.div>
+            )}
+        </AnimatePresence>
+
+        {/* Gacha History */}
+        <section className="mt-24">
+            <h3 className="text-4xl font-space font-black uppercase italic mb-8">GACHA HISTORY</h3>
+            <BrutalCard accent="white" className="p-0 overflow-hidden">
+                <div className="bg-brutal-black text-white p-4 grid grid-cols-4 font-space font-black text-xs uppercase">
+                    <span>Box</span>
+                    <span>Hadiah</span>
+                    <span>Waktu</span>
+                    <span className="text-right">Status</span>
+                </div>
+                <div className="divide-y-2 divide-brutal-black/10">
+                    <div className="p-4 grid grid-cols-4 font-space font-bold text-[10px] uppercase">
+                        <span className="font-black text-brutal-magenta">Diamond Box</span>
+                        <span>Saldo Rp 50.000</span>
+                        <span className="opacity-40 text-[8px]">Today, 14:20</span>
+                        <span className="text-right text-green-600 font-black">SUCCESS</span>
+                    </div>
+                    <div className="p-4 grid grid-cols-4 font-space font-bold text-[10px] uppercase">
+                        <span className="font-black text-brutal-yellow">Gold Box</span>
+                        <span>Zonk</span>
+                        <span className="opacity-40 text-[8px]">Today, 14:15</span>
+                        <span className="text-right text-brutal-magenta font-black">FAILED</span>
+                    </div>
+                </div>
+            </BrutalCard>
+        </section>
+      </main>
     </div>
   );
 };

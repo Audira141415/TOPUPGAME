@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/password/update', [\App\Http\Controllers\Api\AuthController::class, 'updatePassword']);
     Route::post('/profile/avatar', [\App\Http\Controllers\Api\AuthController::class, 'updateAvatar']);
     Route::get('/prime/status', [LeaderboardController::class, 'primeStatus']);
+    Route::get('/me/stats', [DashboardController::class, 'getStats']);
+    Route::post('/mystery-box/win', [DashboardController::class, 'processGachaWin']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

@@ -81,4 +81,65 @@ class DashboardController extends Controller
             'data' => $topGames
         ]);
     }
+
+    public function getStats()
+    {
+        $user = auth('sanctum')->user();
+        if (!$user) return response()->json(['error' => 'Unauthorized'], 401);
+        
+        return response()->json([
+            'balance' => $user->balance,
+            'affiliate_balance' => $user->affiliate_balance,
+            'total_orders' => $user->orders()->count(),
+            'is_prime' => (bool)$user->is_prime
+        ]);
+    }
+
+    public function processGachaWin(Request $request)
+    {
+        $user = auth('sanctum')->user();
+        if (!$user) return response()->json(['error' => 'Unauthorized'], 401);
+
+        $request->validate([
+            'box_type' => 'required|string',
+            'reward_name' => 'required|string',
+            'reward_value' => 'nullable|numeric',
+            'cost' => 'required|numeric'
+        ]);
+
+        if ($user->balance < $request->cost) {
+            return response()->json(['error' => 'Saldo tidak cukup'], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            $user->decrement('balance', $request->cost);
+
+            if ($request->reward_value > 0) {
+                $user->increment('balance', $request->reward_value);
+            }
+
+            DB::table('gacha_logs')->insert([
+                'user_id' => $user->id,
+                'box_type' => $request->box_type,
+                'reward_name' => $request->reward_name,
+                'reward_value' => $request->reward_value ?? 0,
+                'created_at' => now()
+            ]);
+
+            DB::commit();
+            
+            // Refresh user to get new balance
+            $user->refresh();
+
+            return response()->json([
+                'success' => true,
+                'new_balance' => $user->balance,
+                'message' => 'Hadiah berhasil diproses!'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Gagal memproses hadiah: ' . $e->getMessage()], 500);
+        }
+    }
 }
