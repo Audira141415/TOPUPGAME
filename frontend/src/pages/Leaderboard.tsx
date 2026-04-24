@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import BrutalCard from '../components/BrutalCard';
 import { motion } from 'framer-motion';
-import { api } from '../services/api';
+import api from '../services/api';
 
 const Leaderboard: React.FC = () => {
   const [leaders, setLeaders] = useState<any[]>([]);

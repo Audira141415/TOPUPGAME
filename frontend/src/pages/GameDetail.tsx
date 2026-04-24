@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { api, gameService, STORAGE_URL } from '../services/api';
+import api, { gameService, STORAGE_URL } from '../services/api';
 import { useAuthStore } from '../store/useAuthStore';
 
 const GameDetail: React.FC = () => {

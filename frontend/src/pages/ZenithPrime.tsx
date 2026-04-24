@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import BrutalCard from '../components/BrutalCard';
 import BrutalButton from '../components/BrutalButton';
 import { motion } from 'framer-motion';
-import { api } from '../services/api';
+import api from '../services/api';
 import { useAuthStore } from '../store/useAuthStore';
 
 const ZenithPrime: React.FC = () => {
