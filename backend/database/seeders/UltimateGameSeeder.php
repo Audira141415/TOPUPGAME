@@ -385,19 +385,7 @@ class UltimateGameSeeder extends Seeder
                     ]
                 ],
             ],
-            [
-                'category_id' => $cats['mobile-game'],
-                'name' => 'Mobile Game',
-                'slug' => 'mobile-game',
-                'description' => 'Top up Mobile Game termurah dan tercepat hanya di Audira Zenith.',
-                'image' => 'games/mobile-game.png',
-                'is_active' => true,
-                'validation_config' => [
-                    'fields' => [
-                        ['name' => 'User ID', 'key' => 'user_id', 'type' => 'text', 'placeholder' => '12345678'],
-                    ]
-                ],
-            ],
+
             [
                 'category_id' => $cats['mobile-game'],
                 'name' => 'Mobile Legends',
@@ -450,19 +438,7 @@ class UltimateGameSeeder extends Seeder
                     ]
                 ],
             ],
-            [
-                'category_id' => $cats['mobile-game'],
-                'name' => 'PC Game',
-                'slug' => 'pc-game',
-                'description' => 'Top up PC Game termurah dan tercepat hanya di Audira Zenith.',
-                'image' => 'games/pc-game.png',
-                'is_active' => true,
-                'validation_config' => [
-                    'fields' => [
-                        ['name' => 'User ID', 'key' => 'user_id', 'type' => 'text', 'placeholder' => '12345678'],
-                    ]
-                ],
-            ],
+
             [
                 'category_id' => $cats['mobile-game'],
                 'name' => 'Perfect World Mobile',
@@ -710,19 +686,7 @@ class UltimateGameSeeder extends Seeder
                     ]
                 ],
             ],
-            [
-                'category_id' => $cats['mobile-game'],
-                'name' => 'Top Up Apps',
-                'slug' => 'top-up-apps',
-                'description' => 'Top up Top Up Apps termurah dan tercepat hanya di Audira Zenith.',
-                'image' => 'games/top-up-apps.png',
-                'is_active' => true,
-                'validation_config' => [
-                    'fields' => [
-                        ['name' => 'User ID', 'key' => 'user_id', 'type' => 'text', 'placeholder' => '12345678'],
-                    ]
-                ],
-            ],
+
             [
                 'category_id' => $cats['mobile-game'],
                 'name' => 'Tower of Fantasy',
@@ -762,19 +726,7 @@ class UltimateGameSeeder extends Seeder
                     ]
                 ],
             ],
-            [
-                'category_id' => $cats['mobile-game'],
-                'name' => 'Voucher',
-                'slug' => 'voucher',
-                'description' => 'Top up Voucher termurah dan tercepat hanya di Audira Zenith.',
-                'image' => 'games/voucher.png',
-                'is_active' => true,
-                'validation_config' => [
-                    'fields' => [
-                        ['name' => 'User ID', 'key' => 'user_id', 'type' => 'text', 'placeholder' => '12345678'],
-                    ]
-                ],
-            ],
+
             [
                 'category_id' => $cats['mobile-game'],
                 'name' => 'War and Order',
