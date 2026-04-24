@@ -1,5 +1,5 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Home from './pages/Home';
 import GameDetail from './pages/GameDetail';
 import Store from './pages/Store';
@@ -34,6 +34,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 function App() {
   return (
     <Router>
+      <Toaster position="top-right" reverseOrder={false} />
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={
