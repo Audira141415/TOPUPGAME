@@ -18,5 +18,8 @@ export default defineConfig({
     hmr: {
       clientPort: 3000,
     }
+  },
+  optimizeDeps: {
+    include: ['react-hot-toast']
   }
 })
