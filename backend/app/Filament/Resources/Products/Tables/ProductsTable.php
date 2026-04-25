@@ -21,10 +21,16 @@ class ProductsTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('price_basic')
-                    ->label('Harga')
+                    ->label('Basic')
                     ->money('IDR')
-                    ->color('primary')
-                    ->weight('bold')
+                    ->sortable(),
+                TextColumn::make('price_gold')
+                    ->label('Gold')
+                    ->money('IDR')
+                    ->sortable(),
+                TextColumn::make('price_platinum')
+                    ->label('Platinum')
+                    ->money('IDR')
                     ->sortable(),
                 \Filament\Tables\Columns\IconColumn::make('is_active')
                     ->label('Status')

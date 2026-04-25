@@ -17,7 +17,7 @@ class CmsSeeder extends Seeder
         Banner::truncate();
         Banner::create([
             'title' => 'SOLO LEVELING: ARISE',
-            'image_path' => 'banners/hero_main.png',
+            'image_path' => 'banners/hero_solo_leveling.png',
             'link_url' => '/game/solo-leveling',
             'is_active' => true,
             'order' => 1
@@ -25,7 +25,7 @@ class CmsSeeder extends Seeder
 
         Banner::create([
             'title' => 'LEVEL UP YOUR GAMING',
-            'image_path' => 'banners/hero_main.png',
+            'image_path' => 'banners/hero_generic_gaming.png',
             'link_url' => '/game/mobile-legends',
             'is_active' => true,
             'order' => 2

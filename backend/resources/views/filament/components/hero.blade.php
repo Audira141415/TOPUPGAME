@@ -77,7 +77,7 @@
 
         {{-- Right Content: Character Image --}}
         <div style="position: absolute; right: 0; bottom: 0; height: 115%; width: 40%; z-index: 20; display: flex; align-items: flex-end; justify-content: center;">
-            <img src="{{ asset($image) }}" style="height: 100%; width: auto; object-fit: contain; filter: drop-shadow(15px 15px 0px rgba(0,0,0,0.4)); transform: scale(1.1) translateX(15px);" alt="Character">
+            <img src="{{ $image }}" style="height: 100%; width: auto; object-fit: contain; filter: drop-shadow(15px 15px 0px rgba(0,0,0,0.4)); transform: scale(1.1) translateX(15px);" alt="Character">
         </div>
 
         {{-- Floating Badge --}}

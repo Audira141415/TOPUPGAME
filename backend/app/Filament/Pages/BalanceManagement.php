@@ -11,4 +11,11 @@ class BalanceManagement extends Page
     protected static ?string $navigationLabel = 'Saldo & Keuangan';
     protected static ?int $navigationSort = 8;
     protected string $view = 'filament.pages.balance-management';
+
+    public function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Widgets\UserBalanceWidget::class,
+        ];
+    }
 }
