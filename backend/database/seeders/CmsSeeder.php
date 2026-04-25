@@ -16,11 +16,19 @@ class CmsSeeder extends Seeder
         // 1. Seed Banners
         Banner::truncate();
         Banner::create([
+            'title' => 'SOLO LEVELING: ARISE',
+            'image_path' => 'banners/hero_main.png',
+            'link_url' => '/game/solo-leveling',
+            'is_active' => true,
+            'order' => 1
+        ]);
+
+        Banner::create([
             'title' => 'LEVEL UP YOUR GAMING',
             'image_path' => 'banners/hero_main.png',
             'link_url' => '/game/mobile-legends',
             'is_active' => true,
-            'order' => 1
+            'order' => 2
         ]);
 
         // 2. Seed Settings

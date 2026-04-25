@@ -126,6 +126,14 @@ const Home: React.FC = () => {
     return matchesTab && matchesSearch;
   });
 
+  const getGameCount = (catName: string) => {
+    if (!catName || catName === 'All') return allGames.length;
+    return allGames.filter(game => {
+      const categoryName = typeof game.category === 'object' ? game.category?.name : game.category;
+      return categoryName?.toString().toLowerCase() === catName.toLowerCase();
+    }).length;
+  };
+
   const tabList = ['All', ...categories.map(c => c.name)];
 
   return (
@@ -139,42 +147,53 @@ const Home: React.FC = () => {
         <section className="px-4 py-12 max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8">
-               <div className="relative h-[400px] md:h-[500px] border-8 border-brutal-black shadow-[16px_16px_0px_0px_#000] shadow-brutal-magenta group overflow-hidden bg-brutal-black">
+               <div className="relative h-[400px] md:h-[500px] border-8 border-brutal-black shadow-[16px_16px_0px_0px_#000] group overflow-hidden bg-brutal-black">
                   {/* Premium Banner Background */}
                   <div className="absolute inset-0">
                       <img 
-                        src={`${STORAGE_URL}/banners/home_hero.png`} 
-                        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[2000ms]" 
+                        src={banners.length > 0 ? `${STORAGE_URL}/${banners[0].image_path}` : `${STORAGE_URL}/banners/hero_main.png`} 
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[2000ms]" 
                         alt="Hero" 
                       />
-                      <div className="absolute inset-0 bg-gradient-to-r from-brutal-black via-transparent to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-brutal-black via-transparent to-transparent"></div>
                   </div>
                   
                   <div className="absolute bottom-12 left-12 z-20 space-y-6 max-w-xl">
-                      <motion.h1 
+                      <motion.div 
                         initial={{ x: -100, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
-                        className="text-5xl md:text-8xl font-space font-black text-brutal-white bg-brutal-black inline-block px-4 border-4 border-brutal-white shadow-[8px_8px_0px_0px_#FF00FF] italic uppercase leading-none"
+                        className="bg-brutal-black/60 backdrop-blur-md p-6 border-l-8 border-brutal-cyan shadow-[8px_8px_0px_0px_rgba(0,255,255,0.2)]"
                       >
-                        {banners.length > 0 ? banners[0].title : "AUDIRA ZENITH"}
-                      </motion.h1>
+                         <h1 className="text-4xl md:text-7xl font-space font-black text-brutal-white italic uppercase leading-none mb-2">
+                           {banners.length > 0 ? banners[0].title : "LEVEL UP YOUR GAMING"}
+                         </h1>
+                         <p className="text-brutal-cyan font-black uppercase text-[10px] tracking-widest">Premium Topup Destination</p>
+                      </motion.div>
                       <div className="flex gap-4">
-                          <BrutalButton variant="yellow" className="px-8 py-4 text-xl">TOP UP NOW</BrutalButton>
-                          <BrutalButton variant="white" className="px-8 py-4 text-xl">SEE PROMO</BrutalButton>
+                          <BrutalButton variant="yellow" className="px-8 py-4 text-xl shadow-[4px_4px_0px_0px_#000]">TOP UP NOW</BrutalButton>
+                          <BrutalButton variant="white" className="px-8 py-4 text-xl shadow-[4px_4px_0px_0px_#000]">SEE PROMO</BrutalButton>
                       </div>
                   </div>
                </div>
             </div>
 
             <div className="lg:col-span-4 grid grid-rows-2 gap-8">
-               <BrutalCard accent="magenta" className="flex flex-col justify-center items-center text-center p-8 bg-brutal-magenta relative overflow-hidden">
-                  <h3 className="text-3xl font-space font-black text-brutal-white uppercase italic mb-4 relative z-10">DAILY LUCKY SPIN!</h3>
-                  <BrutalButton variant="yellow" className="w-full py-4 text-xl" onClick={() => setShowSpin(true)}>AMBIL HADIAH</BrutalButton>
+               {/* Daily Lucky Spin Card - Now Vibrant & Energetic */}
+               <BrutalCard accent="magenta" className="flex flex-col justify-center items-center text-center p-8 relative overflow-hidden group border-4 border-brutal-black shadow-[8px_8px_0px_0px_#000] bg-cover bg-center" style={{ backgroundImage: `url(${STORAGE_URL}/banners/lucky_spin_bg.png)` }}>
+                  <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]"></div>
+                  <div className="w-16 h-16 mb-4 bg-white/40 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-brutal-black shadow-brutal-black relative z-10">
+                     <span className="text-4xl">🎁</span>
+                  </div>
+                  <h3 className="text-3xl font-space font-black text-brutal-black uppercase italic mb-4 relative z-10 drop-shadow-sm">DAILY LUCKY SPIN!</h3>
+                  <BrutalButton variant="black" className="w-full py-4 text-xl shadow-[4px_4px_0px_0px_#FF00FF] relative z-10" onClick={() => setShowSpin(true)}>AMBIL HADIAH</BrutalButton>
                </BrutalCard>
-               <BrutalCard accent="cyan" className="flex flex-col justify-center items-center text-center p-8 bg-brutal-white group">
-                  <div className="w-16 h-16 bg-brutal-cyan border-2 border-brutal-black mb-4 flex items-center justify-center font-black text-4xl group-hover:rotate-12 transition-transform shadow-brutal-black">?</div>
-                  <h3 className="text-2xl font-space font-black uppercase mb-2">Punya Pertanyaan?</h3>
-                  <BrutalButton variant="black" className="w-full">HUBUNGI KAMI</BrutalButton>
+
+               {/* Questions Card - Now Bright & Clean */}
+               <BrutalCard accent="cyan" className="flex flex-col justify-center items-center text-center p-8 relative group border-4 border-brutal-black shadow-[8px_8px_0px_0px_#000] bg-cover bg-center" style={{ backgroundImage: `url(${STORAGE_URL}/banners/help_bg.png)` }}>
+                  <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
+                  <div className="w-16 h-16 bg-brutal-cyan border-4 border-brutal-black mb-4 flex items-center justify-center font-black text-4xl group-hover:rotate-12 transition-transform shadow-[4px_4px_0px_0px_#000] relative z-10">?</div>
+                  <h3 className="text-2xl font-space font-black uppercase mb-4 text-brutal-black relative z-10">BUTUH BANTUAN?</h3>
+                  <BrutalButton variant="black" className="w-full shadow-[4px_4px_0px_0px_#00FFFF] relative z-10">HUBUNGI KAMI</BrutalButton>
                </BrutalCard>
             </div>
           </div>
@@ -185,7 +204,15 @@ const Home: React.FC = () => {
            <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex flex-wrap gap-2">
                  {tabList.map((cat) => (
-                   <button key={cat} onClick={() => setActiveTab(cat)} className={`px-6 py-2 font-space font-black uppercase border-2 transition-all ${activeTab === cat ? 'bg-brutal-black text-brutal-white border-brutal-black shadow-brutal-cyan -translate-y-1' : 'bg-brutal-white text-brutal-black border-brutal-black hover:bg-brutal-cyan'}`}>{cat}</button>
+                   <button 
+                    key={cat} 
+                    onClick={() => setActiveTab(cat)} 
+                    className={`px-6 py-2 font-space font-black uppercase border-2 transition-all ${activeTab === cat ? 'bg-brutal-black text-brutal-white border-brutal-black shadow-brutal-cyan -translate-y-1' : 'bg-brutal-white text-brutal-black border-brutal-black hover:bg-brutal-cyan'}`}
+                  >
+                    {cat} <span className={`ml-2 px-2 py-0.5 text-xs border-2 ${activeTab === cat ? 'bg-brutal-cyan text-brutal-black border-brutal-black' : 'bg-brutal-black text-brutal-white border-brutal-black'}`}>
+                      {getGameCount(cat)}
+                    </span>
+                  </button>
                  ))}
               </div>
               <div className="relative w-full md:w-96">
@@ -197,9 +224,15 @@ const Home: React.FC = () => {
         {/* Flash Sale Section */}
         {flashSales.length > 0 && (
           <section className="px-4 py-20 max-w-7xl mx-auto">
-            <div className="bg-brutal-magenta border-4 border-brutal-black p-8 md:p-12 shadow-brutal-black relative overflow-hidden">
+            <div 
+                className="border-8 border-brutal-black p-8 md:p-12 shadow-[12px_12px_0px_0px_#000] relative overflow-hidden group bg-cover bg-center"
+                style={{ backgroundImage: `url(${STORAGE_URL}/banners/flash_sale_bg.png)` }}
+            >
+              {/* Dark Overlay for Readability */}
+              <div className="absolute inset-0 bg-brutal-black/40 group-hover:bg-brutal-black/30 transition-colors"></div>
+              
               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
-                  <h2 className="text-5xl md:text-7xl font-space font-black text-brutal-white italic uppercase">FLASH SALE</h2>
+                  <h2 className="text-5xl md:text-8xl font-space font-black text-brutal-white italic uppercase drop-shadow-[4px_4px_0px_rgba(0,0,0,1)]">FLASH SALE</h2>
                   <div className="flex gap-4">
                     {[{ label: 'HRS', val: h }, { label: 'MIN', val: m }, { label: 'SEC', val: s }].map((t, i) => (
                       <div key={i} className="flex flex-col items-center">
@@ -208,7 +241,7 @@ const Home: React.FC = () => {
                     ))}
                   </div>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 relative z-10">
                   {flashSales.slice(0, 5).map((item, i) => (
                     <FlashSaleCard key={item.id} item={item} index={i} />
                   ))}

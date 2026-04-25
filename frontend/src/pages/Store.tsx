@@ -37,6 +37,14 @@ const Store: React.FC = () => {
     return matchesCategory && matchesSearch;
   });
 
+  const getGameCount = (catName: string) => {
+    if (!catName || catName === 'All') return games.length;
+    return games.filter(game => {
+      const categoryName = typeof game.category === 'object' ? game.category?.name : game.category;
+      return categoryName?.toString().toLowerCase() === catName.toLowerCase();
+    }).length;
+  };
+
   return (
     <div className="min-h-screen bg-brutal-bg flex flex-col">
       <Navbar />
@@ -89,7 +97,9 @@ const Store: React.FC = () => {
                   onClick={() => setActiveCategory(cat)}
                   className={`px-6 py-2 font-space font-black uppercase border-2 transition-all ${activeCategory === cat ? 'bg-brutal-black text-brutal-white border-brutal-black shadow-brutal-magenta -translate-y-1' : 'bg-brutal-white text-brutal-black border-brutal-black hover:bg-brutal-cyan'}`}
                 >
-                  {cat}
+                  {cat} <span className={`ml-2 px-2 py-0.5 text-xs border-2 ${activeCategory === cat ? 'bg-brutal-cyan text-brutal-black border-brutal-black' : 'bg-brutal-black text-brutal-white border-brutal-black'}`}>
+                      {getGameCount(cat)}
+                    </span>
                 </button>
               ))}
            </div>
