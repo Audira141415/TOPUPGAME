@@ -9,33 +9,78 @@ use Carbon\Carbon;
 
 class RevenueChart extends ChartWidget
 {
-    protected ?string $heading = 'Monthly Revenue Growth';
+    use \Filament\Widgets\Concerns\InteractsWithPageFilters;
+
+    protected ?string $heading = 'Analisis Omzet & Profit';
     protected static ?int $sort = 3;
     protected int | string | array $columnSpan = 'full';
 
     protected function getData(): array
     {
-        $data = Order::where('payment_status', 'paid')
+        $startDate = $this->filters['startDate'] ?? now()->subDays(30);
+        $endDate = $this->filters['endDate'] ?? now();
+
+        $startDate = Carbon::parse($startDate);
+        $endDate = Carbon::parse($endDate);
+
+        // Get Revenue Data
+        $revenueData = Order::where('payment_status', 'paid')
+            ->whereBetween('created_at', [$startDate->startOfDay(), $endDate->endOfDay()])
             ->select(
-                DB::raw('SUM(total_amount) as revenue'),
-                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month')
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('SUM(total_amount) as total')
             )
-            ->groupBy('month')
-            ->orderBy('month', 'asc')
-            ->limit(12)
-            ->get();
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->pluck('total', 'date')
+            ->toArray();
+
+        // Get Profit Data
+        $profitData = Order::where('payment_status', 'paid')
+            ->whereBetween('created_at', [$startDate->startOfDay(), $endDate->endOfDay()])
+            ->select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('SUM(profit) as total')
+            )
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->pluck('total', 'date')
+            ->toArray();
+
+        // Generate date range labels
+        $labels = [];
+        $revenueValues = [];
+        $profitValues = [];
+        
+        $currentDate = $startDate->copy();
+        while ($currentDate <= $endDate) {
+            $dateString = $currentDate->format('Y-m-d');
+            $labels[] = $dateString;
+            $revenueValues[] = $revenueData[$dateString] ?? 0;
+            $profitValues[] = $profitData[$dateString] ?? 0;
+            $currentDate->addDay();
+        }
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Revenue (IDR)',
-                    'data' => $data->pluck('revenue')->toArray(),
+                    'label' => 'Total Omzet (IDR)',
+                    'data' => $revenueValues,
                     'fill' => 'start',
-                    'borderColor' => '#FF00FF', // Magenta
-                    'backgroundColor' => 'rgba(255, 0, 255, 0.1)',
+                    'borderColor' => '#3b82f6',
+                    'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
+                ],
+                [
+                    'label' => 'Profit Bersih (IDR)',
+                    'data' => $profitValues,
+                    'fill' => 'start',
+                    'borderColor' => '#10b981',
+                    'backgroundColor' => 'rgba(16, 185, 129, 0.1)',
                 ],
             ],
-            'labels' => $data->pluck('month')->toArray(),
+            'labels' => $labels,
         ];
     }
 

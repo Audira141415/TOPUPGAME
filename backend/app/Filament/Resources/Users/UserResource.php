@@ -8,8 +8,7 @@ use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
+// Removed incorrect imports
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 
@@ -72,11 +71,12 @@ class UserResource extends Resource
                     ->copyable(),
                 \Filament\Tables\Columns\TextColumn::make('role')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn (?string $state): string => match ($state) {
                         'admin' => 'danger',
                         'platinum' => 'info',
                         'gold' => 'warning',
                         'member' => 'gray',
+                        default => 'gray',
                     }),
                 \Filament\Tables\Columns\TextColumn::make('balance')
                     ->label('Saldo')
@@ -99,12 +99,12 @@ class UserResource extends Resource
                     ]),
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
             ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+            ->bulkActions([
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

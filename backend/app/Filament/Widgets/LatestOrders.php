@@ -9,15 +9,29 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class LatestOrders extends BaseWidget
 {
+    use \Filament\Widgets\Concerns\InteractsWithPageFilters;
+
     protected static ?int $sort = 2;
     protected int | string | array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(
-                Order::latest()->limit(5)
-            )
+            ->query(function () {
+                $startDate = $this->filters['startDate'] ?? null;
+                $endDate = $this->filters['endDate'] ?? null;
+
+                $query = Order::query();
+
+                if ($startDate) {
+                    $query->whereDate('created_at', '>=', $startDate);
+                }
+                if ($endDate) {
+                    $query->whereDate('created_at', '<=', $endDate);
+                }
+
+                return $query->latest()->limit(10);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('order_id')
                     ->label('ID Pesanan')
@@ -32,7 +46,7 @@ class LatestOrders extends BaseWidget
                     ->money('IDR'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn (?string $state): string => match ($state) {
                         'pending' => 'warning',
                         'processing' => 'info',
                         'success' => 'success',
@@ -43,6 +57,13 @@ class LatestOrders extends BaseWidget
                     ->label('Waktu')
                     ->dateTime()
                     ->sortable(),
+            ])
+            ->actions([
+                \Filament\Actions\Action::make('view')
+                    ->label('Detail')
+                    ->icon('heroicon-m-eye')
+                    ->color('info')
+                    ->url(fn (Order $record): string => \App\Filament\Resources\Orders\OrderResource::getUrl('edit', ['record' => $record])),
             ]);
     }
 }

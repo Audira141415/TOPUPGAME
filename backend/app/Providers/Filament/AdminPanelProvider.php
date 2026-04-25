@@ -27,11 +27,11 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(\App\Filament\Pages\Auth\Login::class)
             ->colors([
-                'primary' => Color::Violet,
-                'gray' => Color::Slate,
+                'primary' => Color::Amber,
             ])
+            ->darkMode(false)
             ->font('Outfit')
             ->brandName('AUDIRA ZENITH')
             ->brandLogo(asset('logo.png'))
@@ -44,7 +44,7 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 'panels::content.start',
                 fn (): string => view('filament.components.hero', [
-                    'title' => request()->route()?->getName() ? strtoupper(str_replace(['admin.', '.', 'resources', 'index', 'create', 'edit'], ' ', request()->route()->getName())) : 'DASHBOARD',
+                    'title' => 'ADMIN PANEL',
                 ])->render(),
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
@@ -56,6 +56,11 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
+                \App\Filament\Widgets\StatsOverview::class,
+                \App\Filament\Widgets\RevenueChart::class,
+                \App\Filament\Widgets\LatestOrders::class,
+                \App\Filament\Widgets\TopSellingGamesWidget::class,
+                \App\Filament\Widgets\SystemActivityWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

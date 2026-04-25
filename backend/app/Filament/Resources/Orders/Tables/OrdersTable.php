@@ -6,10 +6,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use App\Models\Order;
 use Illuminate\Support\Facades\Response;
-use Filament\Actions\EditAction;
-use Filament\Actions\Action;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+// Removed incorrect imports
 
 class OrdersTable
 {
@@ -39,7 +36,7 @@ class OrdersTable
                 TextColumn::make('payment_status')
                     ->label('Bayar')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn (?string $state): string => match ($state) {
                         'paid' => 'success',
                         'unpaid' => 'danger',
                         'expired' => 'gray',
@@ -48,11 +45,12 @@ class OrdersTable
                 TextColumn::make('status')
                     ->label('Proses')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn (?string $state): string => match ($state) {
                         'success' => 'success',
                         'failed' => 'danger',
                         'pending' => 'warning',
                         'processing' => 'info',
+                        default => 'gray',
                     }),
                 TextColumn::make('created_at')
                     ->label('Waktu')
@@ -63,10 +61,10 @@ class OrdersTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                \Filament\Actions\EditAction::make(),
             ])
             ->toolbarActions([
-                Action::make('export_excel')
+                \Filament\Actions\Action::make('export_excel')
                     ->label('Export Excel (NEW)')
                     ->icon('heroicon-o-document-chart-bar')
                     ->color('success')
@@ -76,9 +74,11 @@ class OrdersTable
                             'laporan_transaksi_' . date('Y-m-d') . '.xlsx'
                         );
                     }),
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    \Filament\Tables\Actions\BulkAction::make('export_selected')
+            ])
+            ->bulkActions([
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
+                    \Filament\Actions\BulkAction::make('export_selected')
                         ->label('Export Selected')
                         ->icon('heroicon-o-document-chart-bar')
                         ->action(fn (\Illuminate\Support\Collection $records) => \Maatwebsite\Excel\Facades\Excel::download(

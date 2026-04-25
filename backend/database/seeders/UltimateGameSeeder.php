@@ -73,6 +73,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'arknights',
                 'description' => 'Top up Arknights termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/arknights.png',
+                'banner' => 'banners/arknights_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -99,6 +100,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'blue-archive',
                 'description' => 'Top up Blue Archive termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/blue-archive.png',
+                'banner' => 'banners/blue-archive_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -125,6 +127,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'clash-of-clans',
                 'description' => 'Top up Clash of Clans termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/clash-of-clans.png',
+                'banner' => 'banners/clash-of-clans_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -138,6 +141,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'clash-royale',
                 'description' => 'Top up Clash Royale termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/clash-royale.png',
+                'banner' => 'banners/clash-royale_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -151,6 +155,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'codm',
                 'description' => 'Top up CODM termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/codm.png',
+                'banner' => 'banners/codm_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -177,6 +182,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'diablo-immortal',
                 'description' => 'Top up Diablo Immortal termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/diablo-immortal.png',
+                'banner' => 'banners/diablo_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -242,6 +248,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'free-fire',
                 'description' => 'Top up Free Fire termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/free-fire.png',
+                'banner' => 'banners/free-fire_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -255,6 +262,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'genshin-impact',
                 'description' => 'Top up Genshin Impact termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/genshin-impact.png',
+                'banner' => 'banners/genshin-impact_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -281,6 +289,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'honkai-star-rail',
                 'description' => 'Top up Honkai: Star Rail termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/honkai-star-rail.png',
+                'banner' => 'banners/honkai-star-rail_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -294,6 +303,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'honor-of-kings',
                 'description' => 'Top up Honor of Kings termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/honor-of-kings.png',
+                'banner' => 'banners/honor-of-kings_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -373,6 +383,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'mobile-legends',
                 'description' => 'Top up Mobile Legends termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/mobile-legends.png',
+                'banner' => 'banners/mobile-legends_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -399,6 +410,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'nikke',
                 'description' => 'Top up Nikke: Goddess of Victory termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/nikke-goddess-of-victory.png',
+                'banner' => 'banners/nikke_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -439,6 +451,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'pubg-mobile',
                 'description' => 'Top up PUBG Mobile termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/pubg-mobile.png',
+                'banner' => 'banners/pubg-mobile_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
@@ -674,6 +687,7 @@ class UltimateGameSeeder extends Seeder
                 'slug' => 'valorant',
                 'description' => 'Top up Valorant termurah dan tercepat hanya di Audira Zenith.',
                 'image' => 'games/valorant.png',
+                'banner' => 'banners/valorant_hero.png',
                 'is_active' => true,
                 'validation_config' => [
                     'fields' => [
