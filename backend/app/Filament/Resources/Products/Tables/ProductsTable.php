@@ -14,22 +14,25 @@ class ProductsTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\ImageColumn::make('image')
-                    ->label('Ikon')
-                    ->disk('public')
-                    ->size(40)
-                    ->square(),
-                TextColumn::make('name')
-                    ->label('Produk')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('game.name')
                     ->label('Game')
+                    ->description(fn ($record) => $record->name)
+                    ->icon(fn ($record) => $record->game?->image ? 'url(' . asset('storage/' . $record->game->image) . ')' : null)
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('price_basic')
-                    ->label('Harga Member')
+                    ->label('Harga')
                     ->money('IDR')
+                    ->color('primary')
+                    ->weight('bold')
                     ->sortable(),
+                \Filament\Tables\Columns\IconColumn::make('is_active')
+                    ->label('Status')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-badge')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
                 TextColumn::make('stock')
                     ->label('Stok')
                     ->sortable(),

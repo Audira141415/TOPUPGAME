@@ -16,6 +16,10 @@ class PromoResource extends Resource
 {
     protected static ?string $model = Promo::class;
 
+    protected static ?string $navigationLabel = 'Promo & Voucher';
+    protected static string|\UnitEnum|null $navigationGroup = 'MENU UTAMA';
+    protected static ?int $navigationSort = 10;
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-gift';
 
     public static function form(Schema $schema): Schema

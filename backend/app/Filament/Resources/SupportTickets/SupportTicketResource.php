@@ -15,8 +15,10 @@ use Filament\Actions\DeleteBulkAction;
 class SupportTicketResource extends Resource
 {
     protected static ?string $model = SupportTicket::class;
+    protected static ?string $navigationLabel = 'Tiket Bantuan';
+    protected static string|\UnitEnum|null $navigationGroup = 'PENGATURAN';
+    protected static ?int $navigationSort = 101;
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
-    protected static string|\UnitEnum|null $navigationGroup = 'Customer Service';
 
     public static function form(Schema $schema): Schema
     {

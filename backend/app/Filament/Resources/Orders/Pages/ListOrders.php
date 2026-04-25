@@ -16,4 +16,11 @@ class ListOrders extends ListRecords
             CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Widgets\OrderStatsWidget::class,
+        ];
+    }
 }

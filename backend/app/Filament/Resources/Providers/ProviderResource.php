@@ -18,6 +18,10 @@ class ProviderResource extends Resource
 {
     protected static ?string $model = Provider::class;
 
+    protected static ?string $navigationLabel = 'Provider API';
+    protected static string|\UnitEnum|null $navigationGroup = 'PENGATURAN';
+    protected static ?int $navigationSort = 100;
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-server-stack';
 
     protected static ?string $recordTitleAttribute = 'name';

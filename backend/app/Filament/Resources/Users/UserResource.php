@@ -15,14 +15,16 @@ use Filament\Actions\DeleteBulkAction;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+    protected static ?string $navigationLabel = 'User';
+    protected static string|\UnitEnum|null $navigationGroup = 'MENU UTAMA';
+    protected static ?int $navigationSort = 7;
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
-    protected static string|\UnitEnum|null $navigationGroup = 'User Management';
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Forms\Components\Section::make('Identitas User')
+                \Filament\Schemas\Components\Section::make('Identitas User')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
@@ -38,7 +40,7 @@ class UserResource extends Resource
                             ->required(fn (string $context): bool => $context === 'create'),
                     ])->columns(2),
                 
-                Forms\Components\Section::make('Keanggotaan & Keuangan')
+                \Filament\Schemas\Components\Section::make('Keanggotaan & Keuangan')
                     ->schema([
                         Forms\Components\Select::make('role')
                             ->options([

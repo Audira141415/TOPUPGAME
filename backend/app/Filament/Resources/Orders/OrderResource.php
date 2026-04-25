@@ -18,7 +18,9 @@ class OrderResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-shopping-bag';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Transactions';
+    protected static ?string $navigationLabel = 'Transaksi';
+    protected static string|\UnitEnum|null $navigationGroup = 'MENU UTAMA';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

@@ -4,12 +4,17 @@ namespace App\Filament\Pages;
 
 use App\Filament\Widgets\HeroWidget;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Schemas\Components\Section;
 
 use Filament\Pages\Dashboard\Concerns\HasFilters;
 
 class Dashboard extends BaseDashboard
 {
     use HasFilters;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'MENU UTAMA';
+    protected static ?string $navigationLabel = 'Dashboard';
+    protected static ?int $navigationSort = 1;
 
     protected function getHeaderWidgets(): array
     {
@@ -22,7 +27,7 @@ class Dashboard extends BaseDashboard
     {
         return $form
             ->schema([
-                \Filament\Forms\Components\Section::make()
+                \Filament\Schemas\Components\Section::make()
                     ->schema([
                         \Filament\Forms\Components\DatePicker::make('startDate')
                             ->label('Dari Tanggal'),

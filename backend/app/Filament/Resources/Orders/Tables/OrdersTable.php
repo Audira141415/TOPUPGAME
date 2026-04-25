@@ -18,7 +18,12 @@ class OrdersTable
                     ->label('ID Pesanan')
                     ->searchable()
                     ->fontFamily('mono')
-                    ->weight('bold'),
+                    ->weight('bold')
+                    ->color('primary'),
+                TextColumn::make('user.name')
+                    ->label('User')
+                    ->description(fn ($record) => $record->user?->email)
+                    ->searchable(),
                 TextColumn::make('game.name')
                     ->label('Game')
                     ->sortable(),
@@ -43,8 +48,15 @@ class OrdersTable
                         default => 'warning',
                     }),
                 TextColumn::make('status')
-                    ->label('Proses')
+                    ->label('Status')
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'success' => 'SUKSES',
+                        'failed' => 'GAGAL',
+                        'pending' => 'PENDING',
+                        'processing' => 'PROSES',
+                        default => strtoupper($state),
+                    })
                     ->color(fn (?string $state): string => match ($state) {
                         'success' => 'success',
                         'failed' => 'danger',

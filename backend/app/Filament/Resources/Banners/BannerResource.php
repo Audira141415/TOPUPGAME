@@ -15,8 +15,10 @@ use Filament\Actions\DeleteBulkAction;
 class BannerResource extends Resource
 {
     protected static ?string $model = Banner::class;
+    protected static ?string $navigationLabel = 'Berita & Banner';
+    protected static string|\UnitEnum|null $navigationGroup = 'MENU UTAMA';
+    protected static ?int $navigationSort = 12;
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-photo';
-    protected static string|\UnitEnum|null $navigationGroup = 'CMS';
 
     public static function form(Schema $schema): Schema
     {

@@ -16,7 +16,9 @@ class FlashSaleResource extends Resource
 {
     protected static ?string $model = FlashSale::class;
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-bolt';
-    protected static string|\UnitEnum|null $navigationGroup = 'Marketing';
+    protected static ?string $navigationLabel = 'Flash Sale';
+    protected static string|\UnitEnum|null $navigationGroup = 'MENU UTAMA';
+    protected static ?int $navigationSort = 13;
 
     public static function form(Schema $schema): Schema
     {

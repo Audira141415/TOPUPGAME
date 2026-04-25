@@ -4,7 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -15,8 +15,10 @@ class ManageSettings extends Page
 {
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
     protected string $view = 'filament.pages.manage-settings';
-    protected static ?string $title = 'Site Settings';
-    protected static string|\UnitEnum|null $navigationGroup = 'CMS';
+    protected static ?string $title = 'Pengaturan';
+    protected static ?string $navigationLabel = 'Pengaturan';
+    protected static string|\UnitEnum|null $navigationGroup = 'PENGATURAN';
+    protected static ?int $navigationSort = 100;
 
     public ?array $data = [];
 
